@@ -1,6 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { fetchUsersRequest, fetchUsersSuccess, fetchUsersFailure, addUserRequest, addUserSuccess } from '../slices/userSlice';
 import api from '../api'; // Mock API function
+import { RegisterRestaurantSuperAdmin } from '@/app/api/register/RegisterRestaurantSuperAdmin';
 
 function* fetchUsersSaga() {
   try {
@@ -13,7 +14,7 @@ function* fetchUsersSaga() {
 
 function* addUserSaga(action) {
   try {
-    const response = yield call(api.addUser, action.payload);
+    const response = yield call(() => RegisterRestaurantSuperAdmin(action.payload));
     yield put(addUserSuccess(response.data));
   } catch (error) {
     yield put(fetchUsersFailure(error.message));

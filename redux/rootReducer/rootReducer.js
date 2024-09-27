@@ -5,6 +5,7 @@ import pizzaReducer from '../slices/pizzaSlice';
 import orderReducer from '../slices/orderSlice';
 import toppingReducer from '../slices/toppingSlice';
 import  restaurantReducer from '../slices/restaurantSlice'
+import notificationReducer from '../slices/notificationSlice'
 
 // Combine all the reducers
 const rootReducer = combineReducers({
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   pizza: pizzaReducer,
   order: orderReducer,
   topping: toppingReducer,
-  restaurant:restaurantReducer
+  restaurant:restaurantReducer,
+  notification: notificationReducer,
 });
 
 export default rootReducer;
