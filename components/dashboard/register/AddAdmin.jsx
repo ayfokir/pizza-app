@@ -1,65 +1,34 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { SuccessMessage,FailureMessage } from "@/redux/slices/notificationSlice";
-import UploadIcon from "@mui/icons-material/Upload"; // Import upload icon
-import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Container, Divider } from "@mui/material";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link } from "@mui/material";
 import Image from "next/image";
 import { useFormStatus } from "react-dom";
-import { RegisterRestaurantSuperAdmin } from "@/app/api/register/RegisterRestaurantSuperAdmin";
-import { useRouter } from "next/navigation";
-import InputFileUpload from "./UploadLogo";
-import { styled } from '@mui/material/styles';
+import { RegisterAdmin } from "@/app/api/register/RegisterAdmin";
+import { SuccessMessage,FailureMessage } from "@/redux/slices/notificationSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-// Styled component for visually hidden input
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
-
-const Register = () => {
+const AddAdmin = () => {
   const [userData, setUserData] = useState({
+    name: "",
     email: "",
-    name:  "",
+    phone: "",
     password: "",
     confirmPassword: "",
-    phone: "",
-    restaurantName: "",
-    location: "",
-    logo: null, // Add a property for the logo
-
   });
 
   const router = useRouter();
-  const [termsAccepted, setTermsAccepted] = useState(false);
   const [errors, setErrors] = useState({});
   const { pending } = useFormStatus();
   const dispatch = useDispatch(); // Get dispatch function from Redux
 
-
-   const handleChange = (e) => {
-    const { name, value, checked } = e.target;
-    if (name === "terms") {
-      setTermsAccepted(checked);
-    } else if (name === "logo") {
-      // Handle file input
-      setUserData((prevState) => ({
-        ...prevState,
-        logo: e.target.files[0], // Store the uploaded file in state
-      }));
-    } else {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
       setUserData((prevState) => ({
         ...prevState,
         [name]: value,
       }));
-    }
+    
     // Clear the error for the field that is being edited
     setErrors((prevState) => ({
       ...prevState,
@@ -67,29 +36,19 @@ const Register = () => {
     }));
   };
 
-
-
   const validateForm = () => {
     const newErrors = {};
 
-    if (!userData.name) newErrors.name = "name is required";
+    if (!userData.name) newErrors.name = "Name is required";
     if (!userData.email) newErrors.email = "Email is required";
-    if (!userData.password) newErrors.password = "Password is required";
-    if (userData.password !== userData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
     if (!userData.phone) newErrors.phone = "Phone number is required";
-    if (!userData.restaurantName)
-      newErrors.restaurantName = "Phone number is required";
-    if (!userData.location) newErrors.location = "Location is required";
-    if (!userData.logo) newErrors.logo = "Logo is required";
+    if (!userData.password) newErrors.password = "Password is required";
+    if (userData.password !== userData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
 
     // Regex validation for phone number
     if (userData.phone && !/^\d+$/.test(userData.phone)) {
       newErrors.phone = "Phone number must contain only digits";
     }
-
-    if (!termsAccepted)
-      newErrors.terms = "You must accept the Terms and Conditions";
 
     return newErrors;
   };
@@ -97,21 +56,23 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate form
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return; // Stop submission if there are validation errors
     }
 
+    //Submit user data (implement your submission logic here)
     const formData = new FormData(e.currentTarget);
-    const result = await RegisterRestaurantSuperAdmin(formData);
-
-    console.log(result);
+    const result = await RegisterAdmin(formData);
     if (result.success) {
-     dispatch(SuccessMessage(result))
-      router.push("/add-admin");
+      dispatch(SuccessMessage(result))
+      router.push("/dashboard");
+      // Handle success (e.g., redirect to login)
     } else {
-     dispatch(FailureMessage(result))
+      dispatch(FailureMessage(result))
+      // Handle error
     }
   };
 
@@ -125,6 +86,7 @@ const Register = () => {
           justifyContent: "center",
           alignItems: "center",
           backgroundColor: "#FF9921",
+          height: "100vh"
         }}
       >
         <Image src="/logo.png" width={305} height={300} alt="Logo" />
@@ -139,7 +101,6 @@ const Register = () => {
           alignItems: "center",
           justifyContent: "center",
           p: 5, // Add some padding
-          // overflowY: "auto", // Allow vertical scrolling if content overflows
           backgroundColor: "white", // Optional: set a background color if needed
         }}
       >
@@ -182,13 +143,10 @@ const Register = () => {
         >
           <TextField
             margin="normal"
-            // required
             fullWidth
             id="name"
-            label="Admin Name"
+            label="Name"
             name="name"
-            // type="text"
-            // autoComplete="email"
             autoFocus
             value={userData.name}
             onChange={handleChange}
@@ -197,14 +155,12 @@ const Register = () => {
           />
           <TextField
             margin="normal"
-            // required
             fullWidth
             id="email"
             label="Email Address"
             name="email"
             type="email"
             // autoComplete="email"
-            autoFocus
             value={userData.email}
             onChange={handleChange}
             error={Boolean(errors.email)}
@@ -212,7 +168,17 @@ const Register = () => {
           />
           <TextField
             margin="normal"
-            // required
+            fullWidth
+            name="phone"
+            label="Phone Number"
+            id="phone"
+            value={userData.phone}
+            onChange={handleChange}
+            error={Boolean(errors.phone)}
+            helperText={errors.phone}
+          />
+          <TextField
+            margin="normal"
             fullWidth
             name="password"
             label="Password"
@@ -226,7 +192,6 @@ const Register = () => {
           />
           <TextField
             margin="normal"
-            // required
             fullWidth
             name="confirmPassword"
             label="Confirm Password"
@@ -238,72 +203,7 @@ const Register = () => {
             helperText={errors.confirmPassword}
           />
 
-          <TextField
-            margin="normal"
-            // required
-            fullWidth
-            name="phone"
-            label="Phone Number"
-            id="phone"
-            value={userData.phone}
-            onChange={handleChange}
-            error={Boolean(errors.phone)}
-            helperText={errors.phone}
-          />
-          <TextField
-            margin="normal"
-            // required
-            fullWidth
-            name="restaurantName"
-            label="Restaurant Name"
-            id="restaurantName"
-            value={userData.restaurantName}
-            onChange={handleChange}
-            error={Boolean(errors.restaurantName)}
-            helperText={errors.restaurantName}
-          />
-          <TextField
-            margin="normal"
-            // required
-            fullWidth
-            name="location"
-            label="Location"
-            id="location"
-            value={userData.location}
-            onChange={handleChange}
-            error={Boolean(errors.location)}
-            helperText={errors.location}
-          />
-          <div>
-       <Button
-      component="label"
-      fullWidth
-      variant="outlined" // Changed to outlined for a distinct look
-      sx={{
-        border: "2px dashed #CCCCCC", // Dashed border style
-        textTransform: "none", // Preserve text casing (PascalCase)
-        color: "#FF9921", // Set text and icon color
-        padding: "16px", // Add padding for a better look
-        marginTop: "15px"
-      }}
-      startIcon={<UploadIcon />} // Add upload icon
-      >
-      Upload Logo
-      <VisuallyHiddenInput
-        type="file"
-        name="logo"
-        id="logo"
-        onChange={handleChange}
-      />
-    </Button>
-    {errors.logo && (
-            <Typography variant="body2" color="error" sx={{ mb: 2, ml: 2 }}>
-              {errors.logo}
-            </Typography>
-          )}
-     {/* <InputFileUpload  /> */}
-    </div>
-          <FormControlLabel
+          {/* <FormControlLabel
             control={
               <Checkbox
                 name="terms"
@@ -318,35 +218,28 @@ const Register = () => {
             <Typography variant="body2" color="error" sx={{ mt: 1 }}>
               {errors.terms}
             </Typography>
-          )}
+          )} */}
           <Button
             type="submit"
             fullWidth
-            variant="contained" // Use "contained" to allow background color changes
+            variant="contained"
             sx={{
               mt: 3,
               mb: 2,
-              backgroundColor: "#FF9921", // Set the background color
-              color: "white", // Ensure text is readable by setting the color to white
+              backgroundColor: "#FF9921",
+              color: "white",
               "&:hover": {
-                backgroundColor: "#E6821F", // Optional: Set hover color for a darker shade
+                backgroundColor: "#E6821F",
               },
             }}
             disabled={pending}
           >
-            {pending ? "Submitting..." : "Sign Up"}
+            {pending ? "Submitting..." : "Continue"}
           </Button>
-
-          <Typography variant="body2" color="textSecondary" align="center">
-            Already have an account?{" "}
-            <Link href="/login" variant="body2" sx={{color:"#FF9921"}}>
-              Login
-            </Link>
-          </Typography>
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default Register;
+export default AddAdmin;

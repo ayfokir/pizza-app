@@ -12,11 +12,11 @@ const notificationSlice = createSlice({
   initialState,
   reducers: {
     SuccessMessage(state, action) {
-      console.log("see SuccessMessage:", action);
       state.message = action.payload.message;
       state.success = action.payload.success;
     },
     FailureMessage(state, action) {
+      console.log("see FailureMessage:", action);
       state.error = action.payload.error;
       state.success = action.payload.success;
     },

@@ -20,6 +20,7 @@ model User {
   password       String
   name           String?
   phoneNumber    String
+  secondPhoneNumber String?      // Additional phone number (optional)
   isActive       Boolean         @default(false)  // To track if the user has activated their account
   location       String?
   roles          UserRole[]      @relation("UserRoles")
@@ -125,73 +126,3 @@ enum OrderStatus {
 
 
 
-
-
-// // Enum for user roles
-// enum UserRole {
-//   USER
-//   BOOK_OWNER
-//   ADMIN
-// }
-
-// // User model definition 
-// model User {
-//   id        Int      @id @default(autoincrement())
-//   email     String   @unique
-//   password  String
-//   name      String
-//   role      UserRole @default(USER)
-//   rentals   Rental[]
-//   books     Book[]   @relation("BookOwner") //BookOwner: This is a named relation that Prisma uses to identify the relationship between User and Book. 
-// By naming the relation, you ensure that Prisma knows which relationship to use when joining these tables. This name is used to link the User model’s books field to the Book model’s owner field.
-//  //Named Relationships: Useful when you need to manage or clarify multiple relationships between models.
-// //Implicit Relationships: Can be sufficient for simpler schemas where only one relationship type is involved.
- 
- 
-//  //books: This is a virtual field in Prisma that indicates a one-to-many relationship. It doesn't create a separate column in the User table but implies that the User model can be related to multiple Book records. Prisma uses this field to manage relationships and generate queries.
-// //books in the User model: This field is used to manage the relationship in Prisma but does not create a database column. It is a virtual representation for querying and manipulating data.
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
-// // Book model definition
-// model Book {
-//   id        Int      @id @default(autoincrement())
-//   title     String
-//   author    String
-//   genre     String
-//   owner     User     @relation("BookOwner", fields: [ownerId], references: [id])
-//   //owner in the Book model: This field is used to represent the relationship and is a reference to the User model, but the actual database column created is ownerId.
-//   //owner: This is also a virtual field that represents a one-to-one relationship with the User model. It doesn't create a separate column in the Book table, but rather it helps Prisma understand that each book is linked to a single user. The actual database column for this relationship is ownerId.
-//   //[id]: This specifies that the ownerId field in the Book model references the id field in the User model. It tells Prisma that ownerId should correspond to id in the User model to maintain the relationship
-//   ownerId   Int //ownerId: This is a foreign key field in the Book model that holds the ID of the User who owns the book.// It’s used to establish the connection between Book and User.
-//   //ownerId: In the Book table, Prisma will create a column named ownerId which is a foreign key. This column holds the ID of the user who owns the book. This is the actual database field that stores the relationship data.
-  
-//   // ownerId is the actual foreign key field in the Book table that references the User
-
-
-//   rentals   Rental[]
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
-// // Rental model definition 
-// model Rental {
-//   id        Int      @id @default(autoincrement())
-//   book      Book     @relation(fields: [bookId], references: [id])
-//   bookId    Int
-//   user      User     @relation(fields: [userId], references: [id])
-//   userId    Int
-//   rentDate  DateTime @default(now())
-//   returnDate DateTime?
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
-
-// How Prisma Handles It
-// When you use owner: { connect: { id: userId } }, Prisma performs the following actions:
-
-// Validation: Ensures that a User with the given id exists.
-// Foreign Key Assignment: Sets the ownerId field in the Book table to the provided userId to establish the relationship.
-// Data Integrity: Maintains referential integrity between Book and User tables.
