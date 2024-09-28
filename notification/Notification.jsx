@@ -6,6 +6,7 @@ import { clearNotification } from '@/redux/slices/notificationSlice';
 import 'react-toastify/dist/ReactToastify.css';
 export const Notification = () => {
   const {error, success, message} = useSelector( (state) => state.notification);
+  console.log("inside notification:", error)
   const dispatch = useDispatch(); // Get dispatch function from Redux
   useEffect(() => {
     if (message) {  

@@ -1,11 +1,9 @@
-'use client'
-import { useMemo } from 'react';
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from 'material-react-table';
-import { Box } from '@mui/material';
-
+'use client';
+import { useMemo, useState } from 'react';
+import { MaterialReactTable, useMaterialReactTable} from 'material-react-table';
+import { Box, Button } from '@mui/material';
+import AddRoleModal from '../add-role/AddRoleModal';
+import AddUser from './AddUser';
 //example data type
 const data = [
   {
@@ -55,8 +53,9 @@ const data = [
   },
 ];
 
-const OrderTable = () => {
+const UserTable = () => {
   //should be memoized or stable
+  const [openAddUser, setOpenAddUser] = useState(false);
   const columns = useMemo(
     () => [
       {
@@ -93,9 +92,27 @@ const OrderTable = () => {
     data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
   });
 
-  return <Box width={"100%"} height={"100vh"} mt={"24px"}>
-      <MaterialReactTable table={table} />;
-  </Box>
+  const handlopenAddUser  =  ()  => {
+    setOpenAddUser(true)
+  }
+  const handlCloseAddUser  =  ()  => {
+    setOpenAddUser(false)
+  }
+
+  return (
+    <Box height={"100vh"} padding={"12px"} position="relative">
+      {/* Container for Button and Table */}
+      <Box position="absolute" top={29} left={25}>
+        <Button variant="contained" color="warning" sx={{zIndex:"1000"}}  onClick={handlopenAddUser}>
+          Add User
+        </Button>
+
+      </Box>
+ { openAddUser&& < AddUser  open ={openAddUser} onClose = {handlCloseAddUser} />}
+      {/* Table */}
+      <MaterialReactTable table={table} />
+    </Box>
+  );
 };
 
-export default OrderTable;
+export default UserTable;
