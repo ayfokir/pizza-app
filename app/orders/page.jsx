@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
-import OrderTable from "@/components/dashboard/add-role/RoleTable";
 import Dashboard from "@/components/dashboard/Dashboard";
+import OrderTable from "@/components/dashboard/order/OrderTable";
 const page = () => {
   return (
     <Box>

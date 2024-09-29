@@ -52,19 +52,6 @@ const AddRoleModal = ({ open, onClose }) => {
 
   const handleSubmit = async(event) => {
       event.preventDefault();
-      
-      // Convert selectedPermissions to an array of selected permission IDs
-      const permissionIds = Object.keys(selectedPermissions)
-      .filter((id) => selectedPermissions[id]) // Filter out unselected permissions
-      .map((id) => parseInt(id, 10)); // Convert string IDs to numbers
-    
-    setRoleData((prevState) => ({
-      ...prevState,
-      permissions: permissionIds,
-    }));
-    
-        console.log("see permissionIds:", permissionIds)
-        console.log("see roleData :",roleData )
 
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
@@ -94,6 +81,17 @@ const AddRoleModal = ({ open, onClose }) => {
       [id]: !prevState[id], // Toggle the selection
     }));
   };
+useEffect(()  =>  {
+      // Convert selectedPermissions to an array of selected permission IDs
+      const permissionIds = Object.keys(selectedPermissions)
+      .filter((id) => selectedPermissions[id]) // Filter out unselected permissions
+      .map((id) => parseInt(id, 10)); // Convert string IDs to numbers
+    
+    setRoleData((prevState) => ({
+      ...prevState,
+      permissions: permissionIds,
+    }));
+},[selectedPermissions])
 
   return (
     <Modal open={open} onClose={onClose}>

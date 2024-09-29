@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Box, TextField, Button, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import {
+  Modal,
+  Box,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 import { GetUserRoles } from "@/app/api/user/GetUserRoles";
 import { CreateUser } from "@/app/api/user/CreateUser";
 import { useDispatch } from "react-redux";
-import { SuccessMessage, FailureMessage } from "@/redux/slices/notificationSlice";
+import {
+  SuccessMessage,
+  FailureMessage,
+} from "@/redux/slices/notificationSlice";
 const MyModal = ({ open, onClose }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -39,16 +51,12 @@ const MyModal = ({ open, onClose }) => {
   }, []); // Assuming `newRole` is a dependency that triggers re-fetching
 
   const handleRoleChange = (event) => {
-    const selectedRoleId = event.target.value;
-
-    if (role.includes(selectedRoleId)) {
-      setRole(role.filter((r) => r !== selectedRoleId)); // Remove the role if it's already selected
-    } else {
-      setRole([...role, selectedRoleId]); // Add the role to the array
-    }
+    const selectedRoles = event.target.value; // This will be an array of selected role IDs
+    setRole(selectedRoles); // Set the selected roles directly
   };
-console.log("see role:", role)
-  const handleSubmit = async() => {
+
+  console.log("see role:", role);
+  const handleSubmit = async () => {
     const newErrors = {
       name: !name,
       email: !email,
@@ -61,29 +69,33 @@ console.log("see role:", role)
     setErrors(newErrors);
 
     if (!Object.values(newErrors).some(Boolean)) {
-        const registerUser = {
-            name: name,
-            email: email,
-            phone1: phone1,
-            phone2: phone2,
-            location: location,
-            roleIds: role, // Example role IDs
-          };
-          try {
-            const result = await CreateUser(registerUser);
-            if (result.success) {
-                dispatch(SuccessMessage(result ));
-                onClose(); // Close modal after successful submission
-                setRoleData({ name: "", permissions: [] }); // Reset form
-                // setSelectedPermissions({}); // Reset selected permissions
-            } else {
-                dispatch(FailureMessage(result));
-            }
-        } catch (error) {
-            // Handle any unexpected errors
-            dispatch(FailureMessage({ error: error.message || 'An unexpected error occurred' }));
+      const registerUser = {
+        name: name,
+        email: email,
+        phone1: phone1,
+        phone2: phone2,
+        location: location,
+        roleIds: role, // Example role IDs
+      };
+      try {
+        const result = await CreateUser(registerUser);
+        if (result.success) {
+          dispatch(SuccessMessage(result));
+          onClose(); // Close modal after successful submission
+          setRoleData({ name: "", permissions: [] }); // Reset form
+          // setSelectedPermissions({}); // Reset selected permissions
+        } else {
+          dispatch(FailureMessage(result));
         }
-            }
+      } catch (error) {
+        // Handle any unexpected errors
+        dispatch(
+          FailureMessage({
+            error: error.message || "An unexpected error occurred",
+          })
+        );
+      }
+    }
   };
 
   const modalStyle = {
@@ -91,16 +103,17 @@ console.log("see role:", role)
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 500,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
+    borderRadius: "12px", // Set the desired border radius her
   };
 
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
-        <h2>Form Details</h2>
+        {/* <h2>Form Details</h2> */}
 
         <TextField
           fullWidth
@@ -158,7 +171,8 @@ console.log("see role:", role)
             <InputLabel id="role-label">Role</InputLabel>
             <Select
               labelId="role-label"
-              value={role}
+              multiple // Enable multiple selection
+              value={role} // Bind the array directly
               onChange={handleRoleChange}
               label="Role"
             >
@@ -180,7 +194,7 @@ console.log("see role:", role)
             color="primary"
             fullWidth
             onClick={handleSubmit}
-            sx={{ height: "56px" }}
+            sx={{ height: "56px", backgroundColor: "#FF9921" }}
           >
             Add
           </Button>

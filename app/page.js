@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 import MainHeading from "@/components/home/MainHeading";
 import FeaturedPizza from '@/components/FeaturedPizza/FeaturedPizza';
 import Restaurants from '@/components/restaurants/Restaurants';
+import AllPizzas from '@/components/popular-pizza/AllPizzas';
 export default function Home() {
   return (
     <Box>
@@ -31,6 +32,9 @@ export default function Home() {
     <Restaurants />
     <Restaurants />
     </Box>
+
+   <AllPizzas />
+
   </Box>
   );
 }
