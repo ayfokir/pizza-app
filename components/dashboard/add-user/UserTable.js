@@ -1,87 +1,56 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MaterialReactTable, useMaterialReactTable} from 'material-react-table';
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import AddRoleModal from '../add-role/AddRoleModal';
 import AddUser from './AddUser';
-//example data type
-const data = [
-  {
-    name: {
-      firstName: 'John',
-      lastName: 'Doe',
-    },
-    address: '261 Erdman Ford',
-    city: 'East Daphne',
-    state: 'Kentucky',
-  },
-  {
-    name: {
-      firstName: 'Jane',
-      lastName: 'Doe',
-    },
-    address: '769 Dominic Grove',
-    city: 'Columbus',
-    state: 'Ohio',
-  },
-  {
-    name: {
-      firstName: 'Joe',
-      lastName: 'Doe',
-    },
-    address: '566 Brakus Inlet',
-    city: 'South Linda',
-    state: 'West Virginia',
-  },
-  {
-    name: {
-      firstName: 'Kevin',
-      lastName: 'Vandy',
-    },
-    address: '722 Emie Stream',
-    city: 'Lincoln',
-    state: 'Nebraska',
-  },
-  {
-    name: {
-      firstName: 'Joshua',
-      lastName: 'Rolluffs',
-    },
-    address: '32188 Larkin Turnpike',
-    city: 'Omaha',
-    state: 'Nebraska',
-  },
-];
+import { GetUsers } from '@/app/api/user/GetUsers';
+import StatusSwitch from './StatusSwitch';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const UserTable = () => {
   //should be memoized or stable
   const [openAddUser, setOpenAddUser] = useState(false);
-  const columns = useMemo(
+  const [users, setUsers]   = useState([])
+
+  useEffect(()  =>  {
+    const getUsers  =  async()  =>  {
+let users =  await GetUsers()
+console.log("see users:", users)
+setUsers(users.users)
+    }
+    getUsers()
+},[openAddUser])
+
+const columns = useMemo(
     () => [
       {
-        accessorKey: 'name.firstName', //access nested data with dot notation
-        header: 'First Name',
+        accessorKey: 'name', //access nested data with dot notation
+        header: ' Name',
         size: 150,
       },
       {
-        accessorKey: 'name.lastName',
-        header: 'Last Name',
-        size: 150,
-      },
-      {
-        accessorKey: 'address', //normal accessorKey
-        header: 'Address',
+        accessorKey: 'phoneNumber', //normal accessorKey
+        header: 'Phone No',
         size: 200,
       },
       {
-        accessorKey: 'city',
-        header: 'City',
+        accessorKey: 'email',
+        header: 'Email',
         size: 150,
       },
       {
-        accessorKey: 'state',
-        header: 'State',
-        size: 150,
+        accessorKey: 'actions',
+        header: 'Action',
+        size: 100,
+        Cell: ({ row }) => (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <StatusSwitch />
+            <IconButton onClick={() => handleDelete(row.original.owner_id)}>
+              <DeleteIcon sx={{color: "red"}} />
+            </IconButton>
+          </div>
+        ),
       },
     ],
     [],
@@ -89,7 +58,7 @@ const UserTable = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    data: users, 
   });
 
   const handlopenAddUser  =  ()  => {
@@ -101,15 +70,12 @@ const UserTable = () => {
 
   return (
     <Box height={"100vh"} padding={"12px"} position="relative">
-      {/* Container for Button and Table */}
       <Box position="absolute" top={29} left={25}>
         <Button variant="contained" color="warning" sx={{zIndex:"1000"}}  onClick={handlopenAddUser}>
           Add User
         </Button>
-
       </Box>
  { openAddUser&& < AddUser  open ={openAddUser} onClose = {handlCloseAddUser} />}
-      {/* Table */}
       <MaterialReactTable table={table} />
     </Box>
   );

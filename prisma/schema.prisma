@@ -109,10 +109,10 @@ model OrderPizza {
 }
 
 enum OrderStatus {
-  PENDING
-  PREPARING
-  DELIVERED
-  CANCELED
+  Prepairing
+  Ready
+  Delivered
+  
 }
 
 

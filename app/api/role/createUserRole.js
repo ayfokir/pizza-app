@@ -44,7 +44,6 @@ export async function createUserRole(roleName, permissionIds) {
       success: false,
     };
   }
-
   // Save user role to the database
   try {
     const createdUserRole = await prisma.userRole.create({

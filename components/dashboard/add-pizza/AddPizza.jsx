@@ -12,10 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import UploadIcon from "@mui/icons-material/Upload"; // Import upload icon
 import { useDispatch, useSelector } from "react-redux";
-import {
-  SuccessMessage,
-  FailureMessage,
-} from "@/redux/slices/notificationSlice";
+import {SuccessMessage,FailureMessage,} from "@/redux/slices/notificationSlice";
 import { useFormStatus } from "react-dom";
 import { CreateTopping } from "@/app/api/topping/CreateTopping";
 import { GetToppings } from "@/app/api/topping/GetToppings";
@@ -40,14 +37,22 @@ const AddPizza = () => {
   const [newTopping, setNewTopping] = useState(""); // For the add topping field
   const [toppingsList, setToppingsList] = useState([]); // State to store the fetched toppings
 
-  // Handle toggle of checkbox selection
-  const handleToppingChange = (e) => {
-    setSelectedToppings({
-      ...selectedToppings,
-      [e.target.name]: e.target.checked,
-    });
-    
+  const handleToppingChange = (id) => {
+    console.log("see id:", id)
+    setSelectedToppings((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id], // Toggle the selection
+    }));
   };
+
+  useEffect(() => {
+    const toppingIds = Object.keys(selectedToppings).filter((id) => selectedToppings[id]);
+    setPizzaData((prevState) => ({
+      ...prevState,
+      toppings: toppingIds,
+    }));
+  }, [selectedToppings]);
+  
 
 console.log("selectedToppings:", selectedToppings)
 
@@ -101,11 +106,12 @@ console.log("selectedToppings:", selectedToppings)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "logo") {
+    if (name === "pizza_photo") {
       // Handle file input
+      console.log("see pizza photo:",  e.target.files[0])
       setPizzaData((prevState) => ({
         ...prevState,
-        logo: e.target.files[0], // Store the uploaded file in state
+        pizza_photo: e.target.files[0], // Store the uploaded file in state
       }));
     } else {
       setPizzaData((prevState) => ({
@@ -124,38 +130,48 @@ console.log("selectedToppings:", selectedToppings)
     const newErrors = {};
     if (!pizzaData.name) newErrors.name = "Pizza name is required";
     // Validate toppings array (check if it's empty or not)
-    // if (!pizzaData.toppings || pizzaData.toppings.length === 0) {
-    //   newErrors.toppings = "At least one topping is required";
-    // }
+    if (!pizzaData.toppings || pizzaData.toppings.length === 0) {
+      newErrors.toppings = "At least one topping is required";
+    }
     if (!pizzaData.price) newErrors.price = "Price is required";
     if (!pizzaData.pizza_photo)
       newErrors.pizza_photo = "Pizza photo is required";
     return newErrors;
   };
 
-  const handleSubmit = (event) => {
-
-    const toppingIds = Object.keys(selectedToppings).filter(
-        (key) => selectedToppings[key]
-      );
-      setPizzaData((prevState) => ({
-        ...prevState,
-        toppings: toppingIds,
-      }));
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("yes we are here");
-    console.log(pizzaData)
+  
+    // Extract selected topping IDs
+    const toppingIds = Object.keys(selectedToppings).filter((id) => selectedToppings[id]);
+  
+    // Validate the form before submission
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return; // Stop submission if there are validation errors
     }
-    console.log("below error validation");
-    // Convert selectedToppings to array of topping IDs
-
-    const formData = new FormData(event.currentTarget);
-    const result = CreatePizza(formData);
+  
+    console.log("Pizza data to be submitted:", pizzaData);
+  
+    // Create form data for submission
+    const formData = new FormData();
+    formData.append("name", pizzaData.name);
+    formData.append("price", pizzaData.price);
+    formData.append("toppings", JSON.stringify(toppingIds)); // Use the computed topping IDs directly
+    formData.append("pizza_photo", pizzaData.pizza_photo);
+  
+    const result = await CreatePizza(formData);
+    console.log("see result :", result);
+  
+    if (result.success) {
+      dispatch(SuccessMessage(result));
+    } else {
+      dispatch(FailureMessage(result));
+    }
   };
+  
+  
 
   return (
     <Box
@@ -187,7 +203,9 @@ console.log("selectedToppings:", selectedToppings)
           margin="normal"
           variant="outlined"
           onChange={handleChange}
-          required
+          // required
+          error={!!errors.name}
+          helperText={errors.name}
         />
         <Typography
           variant="h6"
@@ -211,8 +229,8 @@ console.log("selectedToppings:", selectedToppings)
               key={topping.id}
               control={
                 <Checkbox
-                  checked={selectedToppings[topping.name] || false}
-                  onChange={handleToppingChange}
+                  checked={selectedToppings[topping.id] || false}
+                  onChange={ () =>  handleToppingChange(topping.id)}
                   name={topping.name}
                   sx={{
                     color: "#ff8a00",
@@ -223,9 +241,8 @@ console.log("selectedToppings:", selectedToppings)
               }
               label={topping.name}
             />
+            
           ))}
-
-          {/* Conditionally render the new topping field and add button */}
 
           <Box
             sx={{
@@ -283,7 +300,9 @@ console.log("selectedToppings:", selectedToppings)
           variant="outlined"
           type="number"
           onChange={handleChange}
-          required
+          // required
+          error={!!errors.price}
+          helperText={errors.price}
         />
         <Box
           display={"flex"}
@@ -313,9 +332,14 @@ console.log("selectedToppings:", selectedToppings)
                 name="pizza_photo"
                 id="pizza_photo"
                 onChange={handleChange}
-                required
+                // required
               />
             </Button>
+            {errors.pizza_photo && (
+            <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+              {errors.pizza_photo}
+            </Typography>
+          )}
           </Box>
         </Box>
 

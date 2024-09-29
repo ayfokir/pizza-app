@@ -331,8 +331,11 @@ const Register = () => {
               "&:hover": {
                 backgroundColor: "#E6821F", // Optional: Set hover color for a darker shade
               },
+              padding: "12px 16px", // Increase padding of the Login button
             }}
             disabled={pending}
+
+            
           >
             {pending ? "Submitting..." : "Sign Up"}
           </Button>
