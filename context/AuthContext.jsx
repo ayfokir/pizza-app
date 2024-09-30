@@ -16,18 +16,24 @@ export const useAuth = () => {
 // Create a provider component
 export const AuthProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
-  const [userId, setUserId] = useState(null);
-  const [role, setRole] = useState(null);
+  // const [userId, setUserId] = useState(null);
+  const [id, setUserId] = useState(null);
+  // const [role, setRole] = useState(null);
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
   
-  const value = { isLogged, role, userId, setRole, setIsLogged, setUserId };
+  const value = { isLogged, name, id, email, setName, setEmail, setUserId };
   
   useEffect(() => {
     // Retrieve the logged in user from local storage
     const loggedInUser = getAuth();
     loggedInUser.then((response) => {
       if (response.token) {
-        setRole(response.role);
-        setUserId(response.user_id);
+        // setRole(response.role);
+        setName(response.name);
+        setEmail(response.email);
+        // setUserId(response.user_id);
+        setUserId(response.id);
         setIsLogged(true); // Set isLogged to true if token exists
       }
     });

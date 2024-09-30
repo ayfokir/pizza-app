@@ -1,15 +1,16 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-// import { fetchPizzasAPI, addPizzaAPI } from '../api/pizzaApi'; // Assuming these API calls are defined elsewhere
-import { fetchPizzas, addPizza, fetchPizzasSuccess, fetchPizzasFailure, addPizzaSuccess, addPizzaFailure } from '../slices/pizzaSlice';
+import { GetPizzas } from '@/app/api/pizza/GetPizzas';
+import {fetchPizzasRequest, fetchPizzasSuccess, fetchPizzasFailure, addPizzaRequest, addPizzaSuccess, addPizzaFailure } from '../slices/pizzaSlice';
 
 // Worker Saga: Fetch Pizzas
 function* fetchPizzasSaga() {
-  // try {
-  //   const response = yield call(fetchPizzasAPI); // Fetch pizzas from API
-  //   yield put(fetchPizzasSuccess(response.data)); // Dispatch success action with pizzas data
-  // } catch (error) {
-  //   yield put(fetchPizzasFailure(error.message)); // Dispatch failure action if there's an error
-  // }
+  try {
+    const response = yield call(() => GetPizzas()); // Fetch pizzas from API
+    console.log("see pizza inside saga:", response.pizzas)
+    yield put(fetchPizzasSuccess(response.pizzas)); // Dispatch success action with pizzas data
+  } catch (error) {
+    yield put(fetchPizzasFailure(error.message)); // Dispatch failure action if there's an error
+  }
 }
 
 // Worker Saga: Add Pizza
@@ -24,7 +25,7 @@ function* addPizzaSaga(action) {
 
 // Watcher Saga: Watch for pizza-related actions
 function* pizzaSaga() {
-  // yield takeLatest(fetchPizzas.type, fetchPizzasSaga);
+  yield takeLatest(fetchPizzasRequest.type, fetchPizzasSaga);
   // yield takeLatest(addPizza.type, addPizzaSaga);
 }
 

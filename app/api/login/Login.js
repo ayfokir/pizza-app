@@ -13,10 +13,11 @@ const loginSchema = z.object({
   password: z.string().min(2, 'Password must be at least 8 characters long'),
 });
 
-async function LoginUser(formData) {
+export async function LoginUser(formData) {
   // Extract data from FormData
-  const email = formData.get('email')?.toString() ?? '';
-  const password = formData.get('password')?.toString() ?? '';
+  const {email, password}   =  formData
+//   const email = formData.get('email')?.toString() ?? '';
+//   const password = formData.get('password')?.toString() ?? '';
   const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET;
   console.log("see secret:", jwtSecret);
 
@@ -75,8 +76,9 @@ async function LoginUser(formData) {
 
     // Generate JWT token if needed
     const payload = { // the payload data is not sensitive
-      user_id: user.user_id,
-      role: user.role,
+      id: user.id,
+      name: user.name,
+      email: user.email
     };
     console.log(jwtSecret);
     const token = jwt.sign(payload, jwtSecret, { expiresIn: '24h' });
@@ -105,4 +107,3 @@ async function LoginUser(formData) {
   }
 }
 
-module.exports = { LoginUser };

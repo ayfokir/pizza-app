@@ -1,13 +1,19 @@
 // import Image from "next/image";
 // import styles from "./page.module.css";
+'use client'
 import { Box } from '@mui/material';
+import store from "@/redux/store/store";
+
 import Navbar from "@/components/navbar/Navbar";
 import MainHeading from "@/components/home/MainHeading";
 import FeaturedPizza from '@/components/FeaturedPizza/FeaturedPizza';
 import Restaurants from '@/components/restaurants/Restaurants';
 import AllPizzas from '@/components/popular-pizza/AllPizzas';
+import { Provider } from "react-redux";
+
 export default function Home() {
   return (
+    <Provider store={store} >
     <Box>
     <Navbar />
     <MainHeading />
@@ -36,5 +42,6 @@ export default function Home() {
    <AllPizzas />
 
   </Box>
+  </Provider>
   );
 }

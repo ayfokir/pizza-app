@@ -93,7 +93,7 @@ model Order {
   customerId    Int
   restaurant    Restaurant? @relation(fields: [restaurantId], references: [id])
   restaurantId  Int?
-  pizzas        OrderPizza[]
+  pizzas        OrderPizza[] 
   quantity   Int
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt

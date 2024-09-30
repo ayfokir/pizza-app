@@ -6,16 +6,18 @@ import orderReducer from '../slices/orderSlice';
 import toppingReducer from '../slices/toppingSlice';
 import  restaurantReducer from '../slices/restaurantSlice'
 import notificationReducer from '../slices/notificationSlice'
+import selectedPizzaRedecer from '../slices/selectedPizzaSlice'
 
 // Combine all the reducers
 const rootReducer = combineReducers({
   user: userReducer,
   role: roleReducer,
   pizza: pizzaReducer,
-  order: orderReducer,
+  orders: orderReducer,
   topping: toppingReducer,
   restaurant:restaurantReducer,
   notification: notificationReducer,
+  selectedPizza: selectedPizzaRedecer,
 });
 
 export default rootReducer;
