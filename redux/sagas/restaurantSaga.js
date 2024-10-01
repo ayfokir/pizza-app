@@ -1,23 +1,24 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-// import { fetchRestaurantsAPI, addRestaurantAPI } from '../api/restaurantApi'; // Assuming these API calls are defined elsewhere
+import { GetRestaurants } from '@/app/api/restaurant/GetRestaurant';
 import {
-//   fetchRestaurantsRequest,
-//   fetchRestaurantsSuccess,
-//   fetchRestaurantsFailure,
+  fetchRestaurantsRequest,
+  fetchRestaurantsSuccess,
+  fetchRestaurantsFailure,
   addRestaurantRequest,
   addRestaurantSuccess,
   addRestaurantFailure,
 } from '../slices/restaurantSlice';
 
-// // Worker Saga: Fetch Restaurants
-// function* fetchRestaurantsSaga() {
-//   try {
-//     const response = yield call(fetchRestaurantsAPI); // Fetch restaurants from API
-//     yield put(fetchRestaurantsSuccess(response.data)); // Dispatch success action with restaurants data
-//   } catch (error) {
-//     yield put(fetchRestaurantsFailure(error.message)); // Dispatch failure action if there's an error
-//   }
-// }
+// Worker Saga: Fetch Restaurants
+function* fetchRestaurantsSaga() {
+  try {
+    const response = yield call(() => GetRestaurants()); // Fetch restaurants from API
+    console.log("see the resturant data:", response)
+    yield put(fetchRestaurantsSuccess(response.restaurants)); // Dispatch success action with restaurants data
+  } catch (error) {
+    yield put(fetchRestaurantsFailure(error.message)); // Dispatch failure action if there's an error
+  }
+}
 
 // Worker Saga: Add Restaurant
 function* addRestaurantSaga(action) {
@@ -31,7 +32,7 @@ function* addRestaurantSaga(action) {
 
 // Watcher Saga: Watch for restaurant-related actions
 function* restaurantSaga() {
-//   yield takeLatest(fetchRestaurantsRequest.type, fetchRestaurantsSaga);
+  yield takeLatest(fetchRestaurantsRequest.type, fetchRestaurantsSaga);
   // yield takeLatest(addRestaurantRequest.type, addRestaurantSaga);
 }
 

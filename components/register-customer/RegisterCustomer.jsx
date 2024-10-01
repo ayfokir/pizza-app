@@ -6,10 +6,13 @@ import Image from "next/image";
 import { useFormStatus } from "react-dom";
 // import { CreateCustomer } from "@/app/api/register-customer/CreateCustomer";
 import { SuccessMessage, FailureMessage } from "@/redux/slices/notificationSlice";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import { CreateCustomer } from "@/app/api/register-customer/CreateCustomer";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const RegisterCustomer = () => {
+
   const [userData, setUserData] = useState({
     email: "",
     phone: "",
@@ -235,6 +238,7 @@ const RegisterCustomer = () => {
               "&:hover": {
                 backgroundColor: "#E6821F",
               },
+              padding: "12px 16px", // Increase padding of the Login button
             }}
             disabled={pending}
           >

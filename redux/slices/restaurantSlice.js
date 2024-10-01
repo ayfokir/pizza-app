@@ -10,17 +10,18 @@ const restaurantSlice = createSlice({
   name: 'restaurant',
   initialState,
   reducers: {
-    // fetchRestaurantsRequest: (state) => {
-    //   state.status = 'loading';
-    // },
-    // fetchRestaurantsSuccess: (state, action) => {
-    //   state.status = 'succeeded';
-    //   state.restaurants = action.payload; // payload is the array of restaurants
-    // },
-    // fetchRestaurantsFailure: (state, action) => {
-    //   state.status = 'failed';
-    //   state.error = action.payload; // payload is the error message
-    // },
+    fetchRestaurantsRequest: (state) => {
+      state.status = 'loading';
+    },
+    fetchRestaurantsSuccess: (state, action) => {
+      console.log("see action inside restaurant slice:", action)
+      state.status = 'succeeded';
+      state.restaurants = action.payload; // payload is the array of restaurants
+    },
+    fetchRestaurantsFailure: (state, action) => {
+      state.status = 'failed';
+      state.error = action.payload; // payload is the error message
+    },
     addRestaurantRequest: (state) => {
       state.status = 'loading';
     },
@@ -37,9 +38,9 @@ const restaurantSlice = createSlice({
 
 // Export actions
 export const {
-//   fetchRestaurantsRequest,
-//   fetchRestaurantsSuccess,
-//   fetchRestaurantsFailure,
+  fetchRestaurantsRequest,
+  fetchRestaurantsSuccess,
+  fetchRestaurantsFailure,
   addRestaurantRequest,
   addRestaurantSuccess,
   addRestaurantFailure,

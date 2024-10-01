@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { SuccessMessage, FailureMessage } from "@/redux/slices/notificationSlice";
+import {SuccessMessage, FailureMessage,} from "@/redux/slices/notificationSlice";
 import UploadIcon from "@mui/icons-material/Upload"; // Import upload icon
 import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Container } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { LoginUser } from "@/app/api/login/Login";
 
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -36,6 +37,11 @@ const Login = () => {
     }));
   };
 
+    // // Clear fields on component mount
+    // useEffect(() => {
+    //   setUserData({ email: '', password: '' });
+    // }, []);
+
   const validateForm = () => {
     const newErrors = {};
     if (!userData.email) newErrors.email = "Email is required";
@@ -52,17 +58,26 @@ const Login = () => {
     }
 
     // Handle login logic here
-    const result = await loginFunction(userData); // Replace with your actual login function
+    const result = await LoginUser(userData); // Replace with your actual login function
     if (result.success) {
+      const token = result.token;
+      // const expirationTime = new Date().getTime() + (2 * 60 * 1000); // Set expiration time for 2 minutes from now
+      const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000; // Set expiration time for 24 hours from now
+      const customerData = {
+        token: token,
+        expiration: expirationTime,
+      };
+      localStorage.setItem("customer", JSON.stringify(customerData));
+
       dispatch(SuccessMessage(result));
-      router.push("/dashboard"); // Redirect to the dashboard or home page
+      router.push("/order"); // Redirect to the dashboard or home page
     } else {
       dispatch(FailureMessage(result));
     }
   };
 
   return (
-    <Box sx={{ display: "flex", width: "100%" , gap : "40px"  }}>
+    <Box sx={{ display: "flex", width: "100%", gap: "40px" }}>
       {/* Left Box: Image centered */}
       <Box
         sx={{
@@ -72,7 +87,7 @@ const Login = () => {
           alignItems: "center",
           backgroundColor: "#FF9921",
           paddingRight: 4, // Increase space between logo and form
-          height: "100vh"
+          height: "100vh",
         }}
       >
         <Image src="/logo.png" width={305} height={300} alt="Logo" />
@@ -118,14 +133,17 @@ const Login = () => {
               Pizza
             </Typography>
           </Box>
-
-          <Typography variant="h5" component="h2" sx={{ mb: 1, alignSelf: "flex-start" }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{ mb: 1, alignSelf: "flex-start" }}
+          >
             Login
           </Typography>
-          <Box sx={{ borderTop: "1px solid #ccc", mb: 2, width: "100%" }} /> {/* Line under the button */}
-
+          <Box sx={{ borderTop: "1px solid #ccc", mb: 2, width: "100%" }} />{" "}
+          {/* Line under the button */}
         </Box>
-        
+
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -191,10 +209,18 @@ const Login = () => {
             Login
           </Button>
 
-
-          <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 2 }}>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            align="center"
+            sx={{ mt: 2 }}
+          >
             Don't have an account?{" "}
-            <Link href="/register" variant="body2" sx={{ color: "#FF9921" }}>
+            <Link
+              href="/register-customer"
+              variant="body2"
+              sx={{ color: "#FF9921" }}
+            >
               Sign Up
             </Link>
           </Typography>

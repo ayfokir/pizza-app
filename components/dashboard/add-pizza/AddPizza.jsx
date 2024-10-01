@@ -17,7 +17,7 @@ import { useFormStatus } from "react-dom";
 import { CreateTopping } from "@/app/api/topping/CreateTopping";
 import { GetToppings } from "@/app/api/topping/GetToppings";
 import { CreatePizza } from "@/app/api/pizza/CreatePizza";
-
+import OrderSuccessDialog from "@/components/order-pizza/OrderSuccessDialog";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -36,7 +36,16 @@ const AddPizza = () => {
   const [selectedToppings, setSelectedToppings] = useState({});
   const [newTopping, setNewTopping] = useState(""); // For the add topping field
   const [toppingsList, setToppingsList] = useState([]); // State to store the fetched toppings
+  
+  const [open, setOpen] = useState(false);
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleToppingChange = (id) => {
     console.log("see id:", id)
     setSelectedToppings((prevState) => ({
@@ -165,9 +174,20 @@ console.log("selectedToppings:", selectedToppings)
     console.log("see result :", result);
   
     if (result.success) {
-      dispatch(SuccessMessage(result));
+      // dispatch(SuccessMessage(result));
+      // Reset form fields after successful upload
+      setPizzaData({
+        name: "",
+        price: "",
+        toppings: [], // Reset to an empty array
+        pizza_photo: null,
+      });
+      setSelectedToppings({}); // Reset selected toppings
+      setNewTopping(""); // Reset new topping input
+      setShowToppingField(false); // Hide the new topping field if it was open
+      handleOpen()
     } else {
-      dispatch(FailureMessage(result));
+      // dispatch(FailureMessage(result));
     }
   };
   
@@ -202,6 +222,7 @@ console.log("selectedToppings:", selectedToppings)
           id="name"
           margin="normal"
           variant="outlined"
+          value={pizzaData.name}
           onChange={handleChange}
           // required
           error={!!errors.name}
@@ -300,6 +321,7 @@ console.log("selectedToppings:", selectedToppings)
           variant="outlined"
           type="number"
           onChange={handleChange}
+          value={pizzaData.price}
           // required
           error={!!errors.price}
           helperText={errors.price}
@@ -357,6 +379,7 @@ console.log("selectedToppings:", selectedToppings)
         >
           {pending ? "Loading..." : "Submit"}
         </Button>
+        <OrderSuccessDialog open={open} onClose={handleClose} message = {"You have Uploaded the Pizza successfully"} />
       </Box>
     </Box>
   );

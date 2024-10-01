@@ -1,32 +1,70 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   List,
   ListItemIcon,
   ListItemText,
   Typography,
-  Divider,
-  ListItemButton,
   Button,
   IconButton,
+  ListItemButton,
 } from "@mui/material";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import BookIcon from "@mui/icons-material/LocalLibrary"; // LocalLibrary is often used for books
-import UploadIcon from "@mui/icons-material/Upload"; // For Book Upload
-import PeopleIcon from "@mui/icons-material/People"; // For Owners
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from 'next/navigation';
+import Divider from "@mui/material/Divider";
+import LogoutIcon from "@mui/icons-material/Logout"; // Import logout icon
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useDispatch, useSelector } from "react-redux";
+import { setHeaderTitle } from "@/redux/slices/headerTtileSlice";
+const SideBar = () => {
+  const pathname = usePathname();
+  const dispatch = useDispatch(); // Get dispatch function from Redux
 
-const SideBar = ({ isFullHeight }) => {
-  const [selectedIndex, setSelectedIndex] = useState(null);
 
+  const handleHeaderTitle   =  (title)  =>  {
+    dispatch(setHeaderTitle(title))
+  }
+  console.log("see the current :", pathname);
   const menuItems = [
-    { text: "Orders", icon: <DashboardIcon />, link: "/orders" },
-    { text: "Add Menu", icon: <BookIcon />, link: "/add-pizza" },
-    { text: "Role", icon: <UploadIcon />, link: "/add-role" },
-    { text: "User", icon: <PeopleIcon />, link: "/add-user" },
+    {
+      text: "Orders",
+      icon: (
+        <Image
+          src="/dashboard/orders.png"
+          width={24}
+          height={24}
+          alt="Orders"
+        />
+      ),
+      link: "/orders",
+    },
+    {
+      text: "Add Menu",
+      icon: (
+        <Image
+          src="/dashboard/add-menu.png"
+          width={24}
+          height={24}
+          alt="Add Menu"
+        />
+      ),
+      link: "/add-pizza",
+    },
+    {
+      text: "Role",
+      icon: (
+        <Image src="/dashboard/role.png" width={24} height={24} alt="Role" />
+      ),
+      link: "/add-role",
+    },
+    {
+      text: "User",
+      icon: (
+        <Image src="/dashboard/user.png" width={24} height={24} alt="User" />
+      ),
+      link: "/add-user",
+    },
   ];
 
   const logout = () => {
@@ -43,7 +81,6 @@ const SideBar = ({ isFullHeight }) => {
         alignItems: "center",
         backgroundColor: "#F3F3F340",
         width: "250px",
-        // borderRight: "1px solid #E0E0E0",
       }}
     >
       {/* Logo and Menu */}
@@ -53,7 +90,6 @@ const SideBar = ({ isFullHeight }) => {
         justifyContent="space-between"
         width="100%"
         padding="12px"
-        // borderBottom="1px solid #E0E0E0"
       >
         <Typography variant="h6" sx={{ fontWeight: "bold", color: "#000" }}>
           PIZZA
@@ -84,28 +120,38 @@ const SideBar = ({ isFullHeight }) => {
       </Box>
 
       {/* Menu Items */}
-      <List sx={{ width: "100%",  flexGrow: "0.3", alignItems: "center", justifyContent: "center"}} >
-        {menuItems.map((item, index) => (
-          <Link href={item.link} key={item.text} passHref>
+      <List
+        sx={{
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {menuItems.map((item) => (
+          <Link href={item.link} key={item.text}  style={{ textDecoration: "none" }}>
             <ListItemButton
-              onClick={() => setSelectedIndex(index)}
+              onClick={() => handleHeaderTitle(item.text)} // Update header title on click
               sx={{
                 borderRadius: "6px",
-                backgroundColor:
-                  selectedIndex === index
-                    ? "rgba(0,171,255,0.2)"
-                    : "transparent",
+                paddingLeft: "40px",
+                backgroundColor: pathname === item.link ? "rgba(255,129,0,0.3)" : "transparent", // Apply color if the current path matches
                 "&:hover": {
-                  backgroundColor: "rgba(0,171,255,0.2)",
+                  backgroundColor: "rgba(255,129,0,0.1)", // Slight hover effect
                 },
-                marginBottom: index < menuItems.length - 1 ? "8px" : "0", // Remove margin for the last item
+                marginBottom: "8px",
               }}
             >
-              <ListItemIcon sx={{ color: "#000" }}>{item.icon}</ListItemIcon>
+              <ListItemIcon sx={{ color: "#000", minWidth: "36px" }}>
+                {item.icon}
+              </ListItemIcon>
               <ListItemText
                 primary={item.text}
                 primaryTypographyProps={{
-                  style: { color: "#000", fontWeight: "bold" },
+                  style: {
+                    color: "#000",
+                    fontWeight: "bold",
+                    paddingLeft: "0px",
+                  },
                 }}
               />
             </ListItemButton>
@@ -113,17 +159,45 @@ const SideBar = ({ isFullHeight }) => {
         ))}
       </List>
 
+      {/* Add a divider above the logout button */}
+      <Divider sx={{ width: "90%", marginBottom: "16px" }} />
+
       <Button
-        variant="contained"
+        startIcon={
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {/* Arrow Icon */}
+            <ArrowForwardIcon
+              sx={{
+                color: 'red', // Color for the arrow
+                fontSize: '16px', // Adjust size as needed
+              }}
+            />
+            {/* Custom Bracket-like Symbol */}
+            <Typography
+              sx={{
+                fontSize: '17px', // Font size for the bracket
+                color: 'red', // Match the color of the arrow
+                lineHeight: '1', // Adjust line height for better vertical alignment
+                fontWeight: 500, // Make the bracket bold
+              }}
+            >
+              ]
+            </Typography>
+          </Box>
+        }
         sx={{
-            backgroundColor: "rgb(69,73,94)",
-            color: "white",
-            width: "90%",
-            marginBottom: "16px",
+          color: 'red', // Text color
+          fontWeight: 'bold', // Bold text
+          fontSize: '16px', // Font size
+          width: '90%', // Button width
+          display: 'flex', // Ensure alignment
+          justifyContent: 'center', // Align text and icon to the start
+          "&:hover": {
+            backgroundColor: "transparent", // No hover background
+          },
         }}
         onClick={logout}
       >
-        {/* <Divider /> */}
         Logout
       </Button>
     </Box>

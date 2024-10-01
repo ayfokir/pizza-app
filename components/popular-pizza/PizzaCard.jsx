@@ -1,23 +1,33 @@
 'use client'
-
-import React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Avatar,
-  Box,
-} from "@mui/material";
+import React, { useState } from "react";
+import {Card,CardContent,Typography,Button,Avatar,Box} from "@mui/material";
 import Image from "next/image"; // for optimized image loading in Next.js
 import Link from "next/link";
-export default function PizzaCard({
-  name,
-  price,
-  pizza_photo,
-  toppings,
-  restaurant,
-}) {
+import { useDispatch, useSelector } from "react-redux";
+import { selectPizzaRequest, selectPizzaSuccess, selectPizzaFailure } from "@/redux/slices/selectedPizzaSlice";
+import { useRouter } from "next/navigation";
+export default function PizzaCard({pizzaId, name, price, pizza_photo, toppings, restaurant,}) {
+  const dispatch = useDispatch(); // Initialize useDispatch
+  const router   = useRouter()
+
+
+  const handleOrderClick = () => {
+    try {
+      // Dispatching actions
+      // dispatch(selectPizzaRequest()); // Set loading state
+      
+      // Select pizza with ID
+      // dispatch(selectPizzaSuccess(pizzaId)); // Dispatch the pizzaId
+      localStorage.setItem('selectedPizzaId', pizzaId);
+      // Navigate to another page after dispatch
+      router.push(`/register-customer`);
+    } catch (error) {
+      // Handle any error that occurs during dispatch
+      dispatch(selectPizzaFailure(error.message));
+    }
+  };
+
+  
 
   // Accept toppings prop
   return (
@@ -87,8 +97,8 @@ export default function PizzaCard({
             </Typography>
           </Typography>
 
-          <Link href={"/register-customer"}>
               <Button
+              onClick={handleOrderClick} // Attach the handler to the button
                 variant="contained"
                 sx={{
                   borderRadius: 2,
@@ -101,7 +111,6 @@ export default function PizzaCard({
               >
                 Order
               </Button>
-          </Link>
         </Box>
 
         {/* Profile Section */}
@@ -116,10 +125,10 @@ export default function PizzaCard({
           {/* Line under the button */}
           <Avatar
             alt="Azmera Pizza"
-            src={`${restaurant[0].logoUrl}`} // replace with avatar image path
+            src={`${restaurant[0]?.logoUrl}`} // replace with avatar image path
             sx={{ width: 70, height: 70, marginRight: 2 }}
           />
-          <Typography variant="subtitle1">{restaurant[0].name}</Typography>
+          <Typography variant="subtitle1">{restaurant[0]?.name}</Typography>
         </Box>
       </CardContent>
     </Card>
