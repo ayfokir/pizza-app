@@ -31,7 +31,7 @@ const AllPizzas = () => {
 
   return (
       <Box display={"flex"} flexWrap={"wrap"} gap={4}>
-        {pizzas.pizzas.map((pizza) => (
+        {pizzas?.pizzas?.map((pizza) => (
           <PizzaCard
             key={pizza.id} // Unique key for each pizza card
             pizzaId = {pizza.id}

@@ -12,6 +12,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import Image from "next/image";
+import OrderSuccessDialog from "./OrderSuccessDialog";
 import Link from "next/link";
 import { createOrder } from "@/app/api/orders/CreateOrder";
 import { useAuth } from "@/context/AuthContext";
@@ -40,7 +41,16 @@ export default function OrderPizzaCard() {
   const [error, setError] = useState(null);
   const [selectedPizzaId, setSelectedPizzaId] = useState(null);
   const [pizza, setPizza] = useState({});
+ 
+  const [open, setOpen] = useState(false);
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   // const pizza = useSelector((state) => state.pizza); // Adjust according to your pizza slice structure
   // const restaurants = useSelector(state => state.restaurant.restaurants); // Adjust accordingly
 
@@ -82,10 +92,11 @@ export default function OrderPizzaCard() {
 
     console.log(result);
     if (result.success) {
-      dispatch(SuccessMessage(result));
+      // dispatch(SuccessMessage(result));
+      handleOpen()
       // router.push("/your-orders");
     } else {
-      dispatch(FailureMessage(result));
+      // dispatch(FailureMessage(result));
     }
   };
 
@@ -302,6 +313,7 @@ export default function OrderPizzaCard() {
 
         {/* Order Button */}
         <Button
+          
           onClick={handleOrder}
           variant="contained"
           fullWidth
@@ -332,6 +344,7 @@ export default function OrderPizzaCard() {
             </svg>
           </Box>
         </Button>
+        <OrderSuccessDialog open={open} onClose={handleClose} message = {"Your order has been successfully completed"} />
       </Box>
     </Box>
   );

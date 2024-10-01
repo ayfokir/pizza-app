@@ -18,9 +18,11 @@ export async function GetOrders() {
         },
         restaurant: true, // Optionally include restaurant details if necessary
       },
+      orderBy: {
+        createdAt: 'desc', // Order by createdAt in descending order
+      },
     });
     
-
     if (!orderPizzas || orderPizzas.length === 0) {
       return {
         message: 'No order pizzas found',
