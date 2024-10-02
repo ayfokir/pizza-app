@@ -18,6 +18,7 @@ import { CreateTopping } from "@/app/api/topping/CreateTopping";
 import { GetToppings } from "@/app/api/topping/GetToppings";
 import { CreatePizza } from "@/app/api/pizza/CreatePizza";
 import OrderSuccessDialog from "@/components/order-pizza/OrderSuccessDialog";
+import { useAuth } from "@/context/AuthContext";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -38,7 +39,8 @@ const AddPizza = () => {
   const [toppingsList, setToppingsList] = useState([]); // State to store the fetched toppings
   
   const [open, setOpen] = useState(false);
-
+  const {restaurantId, id}  = useAuth()
+  console.log("see restaurantId id inside Add pizza Component :", restaurantId)
   const handleOpen = () => {
     setOpen(true);
   };
@@ -89,7 +91,7 @@ console.log("selectedToppings:", selectedToppings)
   useEffect(() => {
     const createTopping = async () => {
       if (newTopping && !showToppingField) {
-        let result = await CreateTopping(newTopping);
+        let result = await CreateTopping(newTopping, restaurantId);
         console.log("Created Topping:", result);
         if (result.success) {
           setNewTopping("");
@@ -166,6 +168,8 @@ console.log("selectedToppings:", selectedToppings)
     // Create form data for submission
     const formData = new FormData();
     formData.append("name", pizzaData.name);
+    formData.append("restaurantId", restaurantId)
+    formData.append("userId", id)
     formData.append("price", pizzaData.price);
     formData.append("toppings", JSON.stringify(toppingIds)); // Use the computed topping IDs directly
     formData.append("pizza_photo", pizzaData.pizza_photo);

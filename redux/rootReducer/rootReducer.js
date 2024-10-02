@@ -10,12 +10,12 @@ import selectedPizzaRedecer from '../slices/selectedPizzaSlice'
 import headerTtile               from '../slices/headerTtileSlice'
 // Combine all the reducers
 const rootReducer = combineReducers({
-  user: userReducer,
-  role: roleReducer,
+  users: userReducer,
+  roles: roleReducer,
   pizza: pizzaReducer,
   orders: orderReducer,
   topping: toppingReducer,
-  restaurant:restaurantReducer,
+  restaurants:restaurantReducer,
   notification: notificationReducer,
   selectedPizza: selectedPizzaRedecer,
   header:     headerTtile,

@@ -7,7 +7,7 @@ export async function GetUserRoles() {
   // Fetch all user roles from the database
   try {
     const userRoles = await prisma.userRole.findMany();  // Query the user roles table
-    
+    // console.log("see user Roles:", userRoles)
     return {
       message: 'User roles retrieved successfully',
       success: true,

@@ -1,7 +1,7 @@
 "use client";
-import { Box } from "@mui/material";
 import React from "react";
-import AddAdmin from "@/components/dashboard/Super-admin-restaurant-registration/AddAdmin";
+import SuperAdminRestaurantRegistration from "@/components/dashboard/Super-admin-restaurant-registration/SuperAdminRestaurantRegistration";
+import { Box } from "@mui/material";
 import store from "@/redux/store/store";
 import { Provider } from "react-redux";
 import { Notification } from "@/notification/Notification";
@@ -9,8 +9,8 @@ const page = () => {
   return (
     <Box>
       <Provider store={store}>
-        <AddAdmin />
         <Notification />
+        <SuperAdminRestaurantRegistration />
       </Provider>
     </Box>
   );

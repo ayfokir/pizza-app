@@ -3,97 +3,21 @@ import { useEffect, useMemo, useState } from "react";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import { Box, Button } from "@mui/material";
 import AddRoleModal from "./AddRoleModal";
-import { GetUserRoles } from "@/app/api/user/GetUserRoles";
+// import { GetUserRoles } from "@/app/api/user/GetUserRoles";
 import StatusSwitch from "../add-user/StatusSwitch";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
-
-
-// //example data type
-// const data = [
-//   {
-//     name: {
-//       firstName: "John",
-//       lastName: "Doe",
-//     },
-//     address: "261 Erdman Ford",
-//     city: "East Daphne",
-//     state: "Kentucky",
-//   },
-//   {
-//     name: {
-//       firstName: "Jane",
-//       lastName: "Doe",
-//     },
-//     address: "769 Dominic Grove",
-//     city: "Columbus",
-//     state: "Ohio",
-//   },
-//   {
-//     name: {
-//       firstName: "Joe",
-//       lastName: "Doe",
-//     },
-//     address: "566 Brakus Inlet",
-//     city: "South Linda",
-//     state: "West Virginia",
-//   },
-//   {
-//     name: {
-//       firstName: "Kevin",
-//       lastName: "Vandy",
-//     },
-//     address: "722 Emie Stream",
-//     city: "Lincoln",
-//     state: "Nebraska",
-//   },
-//   {
-//     name: {
-//       firstName: "Joshua",
-//       lastName: "Rolluffs",
-//     },
-//     address: "32188 Larkin Turnpike",
-//     city: "Omaha",
-//     state: "Nebraska",
-//   },
-// ];
+import { fetchRolesRequest, deleteRoleRequest } from "@/redux/slices/roleSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const RoleTable = () => {
-  //should be memoized or stable
   const [openAddRole, setOpenAddRole] = useState(false);
-  const [roleListes, setUserRolesList] = useState([]);
+  const dispatch   =  useDispatch()
 
-  // const columns = useMemo(
-  //   () => [
-  //     {
-  //       accessorKey: "name.firstName", //access nested data with dot notation
-  //       header: "First Name",
-  //       size: 150,
-  //     },
-  //     {
-  //       accessorKey: "name.lastName",
-  //       header: "Last Name",
-  //       size: 150,
-  //     },
-  //     {
-  //       accessorKey: "address", //normal accessorKey
-  //       header: "Address",
-  //       size: 200,
-  //     },
-  //     {
-  //       accessorKey: "city",
-  //       header: "City",
-  //       size: 150,
-  //     },
-  //     {
-  //       accessorKey: "state",
-  //       header: "State",
-  //       size: 150,
-  //     },
-  //   ],
-  //   []
-  // );
-
+const handleDelete   =  (id)   =>  {
+  console.log("see the id :", id)
+  dispatch(deleteRoleRequest(id))
+}
 
   const columns = useMemo(
     () => [
@@ -118,7 +42,7 @@ const RoleTable = () => {
         Cell: ({ row }) => (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <StatusSwitch />
-            <IconButton onClick={() => handleDelete(row.original.owner_id)}>
+            <IconButton onClick={() => handleDelete(row.original.id)}>
               <DeleteIcon />
             </IconButton>
           </div>
@@ -127,22 +51,12 @@ const RoleTable = () => {
     ],
     []
   );
-  
 
-
- /// Fetch user roles from the server
+ const roleListes =  useSelector((state) => state.roles.roles)
+ console.log("see all roles:", roleListes)
  useEffect(() => {
-  const fetchUserRoles = async () => {
-    try {
-      const result = await GetUserRoles(); // Call GetUserRoles instead of GetToppings
-      console.log("Fetched user roles:", result.userRoles);
-      setUserRolesList(result.userRoles); // Save the fetched user roles
-    } catch (error) {
-      console.error("Error fetching user roles:", error);
-    }
-  };
-  fetchUserRoles();
-}, []); // Assuming `newRole` is a dependency that triggers re-fetching
+dispatch(fetchRolesRequest())
+}, [openAddRole]); // Assuming `newRole` is a dependency that triggers re-fetching
 
 
   const table = useMaterialReactTable({

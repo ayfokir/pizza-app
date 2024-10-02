@@ -63,6 +63,7 @@ export async function LoginUser(formData) {
         success: false,
       };
     }
+    console.log("see user is theres restaurantID Avalable:", user)
     
     // Compare the password with the stored hashed password
     const isPasswordValid = await bcrypt.compare(data.password, user.password);
@@ -78,7 +79,8 @@ export async function LoginUser(formData) {
     const payload = { // the payload data is not sensitive
       id: user.id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      restaurantId: user.restaurantId 
     };
     console.log(jwtSecret);
     const token = jwt.sign(payload, jwtSecret, { expiresIn: '24h' });

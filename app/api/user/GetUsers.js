@@ -3,23 +3,26 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Function to retrieve multiple users
-export async function GetUsers() {
-  // Fetch multiple users from the database
+// Function to retrieve users based on restaurantId
+export async function GetUsers(restaurantId) { 
+  // Fetch users from the database where restaurantId matches
   try {
     const users = await prisma.user.findMany({
+      where: {
+        restaurantId:  parseInt(restaurantId), // Filter users by restaurantId
+      },
       include: {
-        roles: true, // Include related roles
-        orders: true, // Include related orders
-        restaurant: true, // Include the associated restaurant (if any)
-        superAdminOf: true, // Include the restaurant they are a super admin of (if any)
-        token: true, // Include the associated token (if any)
+        roles: true,          // Include related roles
+        orders: true,         // Include related orders
+        restaurant: true,     // Include the associated restaurant
+        superAdminOf: true,   // Include the restaurant they are a super admin of (if any)
+        token: true,          // Include the associated token (if any)
       },
     });
 
     if (!users || users.length === 0) {
       return {
-        message: 'No users found',
+        message: 'No users found for this restaurant',
         success: false,
       };
     }
