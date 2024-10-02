@@ -28,12 +28,20 @@ const userSlice = createSlice({
       state.status = 'succeeded';
       state.users.push(action.payload);
     },
+    addUserFailure: (state, action) => { // Added addUserFailure
+      state.status = 'failed';
+      state.error = action.payload; // Set the error message when adding a user fails
+    },
     deleteUserRequest: (state, action) => {
       state.status = 'loading';
     },
     deleteUserSuccess: (state, action) => {
       state.status = 'succeeded';
       state.users = state.users.filter(user => user.id !== action.payload);
+    },
+    deleteUserFailure: (state, action) => {
+      state.status = 'failed';
+      state.error = action.payload; // Set the error message when deletion fails
     },
   },
 });
@@ -44,8 +52,10 @@ export const {
   fetchUsersFailure,
   addUserRequest,
   addUserSuccess,
+  addUserFailure, // Exporting the addUserFailure action
   deleteUserRequest,
   deleteUserSuccess,
+  deleteUserFailure, // Exporting the deleteUserFailure action
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -21,8 +21,9 @@ export const AuthProvider = ({ children }) => {
   // const [role, setRole] = useState(null);
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
+  const [restaurantId, setRastaurantId] = useState(null);
   
-  const value = { isLogged, name, id, email, setName, setEmail, setUserId };
+  const value = { isLogged, name, id, email, restaurantId, setName, setEmail, setUserId };
   
   useEffect(() => {
     // Retrieve the logged in user from local storage
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }) => {
         // setRole(response.role);
         setName(response.name);
         setEmail(response.email);
-        // setUserId(response.user_id);
+        setRastaurantId(response.restaurantId);
         setUserId(response.id);
         setIsLogged(true); // Set isLogged to true if token exists
       }

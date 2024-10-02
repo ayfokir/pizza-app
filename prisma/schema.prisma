@@ -15,23 +15,25 @@ datasource db {
 
 
 model User {
-  id             Int             @id @default(autoincrement())
-  email          String          @unique
-  password       String
-  name           String?
-  phoneNumber    String
-  secondPhoneNumber String?      // Additional phone number (optional)
-  isActive       Boolean         @default(false)  // To track if the user has activated their account
-  location       String?
-  roles          UserRole[]      @relation("UserRoles")
-  orders         Order[]
-  restaurant     Restaurant?     @relation("RestaurantUsers", fields: [restaurantId], references: [id])
-  restaurantId   Int?
-  superAdminOf   Restaurant?     @relation("SuperAdminRelation")
-  token          Token?          @relation("UserTokenRelation") // This is enough for the relation
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id                   Int             @id @default(autoincrement())
+  email                String          @unique
+  password             String
+  name                 String?
+  phoneNumber          String
+  secondPhoneNumber    String?         // Additional phone number (optional)
+  isActive             Boolean         @default(false)  // To track if the user has activated their account
+  location             String?
+  roles                UserRole[]      @relation("UserRoles")
+  orders               Order[]
+  restaurant           Restaurant?     @relation("RestaurantUsers", fields: [restaurantId], references: [id])
+  restaurantId         Int?
+  superAdminOf        Restaurant?     @relation("SuperAdminRelation")
+  token                Token?          @relation("UserTokenRelation")
+  pizzas               Pizza[]         @relation("UserPizzas") // New relation to Pizza model
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
 }
+
 
 model Token {
   id          Int       @id @default(autoincrement())
@@ -43,15 +45,30 @@ model Token {
 }
 
 
+// model Restaurant {
+//   id          Int        @id @default(autoincrement())
+//   name        String
+//   location     String
+//   logoUrl     String?    // To store the uploaded logo file
+//   superAdmin  User       @relation("SuperAdminRelation", fields: [superAdminId], references: [id]) // Modify this line
+//   superAdminId Int        @unique
+//   users       User[]     @relation("RestaurantUsers")
+//   orders      Order[]
+//   createdAt   DateTime   @default(now())
+//   updatedAt   DateTime   @updatedAt
+// }
+
 model Restaurant {
   id          Int        @id @default(autoincrement())
   name        String
-  location     String
+  location    String
   logoUrl     String?    // To store the uploaded logo file
-  superAdmin  User       @relation("SuperAdminRelation", fields: [superAdminId], references: [id]) // Modify this line
-  superAdminId Int        @unique
+  superAdmin  User       @relation("SuperAdminRelation", fields: [superAdminId], references: [id])
+  superAdminId Int       @unique
   users       User[]     @relation("RestaurantUsers")
   orders      Order[]
+  pizzas      Pizza[]    // Relation to pizzas
+  toppings    Topping[]  // Relation to toppings
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
@@ -71,21 +88,46 @@ model Permission {
   roles       UserRole[] @relation("RolePermissions")
 }
 
+// model Pizza {
+//   id          Int        @id @default(autoincrement())
+//   name        String     // Pizza name
+//   toppings    Topping[]  @relation("PizzaToppings") // Many-to-many relationship with Topping
+//   price       Float      // Price for the pizza
+//   pizza_photo       String?    // Optional: URL or path to pizza photo
+//   orderPizzas OrderPizza[] @relation("PizzaOrderPizzas") // One-to-many relationship with OrderPizza
+// }
 model Pizza {
   id          Int        @id @default(autoincrement())
   name        String     // Pizza name
   toppings    Topping[]  @relation("PizzaToppings") // Many-to-many relationship with Topping
   price       Float      // Price for the pizza
-  pizza_photo       String?    // Optional: URL or path to pizza photo
+  pizza_photo String?    // Optional: URL or path to pizza photo
+  restaurant  Restaurant @relation(fields: [restaurantId], references: [id]) // Relation to Restaurant
+  restaurantId Int       // Foreign key to Restaurant
   orderPizzas OrderPizza[] @relation("PizzaOrderPizzas") // One-to-many relationship with OrderPizza
+  user        User       @relation("UserPizzas", fields: [userId], references: [id]) // Link to User
+  userId      Int        // Foreign key to User who created the pizza
 }
 
+
+
+// model Topping {
+//   id       Int     @id @default(autoincrement())
+//   name     String
+//   pizzas   Pizza[] @relation("PizzaToppings") // Many-to-many relationship with Pizza
+//   orderPizzas OrderPizza[] @relation("OrderPizzaToppings") // Many-to-many relationship with OrderPizza
+// }
+
 model Topping {
-  id       Int     @id @default(autoincrement())
-  name     String
-  pizzas   Pizza[] @relation("PizzaToppings") // Many-to-many relationship with Pizza
-  orderPizzas OrderPizza[] @relation("OrderPizzaToppings") // Many-to-many relationship with OrderPizza
+  id           Int        @id @default(autoincrement())
+  name         String
+  pizzas       Pizza[]     @relation("PizzaToppings") // Many-to-many relationship with Pizza
+  orderPizzas  OrderPizza[] @relation("OrderPizzaToppings") // Many-to-many relationship with OrderPizza
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id]) // Relation to Restaurant
+  restaurantId Int         // Foreign key to Restaurant
 }
+
+
 model Order {
   id            Int        @id @default(autoincrement())
   status        OrderStatus

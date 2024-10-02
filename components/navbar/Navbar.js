@@ -11,7 +11,7 @@ import Image from "next/image";
 const Navbar = () => {
   return (
     <AppBar
-      position="static"
+      position="fixed"
       sx={{ backgroundColor: "#fff", boxShadow: "none", padding: "0 16px" }}
     >
       <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>

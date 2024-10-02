@@ -24,7 +24,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-const Register = () => {
+const SuperAdminRestaurantRegistration = () => {
   const [userData, setUserData] = useState({
     email: "",
     name:  "",
@@ -342,7 +342,7 @@ const Register = () => {
 
           <Typography variant="body2" color="textSecondary" align="center">
             Already have an account?{" "}
-            <Link href="/login" variant="body2" sx={{color:"#FF9921"}}>
+            <Link href="/super-admin-restaurant-login" variant="body2" sx={{color:"#FF9921"}}>
               Login
             </Link>
           </Typography>
@@ -352,4 +352,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SuperAdminRestaurantRegistration;

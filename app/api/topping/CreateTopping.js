@@ -7,10 +7,11 @@ const prisma = new PrismaClient();
 // Define Zod schema for topping validation
 const toppingSchema = z.object({
   name: z.string().min(1, 'Name is required'),
+  restaurantId: z.number().int().positive('Invalid restaurant ID'), // Validation for restaurantId
 });
 
-export async function CreateTopping(topping) {
-  // Check if topping is a string
+export async function CreateTopping(topping, restaurantId) {
+  // Validate input types
   if (typeof topping !== 'string' || topping.trim() === '') {
     return {
       error: 'Topping name must be a non-empty string.',
@@ -21,6 +22,7 @@ export async function CreateTopping(topping) {
   // Create an object from the topping data
   const data = {
     name: topping.trim(),
+    restaurantId: restaurantId, // Ensure the restaurantId is passed and validated
   };
 
   // Validate the data using Zod schema
@@ -46,11 +48,12 @@ export async function CreateTopping(topping) {
   try {
     const createdTopping = await prisma.topping.create({
       data: {
-        name: data.name, // Use data.name here
+        name: data.name, // Use validated name
+        restaurantId: data.restaurantId, // Ensure restaurantId is saved with topping
       },
     });
 
-    console.log("see after create:", createdTopping);
+    console.log("Topping created:", createdTopping);
 
     return {
       message: 'Topping created successfully',

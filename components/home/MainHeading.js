@@ -9,6 +9,7 @@ const MainHeading = () => {
       display: "flex",
       flexDirection: "row",
       padding: "2rem 0",
+      marginTop: "40px",
       gap: "80px",
       justifyContent: "space-between", // Ensure space between the text and images
       background: "radial-gradient(circle at center, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 80%)", // Central shadow effect

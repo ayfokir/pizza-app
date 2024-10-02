@@ -10,7 +10,7 @@ const SwiperSlide = dynamic(() => import('swiper/react').then((mod) => mod.Swipe
 import 'swiper/css'; // Import core Swiper styles
 import 'swiper/css/pagination'; // Import pagination styles
 import { Pagination } from 'swiper'; // Import Swiper's Pagination module
-import PizzaCard from "./PizzaCard"; // Import the PizzaCard component
+import PizzaCard from "./FeaturedPizzaCard"; // Import the PizzaCard component
 
 const FeaturedPizza = () => {
   return (

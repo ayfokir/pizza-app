@@ -22,9 +22,9 @@ const OrderTable = () => {
   const [name, setName] = useState({});
   const [quantity, setQuantity] = useState();
   const handleOpen = (orders) => {
-    if (orders.pizzas && orders.pizzas.length > 0) {
-      setToppingsList(orders.pizzas[0].toppings);
-      setName(orders.pizzas[0].pizza?.name);
+    if (orders?.pizzas && orders?.pizzas?.length > 0) {
+      setToppingsList(orders?.pizzas[0]?.toppings);
+      setName(orders?.pizzas[0]?.pizza?.name);
     }
     setQuantity(orders.quantity);
     setOpen(true);
@@ -35,7 +35,7 @@ const OrderTable = () => {
   };
 
   const dispatch = useDispatch();
-  const orders = useSelector((state) => state.orders.orders);
+  const orders = useSelector((state) => state?.orders?.orders);
   console.log("see orders:", orders)
   // Fetch orders on component mount
   useEffect(() => {

@@ -1,24 +1,41 @@
-'use client'
+"use client";
 import React, { useState } from "react";
-import {Card,CardContent,Typography,Button,Avatar,Box} from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Avatar,
+  Box,
+} from "@mui/material";
 import Image from "next/image"; // for optimized image loading in Next.js
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPizzaRequest, selectPizzaSuccess, selectPizzaFailure } from "@/redux/slices/selectedPizzaSlice";
+import {
+  selectPizzaRequest,
+  selectPizzaSuccess,
+  selectPizzaFailure,
+} from "@/redux/slices/selectedPizzaSlice";
 import { useRouter } from "next/navigation";
-export default function PizzaCard({pizzaId, name, price, pizza_photo, toppings, restaurant,}) {
+export default function PizzaCard({
+  pizzaId,
+  name,
+  price,
+  pizza_photo,
+  toppings,
+  restaurant,
+}) {
   const dispatch = useDispatch(); // Initialize useDispatch
-  const router   = useRouter()
-
+  const router = useRouter();
 
   const handleOrderClick = () => {
     try {
       // Dispatching actions
       // dispatch(selectPizzaRequest()); // Set loading state
-      
+
       // Select pizza with ID
       // dispatch(selectPizzaSuccess(pizzaId)); // Dispatch the pizzaId
-      localStorage.setItem('selectedPizzaId', pizzaId);
+      localStorage.setItem("selectedPizzaId", pizzaId);
       // Navigate to another page after dispatch
       router.push(`/register-customer`);
     } catch (error) {
@@ -27,53 +44,46 @@ export default function PizzaCard({pizzaId, name, price, pizza_photo, toppings, 
     }
   };
 
-  
-
   // Accept toppings prop
   return (
     <Card
       sx={{
-        maxWidth: 345,
-        borderRadius: 2,
-        backgroundColor: "#fff7ed", // light background like in your design
+        width: "370px",
+        borderRadius: 5,
+        backgroundColor: "white", // light background like in your design
         padding: "16px",
         boxShadow: 3,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
-      <Box
-        sx={{ position: "relative", paddingTop: "100%", borderRadius: "50%" }}
-      >
+      <Box>
         {/* Pizza Image */}
         <Image
           src={pizza_photo} // Use the passed pizza photo URL
           alt={name} // Use the pizza name for accessibility
-          layout="fill"
-          objectFit="cover"
-          style={{ borderRadius: "50%" }} // Circular image
+          width={250}
+          height={250}
         />
       </Box>
 
-      <CardContent sx={{ textAlign: "center" }}>
+      <CardContent sx={{ textAlign: "center", marginTop: "0", padding: "0" }}>
         <Box textAlign={"left"}>
           {/* Pizza Title */}
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ fontWeight: "bold", marginTop: 2 }}
-          >
+          <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
             {name} {/* Use the passed pizza name */}
           </Typography>
           {/* Toppings List */}
           <Typography
             variant="body2"
             color="text.secondary"
-            sx={{ marginBottom: 2 }}
+            sx={{ marginBottom: 2, width: "310px" }}
           >
             {toppings.map((topping) => topping.name).join(", ")}{" "}
             {/* Display toppings as a comma-separated string */}
           </Typography>
         </Box>
-
         {/* Price and Order Button */}
         <Box
           sx={{
@@ -97,24 +107,25 @@ export default function PizzaCard({pizzaId, name, price, pizza_photo, toppings, 
             </Typography>
           </Typography>
 
-              <Button
-              onClick={handleOrderClick} // Attach the handler to the button
-                variant="contained"
-                sx={{
-                  borderRadius: 2,
-                  paddingX: 6.5,
-                  paddingY: 1.5,
-                  fontWeight: "bold",
-                  fontSize: "20px", // Corrected property name
-                  backgroundColor: "#FF9921",
-                }}
-              >
-                Order
-              </Button>
+          <Button
+            onClick={handleOrderClick} // Attach the handler to the button
+            variant="contained"
+            sx={{
+              borderRadius: 2,
+              paddingX: 6.5,
+              paddingY: 1.5,
+              fontWeight: "bold",
+              fontSize: "20px", // Corrected property name
+              backgroundColor: "#FF9921",
+            }}
+          >
+            Order
+          </Button>
         </Box>
-
         {/* Profile Section */}
-        <Box sx={{ borderTop: "1px solid #ccc", mt: 2, mb: 2, width: "100%" }} />{" "}
+        <Box
+          sx={{ borderTop: "1px solid #ccc", mt: 2, mb: 2, width: "100%" }}
+        />{" "}
         <Box
           sx={{
             display: "flex",
