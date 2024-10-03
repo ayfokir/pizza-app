@@ -7,6 +7,10 @@ import { Box } from '@mui/material';
 const AllRestaurant = () => {
   const dispatch = useDispatch();
   const restaurants = useSelector((state) => state?.restaurants?.restaurants);
+  const restaurantsInitially = useSelector((state) => state?.restaurants);
+  console.log("see  restaurantsInitially:", restaurantsInitially)
+  console.log("see restaurants :", restaurants)
+  
   useEffect(() => {
     dispatch(fetchRestaurantsRequest());
   }, [dispatch]);

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link } from "@mui/material";
 import Image from "next/image";
@@ -22,10 +22,20 @@ const RegisterCustomer = () => {
     termsAccepted: false, // Track terms acceptance
   });
 
+
+  const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
   const router = useRouter();
   const [errors, setErrors] = useState({});
   const { pending } = useFormStatus();
   const dispatch = useDispatch(); // Get dispatch function from Redux
+
+  useEffect(() => {
+    // Retrieve the pizzaId from localStorage
+    const restaurantId = localStorage.getItem("selectedRestaurantId");
+    if ( restaurantId) {
+      setSelectedRestaurantId(restaurantId)
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -60,6 +70,7 @@ const RegisterCustomer = () => {
 
     return newErrors;
   };
+  console.log("see the selectedRestaurantId:", selectedRestaurantId)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,10 +81,13 @@ const RegisterCustomer = () => {
       setErrors(formErrors);
       return; // Stop submission if there are validation errors
     }
-
+    
     // Submit user data (implement your submission logic here)
     const formData = new FormData(e.currentTarget);
+    formData.append("restaurantId", selectedRestaurantId)
+    console.log("see the selectedRestaurantId:", selectedRestaurantId)
     const result = await CreateCustomer(formData);
+    console.log("see the result:", result)
     if (result.success) {
       dispatch(SuccessMessage(result));
       router.push("/order");

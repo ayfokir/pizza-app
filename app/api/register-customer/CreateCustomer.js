@@ -10,6 +10,7 @@ const prisma = new PrismaClient();
 // Define Zod schema for validation
 const registrationSchema = z.object({
   location: z.string().min(1, 'location is required'),
+  restaurantId: z.string().min(1, 'RestaurantId is required'),
   email: z.string().email('Invalid email address').min(1, 'Email is required'),
   phone: z.string().min(1, 'Phone number is required').regex(/^\d+$/, 'Phone number must contain only digits'),
   password: z.string().min(2, 'Password must be at least 2 characters long'),
@@ -20,6 +21,7 @@ export async function CreateCustomer(formData) {
   // Extract data from FormData
   const location = formData.get('location')?.toString() ?? '';
   const email = formData.get('email')?.toString() ?? '';
+  const restaurantId = formData.get("restaurantId").toString() ?? '';
   const phone = formData.get('phone')?.toString() ?? '';
   const password = formData.get('password')?.toString() ?? '';
   const confirmPassword = formData.get('confirmPassword')?.toString() ?? '';
@@ -28,6 +30,7 @@ export async function CreateCustomer(formData) {
   // Create an object from the form data
   const data = {
     location,
+    restaurantId,
     email,
     phone,
     password,
@@ -91,31 +94,12 @@ console.log("see existingUser:", existingUser)
     const user = await prisma.user.create({
     data: {
         location: data.location,
+        restaurantId: parseInt(restaurantId),
         email: data.email,
         phoneNumber: data.phone,
         password: hashedPassword,
         // Here you can set the restaurantId later after creating the restaurant
       },
-    });
-
-  
-       // Fetch the latest restaurant (you can adjust the criteria to match your needs)
-  const restaurant = await prisma.restaurant.findFirst({
-    orderBy: {
-      createdAt: 'desc', // Assuming `createdAt` is a timestamp for when the restaurant was created
-    },
-  });
-
-  if (!restaurant) {
-    return {
-      error: 'No restaurant found',
-      success: false,
-    };
-  }
-    // Update the user with the restaurant ID
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { restaurantId: restaurant.id },
     });
 
     return {

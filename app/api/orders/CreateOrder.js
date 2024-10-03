@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 // Define Zod schema for order validation
 const orderSchema = z.object({
-  status: z.enum(['Prepairing', 'Ready', 'Delivered'], {
+  status: z.enum(['Preparing', 'Ready', 'Delivered'], {
     errorMap: () => ({ message: 'Invalid order status' }),
   }),
   customerId: z.string().regex(/^\d+$/, 'Customer ID must be a valid string number'),

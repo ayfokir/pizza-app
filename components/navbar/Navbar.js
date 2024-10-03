@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 
-const Navbar = () => {
+const Navbar = ({noRegisterButton}) => {
   return (
     <AppBar
       position="fixed"
@@ -81,8 +81,9 @@ const Navbar = () => {
           </Button>
         </Box>
 
-        {/* Right Side: Register Button */}
-        <Box
+       {!noRegisterButton &&
+       
+       <Box
           display="flex"
           justifyContent="flex-end"
           alignItems="center"
@@ -99,7 +100,9 @@ const Navbar = () => {
           >
             Register
           </Button>
-        </Box>
+        </Box>}
+
+
       </Toolbar>
     </AppBar>
   );

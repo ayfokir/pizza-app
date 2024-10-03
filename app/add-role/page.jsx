@@ -7,13 +7,16 @@ import { populatePermissions } from "../api/permission/populatePermissions";
 import store from "@/redux/store/store";
 import { Provider } from "react-redux";
 import { Notification } from "@/notification/Notification";
+import { AuthProvider } from "@/context/AuthContext";
 const page = () => {
   // populatePermissions()
   return (
     <Box>
       <Provider store={store}>
+        <AuthProvider>
         <Dashboard DynamicComponent={RoleTable} />
         <Notification />
+        </AuthProvider>
       </Provider>
     </Box>
   );

@@ -6,7 +6,7 @@ import {fetchPizzasRequest, fetchPizzasSuccess, fetchPizzasFailure, addPizzaRequ
 function* fetchPizzasSaga() {
   try {
     const response = yield call(() => GetPizzas()); // Fetch pizzas from API
-    console.log("see pizza inside saga:", response.pizzas)
+    // console.log("see pizza inside saga:", response.pizzas)
     yield put(fetchPizzasSuccess(response.pizzas)); // Dispatch success action with pizzas data
   } catch (error) {
     yield put(fetchPizzasFailure(error.message)); // Dispatch failure action if there's an error

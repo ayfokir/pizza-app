@@ -1,41 +1,57 @@
-import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
-import Image from 'next/image';
+import React from "react";
+import { Box, Card, CardContent, Typography } from "@mui/material";
+import Image from "next/image";
 
 const RelatedPizzaCard = ({ pizzaId, name, price, pizza_photo, toppings }) => {
   console.log("toppings:", toppings);
   return (
     <Card
       sx={{
-        width: 380,
-        height: 400, // Set height greater than width
-        border: 'none', // Remove border
-        borderRadius: 2, // Add border radius
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center', // Center content
-        justifyContent: 'center', // Center content vertically
-        marginTop: 4,
-        gap : 4
+        width: "370px",
+        borderRadius: 5,
+        backgroundColor: "white", // light background like in your design
+        padding: "16px",
+        boxShadow: 3,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
-      {/* <div style={{ width: '100%', height: '140px' }}> */}
+      <Box>
+        {/* Pizza Image */}
         <Image
-          src={pizza_photo}
-          alt={name}
-          width={200}
-          height={200} // Adjust height to fit the div
-          style={{ borderRadius: '8px' }} // Optional: Add border radius to the image
+          src={pizza_photo} // Use the passed pizza photo URL
+          alt={name} // Use the pizza name for accessibility
+          width={250}
+          height={250}
         />
-      {/* </div> */}
-      <CardContent sx={{ marginTop: "12px", textAlign: 'center' }}> {/* Center text */}
-        <Typography variant="h6">{name}</Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ margin: '8px 0' }}>
-          {toppings.map((topping) => topping.name).join(', ')}
-        </Typography>
-        <Typography variant="body1" color="primary">
-          ${price}
-        </Typography>
+      </Box>
+
+      <CardContent sx={{ textAlign: "center", marginTop: "0", padding: "0" }}>
+        <Box textAlign={"center"}>
+          {/* Pizza Title */}
+          <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
+            {name} {/* Use the passed pizza name */}
+          </Typography>
+          {/* Toppings List */}
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ marginBottom: 2, width: "310px" }}
+          >
+            {toppings.map((topping) => topping.name).join(", ")}{" "}
+            {/* Display toppings as a comma-separated string */}
+          </Typography>
+        </Box>
+        {/* Price and Order Button */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 2,
+          }}
+        ></Box>
       </CardContent>
     </Card>
   );
