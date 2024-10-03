@@ -40,6 +40,7 @@ export default function OrderPizzaCard() {
   const [restaurants, setRestaurants] = useState([]);
   const [error, setError] = useState(null);
   const [selectedPizzaId, setSelectedPizzaId] = useState(null);
+  const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
   const [pizza, setPizza] = useState({});
  
   const [open, setOpen] = useState(false);
@@ -59,6 +60,7 @@ export default function OrderPizzaCard() {
       try {
         // Fetch restaurants
         const restaurantData = await GetRestaurants();
+        console.log("see the restaurant inside order page:", restaurantData)
         if (restaurantData.success) {
           setRestaurants(restaurantData.restaurants); // Assuming restaurantData.restaurants contains the array of restaurant objects
         } else {
@@ -75,16 +77,19 @@ export default function OrderPizzaCard() {
   useEffect(() => {
     // Retrieve the pizzaId from localStorage
     const pizzaId = localStorage.getItem("selectedPizzaId");
-    if (pizzaId) {
+    const restaurantId = localStorage.getItem("selectedRestaurantId");
+
+    if (pizzaId && restaurantId) {
       setSelectedPizzaId(pizzaId);
+      setSelectedRestaurantId(restaurantId)
     }
   }, []);
   console.log("see quantity:", pizzaQuantity);
   const handleOrder = async () => {
     let result = await createOrder({
-      status: "Prepairing",
+      status: "Preparing",
       customerId: id.toString(),
-      restaurantId: restaurants[0].id.toString(),
+      restaurantId: selectedRestaurantId,
       pizzaId: selectedPizzaId, // Pass the pizza ID here as string
       toppings: toppingsId,
       quantity: pizzaQuantity.toString(), // Convert quantity to string
@@ -92,6 +97,7 @@ export default function OrderPizzaCard() {
 
     console.log(result);
     if (result.success) {
+      router.push('/order-history')
       // dispatch(SuccessMessage(result));
       handleOpen()
       // router.push("/your-orders");
@@ -164,10 +170,10 @@ export default function OrderPizzaCard() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff7ed",
+        // backgroundColor: "#fff7ed",
         padding: "32px",
-        borderRadius: "16px",
-        boxShadow: 3,
+        // borderRadius: "16px",
+        // boxShadow: 3,
       }}
     >
       {/* Left-aligned large pizza image */}

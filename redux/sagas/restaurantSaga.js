@@ -13,7 +13,7 @@ import {
 function* fetchRestaurantsSaga() {
   try {
     const response = yield call(() => GetRestaurants()); // Fetch restaurants from API
-    console.log("see the resturant data inside saga:", response)
+    // console.log("see the resturant data inside saga:", response)
     yield put(fetchRestaurantsSuccess(response.restaurants)); // Dispatch success action with restaurants data
   } catch (error) {
     yield put(fetchRestaurantsFailure(error.message)); // Dispatch failure action if there's an error

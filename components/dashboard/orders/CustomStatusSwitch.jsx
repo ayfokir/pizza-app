@@ -31,7 +31,7 @@ const CustomStatusSwitch = ({ currentStatus, onChangeStatus }) => {
           endIcon={<ArrowDropDownIcon />} // Add the arrow icon to the button
           style={{
             backgroundColor:
-              currentStatus === "Prepairing"
+              currentStatus === "Preparing"
                 ? "#FF9921"
                 : currentStatus === "Ready"
                 ? "green"
@@ -54,8 +54,8 @@ const CustomStatusSwitch = ({ currentStatus, onChangeStatus }) => {
           <MenuItem onClick={handleClose} sx={{ justifyContent: "space-between", paddingY: 0, }}>
             <Typography>Preparing</Typography>
             <Radio
-              checked={currentStatus === "Prepairing"}
-              onChange={() => handleStatusChange("Prepairing")}
+              checked={currentStatus === "Preparing"}
+              onChange={() => handleStatusChange("Preparing")}
             />
           </MenuItem>
           <MenuItem onClick={handleClose} sx={{ justifyContent: "space-between", paddingY: 0 }}>

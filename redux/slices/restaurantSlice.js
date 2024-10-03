@@ -12,9 +12,10 @@ const restaurantSlice = createSlice({
   reducers: {
     fetchRestaurantsRequest: (state) => {
       state.status = 'loading';
+      state.error = null;        // Reset error on new request
     },
     fetchRestaurantsSuccess: (state, action) => {
-      console.log("see action inside restaurant slice:", action)
+      // console.log("see action inside restaurant slice:", action)
       state.status = 'succeeded';
       state.restaurants = action.payload; // payload is the array of restaurants
     },
@@ -24,6 +25,7 @@ const restaurantSlice = createSlice({
     },
     addRestaurantRequest: (state) => {
       state.status = 'loading';
+      state.error = null;        // Reset error for this action
     },
     addRestaurantSuccess: (state, action) => {
       state.status = 'succeeded';

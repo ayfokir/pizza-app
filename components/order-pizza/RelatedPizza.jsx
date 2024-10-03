@@ -17,36 +17,42 @@ const RelatedPizza = () => {
 
   return (
     <Box>
-      <Typography sx={{ padding: 2, fontSize: "40px", fontWeight: "body1" }}>
-        Related
-      </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "nowrap",
-          overflowX: "scroll",
-          scrollBehavior: "smooth",
-          "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar in WebKit-based browsers
-        }}
-      >
-        {pizzas?.pizzas?.map((pizza, index) => (
-          <Box
-            key={pizza.id} // Unique key for each pizza card
-            sx={{
-              flexShrink: 0, // Prevent the card from shrinking
-              width: "300px", // Set a fixed width for each card
-              // marginRight: index < pizzas.pizzas.length - 1 ? 2 : 0, // Add margin only between cards
-            }}
-          >
-            <RelatedPizzaCard
-              pizzaId={pizza.id}
-              name={pizza.name}
-              price={pizza.price}
-              pizza_photo={pizza.pizza_photo} // Pass the photo URL
-              toppings={pizza.toppings} // Pass the toppings array
-            />
-          </Box>
-        ))}
+      <Box display={"flex"} flexDirection={"column"}>
+        <Typography
+          paddingLeft={"80px"}
+          mx={5}
+          component={"h2"}
+          sx={{ fontSize: "35px", color: "#00000080", paddingTop: "15px" }}
+        >
+          Related
+        </Typography>
+        <Box
+          display={"flex"}
+          flexWrap={"nowrap"}
+          justifyContent={"center"}
+          gap={4}
+          mx={5}
+          marginTop={2}
+          paddingBottom={"60px"}
+          sx={{
+            overflowX: "scroll",
+            scrollBehavior: "smooth",
+            "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar in WebKit-based browsers
+          }}
+        >
+          {pizzas.pizzas.map((pizza) => {
+            return (
+              <RelatedPizzaCard
+                key={pizza.id} // Unique key for each pizza card
+                pizzaId={pizza.id}
+                name={pizza.name}
+                price={pizza.price}
+                pizza_photo={pizza.pizza_photo} // Pass the photo URL
+                toppings={pizza.toppings} // Pass the toppings array
+              />
+            );
+          })}
+        </Box>
       </Box>
     </Box>
   );

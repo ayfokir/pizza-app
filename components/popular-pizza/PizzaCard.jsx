@@ -27,8 +27,9 @@ export default function PizzaCard({
 }) {
   const dispatch = useDispatch(); // Initialize useDispatch
   const router = useRouter();
-
+  
   const handleOrderClick = () => {
+    console.log("see d/f pizzaId:", pizzaId)
     try {
       // Dispatching actions
       // dispatch(selectPizzaRequest()); // Set loading state
@@ -36,6 +37,7 @@ export default function PizzaCard({
       // Select pizza with ID
       // dispatch(selectPizzaSuccess(pizzaId)); // Dispatch the pizzaId
       localStorage.setItem("selectedPizzaId", pizzaId);
+      localStorage.setItem("selectedRestaurantId", restaurant.id);
       // Navigate to another page after dispatch
       router.push(`/register-customer`);
     } catch (error) {
@@ -136,10 +138,10 @@ export default function PizzaCard({
           {/* Line under the button */}
           <Avatar
             alt="Azmera Pizza"
-            src={`${restaurant[0]?.logoUrl}`} // replace with avatar image path
+            src={`${restaurant?.logoUrl}`} // replace with avatar image path
             sx={{ width: 70, height: 70, marginRight: 2 }}
           />
-          <Typography variant="subtitle1">{restaurant[0]?.name}</Typography>
+          <Typography variant="subtitle1">{restaurant?.name}</Typography>
         </Box>
       </CardContent>
     </Card>

@@ -151,7 +151,7 @@ model OrderPizza {
 }
 
 enum OrderStatus {
-  Prepairing
+  Preparing
   Ready
   Delivered
   

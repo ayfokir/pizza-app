@@ -49,10 +49,10 @@ const Page = () => {
     <Provider store={store}>
       <AuthProvider>
         <Notification />
-        <Box>
+        <Box sx={{backgroundColor: "#FFF8F1"}}>
           <OrderPizzaCard />
-        </Box>
         <RelatedPizza />
+        </Box>
       </AuthProvider>
     </Provider>
   );

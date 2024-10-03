@@ -5,11 +5,13 @@ import { useDispatch } from "react-redux";
 import { SuccessMessage, FailureMessage } from "@/redux/slices/notificationSlice";
 import { GetPermissions } from "@/app/api/permission/GetPermissions"; // Assuming you have this API function
 import { createUserRole } from "@/app/api/role/createUserRole";
+import { useAuth } from "@/context/AuthContext";
 const AddRoleModal = ({ open, onClose }) => {
   const [selectedPermissions, setSelectedPermissions] = useState({});
   const [permissionsList, setPermissionsList] = useState([]);
   const dispatch = useDispatch();
-
+  const {id}   = useAuth();
+  console.log("see the current UserId:", id)
   // Fetch permissions from the server
   useEffect(() => {
     const fetchPermissions = async () => {
