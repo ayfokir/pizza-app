@@ -9,10 +9,10 @@ import { Notification } from "@/notification/Notification";
 const page = () => {
   return (
     <Box>
-      <Provider store={store}>
+      {/* <Provider store={store}> */}
         <SuperAdminRestaurantLogin />
-        <Notification  />
-      </Provider>
+        {/* <Notification  /> */}
+      {/* </Provider> */}
     </Box>
   );
 };

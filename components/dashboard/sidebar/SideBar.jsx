@@ -1,15 +1,6 @@
 'use client'
 import React from "react";
-import {
-  Box,
-  List,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  Button,
-  IconButton,
-  ListItemButton,
-} from "@mui/material";
+import { Box, List, ListItemIcon, ListItemText, Typography, Button, IconButton, ListItemButton } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
@@ -18,17 +9,24 @@ import LogoutIcon from "@mui/icons-material/Logout"; // Import logout icon
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useDispatch, useSelector } from "react-redux";
 import { setHeaderTitle } from "@/redux/slices/headerTtileSlice";
+import { useAbility } from "@/context/AbilityContext";
+
 const SideBar = () => {
   const pathname = usePathname();
   const dispatch = useDispatch(); // Get dispatch function from Redux
+  const abilities = useAbility();
 
 
   const handleHeaderTitle   =  (title)  =>  {
     dispatch(setHeaderTitle(title))
   }
-  console.log("see the current :", pathname);
+  // console.log("see the current :", pathname);
+
+
+
+
   const menuItems = [
-    {
+    abilities.can("read", "orders") ? { 
       text: "Orders",
       icon: (
         <Image
@@ -38,9 +36,10 @@ const SideBar = () => {
           alt="Orders"
         />
       ),
-      link: "/orders",
-    },
-    {
+      link: "/dashboard/orders",
+    } : null,
+  
+    abilities.can('create', 'Pizza') ? {
       text: "Add Menu",
       icon: (
         <Image
@@ -48,31 +47,48 @@ const SideBar = () => {
           width={24}
           height={24}
           alt="Add Menu"
-        />
+      />
       ),
-      link: "/add-pizza",
-    },
-    {
+      link: "/dashboard/add-pizza",
+    } : null,
+  
+    // Add conditions for Role and User if needed
+    abilities.can('manage', 'all') ? { 
       text: "Role",
       icon: (
-        <Image src="/dashboard/role.png" width={24} height={24} alt="Role" />
+        <Image
+          src="/dashboard/role.png"
+          width={24}
+          height={24}
+          alt="Role"
+        />
       ),
-      link: "/add-role",
-    },
-    {
+      link: "/dashboard/add-role",
+    } : null,
+  
+    abilities.can('manage', 'all') ? { 
       text: "User",
       icon: (
-        <Image src="/dashboard/user.png" width={24} height={24} alt="User" />
+        <Image
+          src="/dashboard/user.png"
+          width={24}
+          height={24}
+          alt="User"
+        />
       ),
-      link: "/add-user",
-    },
-  ];
+      link: "/dashboard/add-user",
+    } : null,
+  ].filter(Boolean);
+  
+
+
+
 
   const logout = () => {
     localStorage.removeItem("customer");
-    window.location.href = "/login";
+    window.location.href = "/super-admin-restaurant-login";
   };
-
+  
   return (
     <Box
       sx={{
@@ -92,9 +108,11 @@ const SideBar = () => {
         width="100%"
         padding="12px"
       >
-        <Typography variant="h6" sx={{ fontWeight: "bold", color: "#000" }}>
-          PIZZA
-        </Typography>
+        <Link href={"/"} style={{textDecoration :"none"}}>
+          <Typography variant="h6" sx={{ fontWeight: "bold", color: "#000" }}>
+            PIZZA
+          </Typography>
+        </Link>
         <Box display="flex" alignItems="center">
           <IconButton sx={{ marginLeft: "10px", paddingRight: "16px" }}>
             <Image
@@ -128,7 +146,7 @@ const SideBar = () => {
           justifyContent: "center",
         }}
       >
-        {menuItems.map((item) => (
+        {menuItems?.map((item) => (
           <Link href={item.link} key={item.text}  style={{ textDecoration: "none" }}>
             <ListItemButton
               onClick={() => handleHeaderTitle(item.text)} // Update header title on click

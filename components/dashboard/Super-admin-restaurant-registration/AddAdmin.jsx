@@ -7,7 +7,7 @@ import { useFormStatus } from "react-dom";
 import { RegisterAdmin } from "@/app/api/register/RegisterAdmin";
 import { SuccessMessage,FailureMessage } from "@/redux/slices/notificationSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useAuth } from "@/context/AuthContext";
 const AddAdmin = () => {
   const [userData, setUserData] = useState({
     name: "",
@@ -16,7 +16,10 @@ const AddAdmin = () => {
     password: "",
     confirmPassword: "",
   });
+  const { id , email} = useAuth();
 
+  console.log("see user id:", id);
+  console.log("see user email:", email);
   const router = useRouter();
   const [errors, setErrors] = useState({});
   const { pending } = useFormStatus();
@@ -202,23 +205,6 @@ const AddAdmin = () => {
             error={Boolean(errors.confirmPassword)}
             helperText={errors.confirmPassword}
           />
-
-          {/* <FormControlLabel
-            control={
-              <Checkbox
-                name="terms"
-                color="primary"
-                checked={termsAccepted}
-                onChange={handleChange}
-              />
-            }
-            label="I accept the Terms and Conditions"
-          />
-          {errors.terms && (
-            <Typography variant="body2" color="error" sx={{ mt: 1 }}>
-              {errors.terms}
-            </Typography>
-          )} */}
           <Button
             type="submit"
             fullWidth

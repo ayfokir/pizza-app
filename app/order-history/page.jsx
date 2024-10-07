@@ -8,11 +8,11 @@ import { Notification } from "@/notification/Notification";
 import { AuthProvider } from "@/context/AuthContext";
 const page = () => {
   return (
-    <Provider store={store}>
-      <AuthProvider>
+    // <Provider store={store}>
+      // <AuthProvider>
         <OrderHistory />
-      </AuthProvider>
-    </Provider>
+      // </AuthProvider>
+    // </Provider>
   );
 };
 

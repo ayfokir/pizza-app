@@ -4,6 +4,7 @@ const initialState = {
   roles: [],
   status: 'idle',
   error: null,
+  message: ""
 };
 
 const roleSlice = createSlice({
@@ -15,7 +16,7 @@ const roleSlice = createSlice({
     },
     fetchRolesSuccess: (state, action) => {
       state.status = 'succeeded';
-      state.roles = action.payload;
+      state.roles = action.payload.userRoles;
       state.error = null;
     },
     fetchRolesFailure: (state, action) => {
@@ -39,13 +40,16 @@ const roleSlice = createSlice({
       state.status = 'loading';
     },
     deleteRoleSuccess: (state, action) => {
+      console.log("see  state of role:", state)
+      console.log("see action inside deleteRoleSuccess slice", action)
       state.status = 'succeeded';
-      state.roles = state.roles.filter(role => role.id !== action.payload);
+      state.roles = state.roles.filter(role => role.id !== action.payload.roleId);
+      state.message = action.payload.message;
       state.error = null;
     },
     deleteRoleFailure: (state, action) => {
       state.status = 'failed';
-      state.error = action.payload;
+      state.error = action.payload.error;
     },
   },
 });

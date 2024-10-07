@@ -1,14 +1,24 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { fetchRolesRequest, fetchRolesSuccess, fetchRolesFailure, addRoleRequest, addRoleSuccess, addRoleFailure, deleteRoleRequest, deleteRoleSuccess, deleteRoleFailure } from '../slices/roleSlice'; // Adjust path based on where your slice is located
-import { GetUserRoles } from "@/app/api/user/GetUserRoles";
+import { call, put, takeLatest } from "redux-saga/effects";
+import {
+  fetchRolesRequest,
+  fetchRolesSuccess,
+  fetchRolesFailure,
+  addRoleRequest,
+  addRoleSuccess,
+  addRoleFailure,
+  deleteRoleRequest,
+  deleteRoleSuccess,
+  deleteRoleFailure,
+} from "../slices/roleSlice"; // Adjust path based on where your slice is located
+import { GetRoles } from "@/app/api/role/GetRoles";
 // import { AddRole } from '@/app/api/roles/AddRole';   // Replace with actual API path
-import { DeleteRole } from '@/app/api/role/DeleteRole';
+import { DeleteRole } from "@/app/api/role/DeleteRole";
 // Worker Saga: Fetch Roles
 function* fetchRolesSaga() {
   try {
-    const response = yield call(() => GetUserRoles()); // Fetch roles from API
-    console.log('Roles fetched successfully:', response);
-    yield put(fetchRolesSuccess(response.userRoles)); // Dispatch success action with roles data
+    const response = yield call(() => GetRoles()); // Fetch roles from API
+    console.log("Roles fetched successfully:", response);
+    yield put(fetchRolesSuccess(response)); // Dispatch success action with roles data
   } catch (error) {
     yield put(fetchRolesFailure(error.message)); // Dispatch failure action if there's an error
   }
@@ -27,13 +37,14 @@ function* fetchRolesSaga() {
 
 // Worker Saga: Delete Role
 function* deleteRoleSaga(action) {
-  console.log("see the id inside saga:", action)
+  console.log("see the id inside saga:", action);
+  let response
   try {
-    const response = yield call(() => DeleteRole(action.payload)); // Call API to delete role
-    console.log('Role deleted successfully:', response);
-    yield put(deleteRoleSuccess(action.payload)); // Dispatch success action with deleted role ID
+     response = yield call(() => DeleteRole(action.payload)); // Call API to delete role
+    console.log("Role deleted successfully:", response);
+    yield put(deleteRoleSuccess(response)); // Dispatch success action with deleted role ID
   } catch (error) {
-    yield put(deleteRoleFailure(error.message)); // Dispatch failure action if there's an error
+    yield put(deleteRoleFailure(response)); // Dispatch failure action if there's an error
   }
 }
 

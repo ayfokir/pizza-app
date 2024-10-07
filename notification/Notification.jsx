@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { clearNotification } from '@/redux/slices/notificationSlice';
 import 'react-toastify/dist/ReactToastify.css';
 export const Notification = () => {
-  const {error, success, message} = useSelector( (state) => state.notification);
-  console.log("inside notification:", error)
+  const {error, message} = useSelector( (state) => state.notification);
   const dispatch = useDispatch(); // Get dispatch function from Redux
   useEffect(() => {
     if (message) {  
@@ -37,9 +36,9 @@ export const Notification = () => {
         toastId: 'error1',
         className: 'toast-position'
       });
+      dispatch(clearNotification()); // Clear error after showing
     }
-    dispatch(clearNotification()); // Clear error after showing
-  }, [message, error]);
+  }, [message, error, dispatch]);
 
   return (
     <div className='toast-position'>

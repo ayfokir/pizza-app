@@ -4,6 +4,7 @@ const initialState = {
   users: [],
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
+  message: '',
 };
 
 const userSlice = createSlice({
@@ -28,20 +29,39 @@ const userSlice = createSlice({
       state.status = 'succeeded';
       state.users.push(action.payload);
     },
-    addUserFailure: (state, action) => { // Added addUserFailure
+    addUserFailure: (state, action) => {
       state.status = 'failed';
-      state.error = action.payload; // Set the error message when adding a user fails
+      state.error = action.payload;
     },
     deleteUserRequest: (state, action) => {
       state.status = 'loading';
     },
     deleteUserSuccess: (state, action) => {
       state.status = 'succeeded';
-      state.users = state.users.filter(user => user.id !== action.payload);
+      state.message = action.payload.message;
+      state.users = state.users.filter(user => user.id !== action.payload.userId);
     },
     deleteUserFailure: (state, action) => {
       state.status = 'failed';
-      state.error = action.payload; // Set the error message when deletion fails
+      state.error = action.payload.error;
+    },
+    // New reducer for updating user status
+    updateUserStatusRequest: (state) => {
+      state.status = 'loading';
+    },
+    updateUserStatusSuccess: (state, action) => {
+      state.status = 'succeeded';
+      state.message = `${action.payload.message}`
+      const { userId, newStatus } = action.payload;
+      const user = state.users.find(user => user.id === userId);
+      if (user) {
+        user.status = newStatus; // Update the user's status
+      }
+    },
+    updateUserStatusFailure: (state, action) => {
+      state.status = 'failed';
+      state.error = `${action.payload.error}`
+      state.error = action.payload.error;
     },
   },
 });
@@ -52,10 +72,13 @@ export const {
   fetchUsersFailure,
   addUserRequest,
   addUserSuccess,
-  addUserFailure, // Exporting the addUserFailure action
+  addUserFailure,
   deleteUserRequest,
   deleteUserSuccess,
-  deleteUserFailure, // Exporting the deleteUserFailure action
+  deleteUserFailure,
+  updateUserStatusRequest,   // Export the new actions
+  updateUserStatusSuccess,
+  updateUserStatusFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

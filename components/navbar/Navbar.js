@@ -1,14 +1,16 @@
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  IconButton,
-  Box,
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, IconButton, Box } from "@mui/material";
 import Image from "next/image";
-
+import Link from 'next/link'
+import { useSelector } from "react-redux";
 const Navbar = ({noRegisterButton}) => {
+
+
+
+
+
+
+
+
   return (
     <AppBar
       position="fixed"
@@ -16,28 +18,30 @@ const Navbar = ({noRegisterButton}) => {
     >
       <Toolbar sx={{ justifyContent: "space-between", display: "flex" }}>
         {/* Left Side: Logo */}
+          <Link href={"/"} style={{textDecoration: "none"}}>
         <Box display="flex" alignItems="center" flexGrow={1}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="logo"
-            sx={{ padding: 0 }}
-          >
-            <Image
-              src="/logo.png" // Ensure the correct logo path
-              alt="Pizza Logo"
-              width={40}
-              height={40}
-            />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ marginLeft: 1, color: "#AF5901", fontWeight: "bold" }}
-          >
-            Pizza
-          </Typography>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="logo"
+              sx={{ padding: 0 }}
+            >
+              <Image
+                src="/logo.png" // Ensure the correct logo path
+                alt="Pizza Logo"
+                width={40}
+                height={40}
+              />
+            </IconButton>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ marginLeft: 1, color: "#AF5901", fontWeight: "bold" }}
+            >
+              Pizza
+            </Typography>
         </Box>
+          </Link>
 
         {/* Center: Navigation Links */}
         <Box
@@ -58,17 +62,19 @@ const Navbar = ({noRegisterButton}) => {
           >
             Home
           </Button>
-          <Button
-            color="inherit"
-            sx={{
-              color: "#000",
-              marginRight: 3,
-              "&:hover": { color: "#f57c00" },
-              fontWeight: "bold",
-            }}
-          >
-            Orders
-          </Button>
+          <Link href={"/order-history"}>
+            <Button
+              color="inherit"
+              sx={{
+                color: "#000",
+                marginRight: 3,
+                "&:hover": { color: "#f57c00" },
+                fontWeight: "bold",
+              }}
+            >
+              Orders
+            </Button>
+          </Link>
           <Button
             color="inherit"
             sx={{
@@ -89,17 +95,19 @@ const Navbar = ({noRegisterButton}) => {
           alignItems="center"
           flexGrow={1}
         >
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#f57c00",
-              color: "#fff",
-              fontWeight: "bold",
-              "&:hover": { backgroundColor: "#d35f00" },
-            }}
-          >
-            Register
-          </Button>
+          <Link href={"/register-customer"}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#f57c00",
+                color: "#fff",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#d35f00" },
+              }}
+            >
+              Register
+            </Button>
+          </Link>
         </Box>}
 
 

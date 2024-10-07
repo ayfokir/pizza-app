@@ -1,40 +1,52 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SuccessMessage,FailureMessage } from "@/redux/slices/notificationSlice";
+import {
+  SuccessMessage,
+  FailureMessage,
+} from "@/redux/slices/notificationSlice";
 import UploadIcon from "@mui/icons-material/Upload"; // Import upload icon
-import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Container, Divider } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  Link,
+  Container,
+  Divider,
+} from "@mui/material";
 import Image from "next/image";
 import { useFormStatus } from "react-dom";
 import { RegisterRestaurantSuperAdmin } from "@/app/api/register/RegisterRestaurantSuperAdmin";
 import { useRouter } from "next/navigation";
 import InputFileUpload from "./UploadLogo";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
 // Styled component for visually hidden input
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
   height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
+  overflow: "hidden",
+  position: "absolute",
   bottom: 0,
   left: 0,
-  whiteSpace: 'nowrap',
+  whiteSpace: "nowrap",
   width: 1,
 });
 
 const SuperAdminRestaurantRegistration = () => {
   const [userData, setUserData] = useState({
     email: "",
-    name:  "",
+    name: "",
     password: "",
     confirmPassword: "",
     phone: "",
     restaurantName: "",
     location: "",
     logo: null, // Add a property for the logo
-
   });
 
   const router = useRouter();
@@ -43,8 +55,7 @@ const SuperAdminRestaurantRegistration = () => {
   const { pending } = useFormStatus();
   const dispatch = useDispatch(); // Get dispatch function from Redux
 
-
-   const handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value, checked } = e.target;
     if (name === "terms") {
       setTermsAccepted(checked);
@@ -66,8 +77,6 @@ const SuperAdminRestaurantRegistration = () => {
       [name]: "",
     }));
   };
-
-
 
   const validateForm = () => {
     const newErrors = {};
@@ -108,10 +117,19 @@ const SuperAdminRestaurantRegistration = () => {
 
     console.log(result);
     if (result.success) {
-     dispatch(SuccessMessage(result))
+      console.log("see the result:", result)
+      const token = result.token;
+      // const expirationTime = new Date().getTime() + (2 * 60 * 1000); // Set expiration time for 2 minutes from now
+      const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000; // Set expiration time for 24 hours from now
+      const customerData = {
+        token: token,
+        expiration: expirationTime,
+      };
+      localStorage.setItem("customer", JSON.stringify(customerData));
+      dispatch(SuccessMessage(result));
       router.push("/add-admin");
     } else {
-     dispatch(FailureMessage(result))
+      dispatch(FailureMessage(result));
     }
   };
 
@@ -275,34 +293,34 @@ const SuperAdminRestaurantRegistration = () => {
             helperText={errors.location}
           />
           <div>
-       <Button
-      component="label"
-      fullWidth
-      variant="outlined" // Changed to outlined for a distinct look
-      sx={{
-        border: "2px dashed #CCCCCC", // Dashed border style
-        textTransform: "none", // Preserve text casing (PascalCase)
-        color: "#FF9921", // Set text and icon color
-        padding: "16px", // Add padding for a better look
-        marginTop: "15px"
-      }}
-      startIcon={<UploadIcon />} // Add upload icon
-      >
-      Upload Logo
-      <VisuallyHiddenInput
-        type="file"
-        name="logo"
-        id="logo"
-        onChange={handleChange}
-      />
-    </Button>
-    {errors.logo && (
-            <Typography variant="body2" color="error" sx={{ mb: 2, ml: 2 }}>
-              {errors.logo}
-            </Typography>
-          )}
-     {/* <InputFileUpload  /> */}
-    </div>
+            <Button
+              component="label"
+              fullWidth
+              variant="outlined" // Changed to outlined for a distinct look
+              sx={{
+                border: "2px dashed #CCCCCC", // Dashed border style
+                textTransform: "none", // Preserve text casing (PascalCase)
+                color: "#FF9921", // Set text and icon color
+                padding: "16px", // Add padding for a better look
+                marginTop: "15px",
+              }}
+              startIcon={<UploadIcon />} // Add upload icon
+            >
+              Upload Logo
+              <VisuallyHiddenInput
+                type="file"
+                name="logo"
+                id="logo"
+                onChange={handleChange}
+              />
+            </Button>
+            {errors.logo && (
+              <Typography variant="body2" color="error" sx={{ mb: 2, ml: 2 }}>
+                {errors.logo}
+              </Typography>
+            )}
+            {/* <InputFileUpload  /> */}
+          </div>
           <FormControlLabel
             control={
               <Checkbox
@@ -334,15 +352,17 @@ const SuperAdminRestaurantRegistration = () => {
               padding: "12px 16px", // Increase padding of the Login button
             }}
             disabled={pending}
-
-            
           >
             {pending ? "Submitting..." : "Sign Up"}
           </Button>
 
           <Typography variant="body2" color="textSecondary" align="center">
             Already have an account?{" "}
-            <Link href="/super-admin-restaurant-login" variant="body2" sx={{color:"#FF9921"}}>
+            <Link
+              href="/super-admin-restaurant-login"
+              variant="body2"
+              sx={{ color: "#FF9921" }}
+            >
               Login
             </Link>
           </Typography>

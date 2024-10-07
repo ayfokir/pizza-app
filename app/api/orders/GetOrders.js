@@ -36,16 +36,9 @@ export async function GetOrders() {
       orderPizzas, // Return the retrieved order pizzas
     };
   } catch (error) {
-    // Handle errors
-    if (error instanceof Error) {
-      return {
-        error: error.message, // Return the error message
-        success: false,
-      };
-    }
-    // Handle other types of errors
-    return {
-      error: 'An unexpected error occurred',
+     // Handle errors
+     return {
+      error: error.message || "An unexpected error occurred", // Return the error message
       success: false,
     };
   }

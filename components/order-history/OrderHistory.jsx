@@ -22,9 +22,9 @@ const OrderHistory = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (id && orders.length > 0) {
+    if (id && orders?.length > 0) {
       // filter user orders based on customerId
-      const filteredOrders = orders.filter((order) => order.customerId === id);
+      const filteredOrders = orders?.filter((order) => order.customerId === id);
       console.log("filtered orders:", filteredOrders);
       setUserOrders(filteredOrders);
     }

@@ -5,13 +5,16 @@ import AddAdmin from "@/components/dashboard/Super-admin-restaurant-registration
 import store from "@/redux/store/store";
 import { Provider } from "react-redux";
 import { Notification } from "@/notification/Notification";
+import { AuthProvider } from "@/context/AuthContext";
 const page = () => {
   return (
     <Box>
-      <Provider store={store}>
+      {/* <Provider store={store}> */}
+        {/* <AuthProvider> */}
         <AddAdmin />
-        <Notification />
-      </Provider>
+        {/* <Notification /> */}
+        {/* </AuthProvider> */}
+      {/* </Provider> */}
     </Box>
   );
 };

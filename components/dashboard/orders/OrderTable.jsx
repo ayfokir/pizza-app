@@ -8,8 +8,17 @@ import { Box, Typography, MenuItem, IconButton } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import VisibilityIcon from "@mui/icons-material/Visibility"; // Eye icon
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOrdersRequest, updateOrderStatus } from "@/redux/slices/orderSlice";
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import {
+  fetchOrdersRequest,
+  updateOrderStatus,
+} from "@/redux/slices/orderSlice";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import ToopingDetail from "./ToopingDetail";
 import { Menu, FormControlLabel, Radio } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the arrow icon
@@ -36,7 +45,7 @@ const OrderTable = () => {
 
   const dispatch = useDispatch();
   const orders = useSelector((state) => state?.orders?.orders);
-  console.log("see orders:", orders)
+  console.log("see orders:", orders);
   // Fetch orders on component mount
   useEffect(() => {
     dispatch(fetchOrdersRequest());
@@ -44,12 +53,9 @@ const OrderTable = () => {
 
   // Function to update the order status in the database
   const handleStatusChange = (orderId, newStatus) => {
-    console.log("see handleStatus:", orderId)
-    console.log("see handleStatus:", newStatus)
+    console.log("see handleStatus:", orderId);
+    console.log("see handleStatus:", newStatus);
     dispatch(updateOrderRequest({ orderId, newStatus }));
-    
-
-
   };
 
   const columns = useMemo(
@@ -106,10 +112,12 @@ const OrderTable = () => {
         header: "Status",
         size: 150,
         Cell: ({ row }) => {
-          const [currentStatus, setCurrentStatus] = useState(row.original.status);
-          
+          const [currentStatus, setCurrentStatus] = useState(
+            row.original.status
+          );
+
           console.log("Current Status:", row.original.status); // Debugging line
-          
+
           return (
             <CustomStatusSwitch
               currentStatus={currentStatus}
@@ -120,7 +128,7 @@ const OrderTable = () => {
             />
           );
         },
-      }
+      },
     ],
     []
   );
@@ -128,11 +136,22 @@ const OrderTable = () => {
   return (
     <Box height={"100vh"} padding={"12px"} position="relative">
       <Box position="absolute" top={29} left={25} sx={{ zIndex: "1000" }}>
-        <Typography>Packages</Typography>
+        <Typography>Orders</Typography>
       </Box>
 
-      {/* Table */}
-      <MaterialReactTable columns={columns} data={orders} />
+      {/* Check if there are any orders */}
+      {!orders || orders?.length === 0 ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
+          <Typography variant="h6" color="textSecondary" sx={{marginBottom: "90px"}}>No orders available</Typography>
+        </Box>
+      ) : (
+        <MaterialReactTable columns={columns} data={orders} />
+      )}
 
       {open && (
         <ToopingDetail

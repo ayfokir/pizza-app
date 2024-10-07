@@ -30,8 +30,9 @@ model User {
   superAdminOf        Restaurant?     @relation("SuperAdminRelation")
   token                Token?          @relation("UserTokenRelation")
   pizzas               Pizza[]         @relation("UserPizzas") // New relation to Pizza model
+  status               UserStatus      @default(active)  // New status field using the enum
   createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
+  updatedAt            DateTime        @updatedAt 
 }
 
 
@@ -43,20 +44,6 @@ model Token {
   createdAt   DateTime  @default(now())
   expiresAt   DateTime  // Time when the token will expire
 }
-
-
-// model Restaurant {
-//   id          Int        @id @default(autoincrement())
-//   name        String
-//   location     String
-//   logoUrl     String?    // To store the uploaded logo file
-//   superAdmin  User       @relation("SuperAdminRelation", fields: [superAdminId], references: [id]) // Modify this line
-//   superAdminId Int        @unique
-//   users       User[]     @relation("RestaurantUsers")
-//   orders      Order[]
-//   createdAt   DateTime   @default(now())
-//   updatedAt   DateTime   @updatedAt
-// }
 
 model Restaurant {
   id          Int        @id @default(autoincrement())
@@ -88,14 +75,6 @@ model Permission {
   roles       UserRole[] @relation("RolePermissions")
 }
 
-// model Pizza {
-//   id          Int        @id @default(autoincrement())
-//   name        String     // Pizza name
-//   toppings    Topping[]  @relation("PizzaToppings") // Many-to-many relationship with Topping
-//   price       Float      // Price for the pizza
-//   pizza_photo       String?    // Optional: URL or path to pizza photo
-//   orderPizzas OrderPizza[] @relation("PizzaOrderPizzas") // One-to-many relationship with OrderPizza
-// }
 model Pizza {
   id          Int        @id @default(autoincrement())
   name        String     // Pizza name
@@ -109,14 +88,6 @@ model Pizza {
   userId      Int        // Foreign key to User who created the pizza
 }
 
-
-
-// model Topping {
-//   id       Int     @id @default(autoincrement())
-//   name     String
-//   pizzas   Pizza[] @relation("PizzaToppings") // Many-to-many relationship with Pizza
-//   orderPizzas OrderPizza[] @relation("OrderPizzaToppings") // Many-to-many relationship with OrderPizza
-// }
 
 model Topping {
   id           Int        @id @default(autoincrement())
@@ -157,7 +128,10 @@ enum OrderStatus {
   
 }
 
-
+enum UserStatus {
+  active
+  inActive
+}
 
 
 

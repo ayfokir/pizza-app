@@ -9,9 +9,9 @@ import { Provider } from "react-redux";
 const page = () => {
   return (
     <Box>
-        <Provider store={store}>
-      <Dashboard DynamicComponent={OrderTable} />
-      </Provider>
+        {/* <Provider store={store}> */}
+      <OrderTable/>
+      {/* </Provider> */}
     </Box>
   );
 };

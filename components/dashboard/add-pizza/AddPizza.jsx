@@ -40,7 +40,9 @@ const AddPizza = () => {
   
   const [open, setOpen] = useState(false);
   const {restaurantId, id}  = useAuth()
-  console.log("see restaurantId id inside Add pizza Component :", restaurantId)
+  const AllToken  = useAuth()
+  console.log("AllPayload Value:", AllToken)
+  // console.log("see restaurantId id inside Add pizza Component :", restaurantId)
   const handleOpen = () => {
     setOpen(true);
   };
@@ -163,7 +165,7 @@ console.log("selectedToppings:", selectedToppings)
       return; // Stop submission if there are validation errors
     }
   
-    console.log("Pizza data to be submitted:", pizzaData);
+    // console.log("Pizza data to be submitted:", pizzaData);
   
     // Create form data for submission
     const formData = new FormData();

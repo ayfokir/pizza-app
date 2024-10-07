@@ -33,16 +33,9 @@ export async function GetUsers(restaurantId) {
       users, // Return the retrieved users
     };
   } catch (error) {
-    // Handle errors
-    if (error instanceof Error) {
-      return {
-        error: error.message, // Return the error message
-        success: false,
-      };
-    }
-    // Handle other types of errors
+     // Handle errors
     return {
-      error: 'An unexpected error occurred',
+      error: error.message || "An unexpected error occurred", // Return the error message
       success: false,
     };
   }

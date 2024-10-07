@@ -3,10 +3,14 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function GetUserRoles() {
+export async function GetRoles() {
   // Fetch all user roles from the database
   try {
-    const userRoles = await prisma.userRole.findMany();  // Query the user roles table
+    const userRoles = await prisma.userRole.findMany({
+      include: {
+        permissions: true
+      }
+    });  // Query the user roles table
     // console.log("see user Roles:", userRoles)
     return {
       message: 'User roles retrieved successfully',
@@ -15,16 +19,9 @@ export async function GetUserRoles() {
     };
   } catch (error) {
     // Handle errors
-    if (error instanceof Error) {
       return {
-        error: error.message, // Return the error message
+        error: error.message || "An unexpected error occurred", // Return the error message
         success: false,
       };
-    }
-    // Handle other types of errors
-    return {
-      error: 'An unexpected error occurred',
-      success: false,
-    };
   }
 }

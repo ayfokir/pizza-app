@@ -87,9 +87,9 @@ console.log("see existingUser:", existingUser)
   const hashedPassword = await bcrypt.hash(data.password, salt);
 
   // Save user and restaurant to the database
-  try {
+   try {
     const user = await prisma.user.create({
-    data: {
+      data: {
         name: data.name,
         email: data.email,
         phoneNumber: data.phone,
@@ -98,24 +98,46 @@ console.log("see existingUser:", existingUser)
       },
     });
 
-  
-       // Fetch the latest restaurant (you can adjust the criteria to match your needs)
-  const restaurant = await prisma.restaurant.findFirst({
-    orderBy: {
-      createdAt: 'desc', // Assuming `createdAt` is a timestamp for when the restaurant was created
-    },
-  });
+    // Fetch the latest restaurant (you can adjust the criteria to match your needs)
+    const restaurant = await prisma.restaurant.findFirst({
+      orderBy: {
+        createdAt: 'desc', // Assuming `createdAt` is a timestamp for when the restaurant was created
+      },
+    });
 
-  if (!restaurant) {
-    return {
-      error: 'No restaurant found',
-      success: false,
-    };
-  }
+    if (!restaurant) {
+      return {
+        error: 'No restaurant found',
+        success: false,
+      };
+    }
+
     // Update the user with the restaurant ID
     await prisma.user.update({
       where: { id: user.id },
       data: { restaurantId: restaurant.id },
+    });
+
+    // Fetch the Admin role from the UserRole table
+    const adminRole = await prisma.userRole.findFirst({
+      where: { name: 'Admin' }, // Ensure that the role exists in your UserRole table
+    });
+
+    if (!adminRole) {
+      return {
+        error: 'Admin role not found',
+        success: false,
+      };
+    }
+
+    // Assign the Admin role to the user
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        roles: {
+          connect: { id: adminRole.id }, // Connect the Admin role by its ID
+        },
+      },
     });
 
     return {
@@ -136,4 +158,5 @@ console.log("see existingUser:", existingUser)
       success: false,
     };
   }
+
 }
