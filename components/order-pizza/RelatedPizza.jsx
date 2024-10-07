@@ -8,7 +8,7 @@ import { fetchPizzasRequest } from "@/redux/slices/pizzaSlice";
 const RelatedPizza = () => {
   const dispatch = useDispatch(); // Get dispatch function from Redux
   const pizzas = useSelector((state) => state.pizza); // Adjust according to your pizza slice structure
-  console.log("see the pizzas inside related pizza:", pizzas);
+  // console.log("see the pizzas inside related pizza:", pizzas);
 
   useEffect(() => {
     dispatch(fetchPizzasRequest());
@@ -40,7 +40,7 @@ const RelatedPizza = () => {
             "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar in WebKit-based browsers
           }}
         >
-          {pizzas.pizzas.map((pizza) => {
+          {pizzas?.pizzas?.map((pizza) => {
             return (
               <RelatedPizzaCard
                 key={pizza.id} // Unique key for each pizza card

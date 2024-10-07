@@ -13,8 +13,6 @@ const AllPizzas = () => {
   // Select pizzas from Redux state
   const pizzas = useSelector((state) => state.pizza); // Adjust according to your pizza slice structure
   const restaurants = useSelector((state) => state.restaurants.restaurants); // Adjust accordingly
-  // console.log("see the restaurant inside homepage:", restaurants);
-  // console.log("see the pizzas inside homepage:", pizzas);
 
   useEffect(() => {
     dispatch(fetchPizzasRequest());
@@ -24,12 +22,12 @@ const AllPizzas = () => {
   // Create a map of restaurant IDs to restaurant details for quick lookup
   const restaurantMap = useMemo(() => {
     const map = {};
-    restaurants.forEach((restaurant) => {
+    restaurants?.forEach((restaurant) => {
       map[restaurant.id] = restaurant; // Assuming each restaurant has a unique 'id'
     });
     return map;
   }, [restaurants]);
-  
+  console.log("see pizzas:", pizzas)
   // Check if loading or if there's an error
   if (pizzas.loading === "loading") {
     return <div>Loading...</div>;
@@ -57,7 +55,7 @@ const AllPizzas = () => {
         marginTop={2}
         paddingBottom={"60px"}
       >
-        {pizzas.pizzas.map((pizza) => {
+        {pizzas?.pizzas?.map((pizza) => {
           // Get the specific restaurant associated with the pizza
           const restaurant = restaurantMap[pizza.restaurantId];
 

@@ -42,10 +42,6 @@ export async function createOrder(data) {
   // Destructure the validated data
   const { status, customerId, restaurantId, pizzaId, toppings, quantity } = data;
 
-  console.log("see data:", data);
-  console.log("see type of pizza id:", typeof(pizzaId));
-  console.log("see type of pizza id:", typeof(toppings[0]));
-
   // Save order to the database
   try {
     const createdOrder = await prisma.$transaction(async (tx) => {
@@ -62,7 +58,7 @@ export async function createOrder(data) {
       // Step 2: Create one OrderPizza entry since we have only one pizza
       const createdOrderPizza = await tx.orderPizza.create({
         data: {
-          pizzaId: parseInt(pizzaId), // Ensure pizzaId is an integer
+          pizzaId: pizzaId ? parseInt(pizzaId) : null, // Ensure pizzaId is an integer
           orderId: order.id, // Link the orderId to the created order
           toppings: {
             connect: toppings.map((id) => ({ id })) || [], // Connect toppings using number ids

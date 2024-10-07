@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const DeleteRole = async (roleId) => {
-  console.log("see id server side:", roleId);
+  console.log("Attempting to delete role with ID:", roleId);
   try {
     // Validate if the role exists
     const existingRole = await prisma.userRole.findUnique({
@@ -14,8 +14,8 @@ export const DeleteRole = async (roleId) => {
 
     if (!existingRole) {
       return {
-        success: false,
-        message: `Role with id ${roleId} does not exist`,
+        error: `Role with ID ${roleId} does not exist`,
+        status: false,
       };
     }
 
@@ -24,30 +24,29 @@ export const DeleteRole = async (roleId) => {
       where: { roles: { some: { id: roleId } } },
     });
 
-    // Disconnect the role from each user individually
-    for (const user of usersWithRole) {
-      await prisma.user.update({
+    // Disconnect the role from each user
+    await Promise.all(usersWithRole.map(user => 
+      prisma.user.update({
         where: { id: user.id },
         data: { roles: { disconnect: { id: roleId } } },
-      });
-    }
+      })
+    ));
 
-    // Then delete the role itself
+    // Delete the role itself
     const deletedRole = await prisma.userRole.delete({
       where: { id: roleId },
     });
 
     return {
-      success: true,
       message: 'Role deleted successfully',
-      data: deletedRole,
+      status: true,
+      roleId: roleId,
     };
   } catch (error) {
-    console.error(`Error deleting role: ${error.message}`);
+    console.error(`Error deleting role with ID ${roleId}: ${error.message}`);
     return {
-      success: false,
-      message: 'Failed to delete role',
-      error: error.message,
+      error: error.message || 'Failed to delete role',
+      status: false,
     };
   } finally {
     await prisma.$disconnect();

@@ -53,6 +53,9 @@ export async function LoginUser(formData) {
       where: {
         email: data.email,
       },
+      include: {
+        roles: true,
+      }
     });
 
     console.log("see user:", user);
@@ -74,18 +77,20 @@ export async function LoginUser(formData) {
         success: false,
       };
     }
-
+console.log("see all current user information:", user)
+// console.log("see all current user roles:", user.roles[0].name)
     // Generate JWT token if needed
     const payload = { // the payload data is not sensitive
       id: user.id,
       name: user.name,
       email: user.email,
-      restaurantId: user.restaurantId 
+      restaurantId: user.restaurantId,
+      roles: user.roles.length > 0 ? user.roles.map(role => role.name) : ['guest'], // Assign roles or default to 'guest'
     };
     console.log(jwtSecret);
     const token = jwt.sign(payload, jwtSecret, { expiresIn: '24h' });
     console.log(token);
-
+    console.log("see payload:", payload)
     // Return success if the login is valid
     return {
       message: 'Logged in successfully',
@@ -94,14 +99,6 @@ export async function LoginUser(formData) {
     };
 
   } catch (error) {
-    if (error instanceof Error) {
-      return {
-        error: error.message, // Extract and return the error message as a string
-        success: false,
-      };
-    }
-
-    // Handle other types of errors or unknown types
     return {
       error: 'An unexpected error occurred',
       success: false,

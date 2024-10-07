@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 // Define Zod schema for validation
 const registrationSchema = z.object({
   name: z.string().min(1, 'Name is required'),
+  restaurantId: z.string().min(1, 'RestaurantId is required'),
   email: z.string().email('Invalid email address').min(1, 'Email is required'),
   phone1: z.string().min(1, 'Phone number is required').regex(/^\d+$/, 'Phone number must contain only digits'),
   phone2: z.string().optional(), // Second phone number is optional
@@ -33,6 +34,7 @@ export async function CreateUser(data) {
     registrationSchema.parse(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.log("see the error :", error)
       const messages = error.errors.map((err) => err.message).join(', ');
       return {
         error: messages,
@@ -97,6 +99,7 @@ export async function CreateUser(data) {
       data: {
         name: data.name,
         email: data.email,
+        restaurantId: data.restaurantId ? parseInt(data.restaurantId): null,
         phoneNumber: data.phone1,
         secondPhoneNumber: data.phone2, // Save second phone number if provided
         password: hashedPassword,

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
   let title = useSelector((state) => state.header);
-  console.log("see the titl:", title);
+  // console.log("see the titl:", title);
   return (
     <AppBar
       position="relative"

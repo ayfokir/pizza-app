@@ -11,6 +11,7 @@ export async function populatePermissions() {
     { name: 'add users' },
     { name: 'see customers' },
     { name: 'create roles' },
+    { name: 'create pizza' },
   ];
 
   for (const permission of permissions) {

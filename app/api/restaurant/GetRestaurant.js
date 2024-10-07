@@ -28,17 +28,10 @@ export async function GetRestaurants() {
       restaurants, // Return the retrieved restaurants
     };
   } catch (error) {
-    // Handle errors
-    if (error instanceof Error) {
+      // Handle errors
       return {
-        error: error.message, // Return the error message
+        error: error.message || "An unexpected error occurred", // Return the error message
         success: false,
       };
-    }
-    // Handle other types of errors
-    return {
-      error: 'An unexpected error occurred',
-      success: false,
-    };
   }
 }

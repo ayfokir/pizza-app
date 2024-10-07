@@ -18,19 +18,20 @@ export const AuthProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   // const [userId, setUserId] = useState(null);
   const [id, setUserId] = useState(null);
-  // const [role, setRole] = useState(null);
+  const [roles, setRole] = useState([]);
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [restaurantId, setRastaurantId] = useState(null);
   
-  const value = { isLogged, name, id, email, restaurantId, setName, setEmail, setUserId };
+  const value = { isLogged, name, id, email, restaurantId, roles,setName, setEmail, setUserId };
   
   useEffect(() => {
     // Retrieve the logged in user from local storage
-    const loggedInUser = getAuth();
+    const loggedInUser =  getAuth();
     loggedInUser.then((response) => {
       if (response.token) {
-        // setRole(response.role);
+        console.log("loggedInUser",response)
+        setRole(response.roles);
         setName(response.name);
         setEmail(response.email);
         setRastaurantId(response.restaurantId);

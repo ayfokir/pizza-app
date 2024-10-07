@@ -3,8 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   pizzas: [],
+  selectedPizzaId: null,
   status: 'idle',
   error: null,
+  orderStatus: 'idle',  // New state for order status
+  orderError: null,     // New state for order error
 };
 
 const pizzaSlice = createSlice({
@@ -15,23 +18,34 @@ const pizzaSlice = createSlice({
       state.status = 'loading';
     },
     fetchPizzasSuccess: (state, action) => {
-      state.status = true;
+      state.status = 'succeeded';
       state.pizzas = action.payload;
     },
-    fetchPizzasFailure: (state, action) => {  // New failure action
-      state.status = false;
-      state.error = action.payload;  // Store the error message
+    fetchPizzasFailure: (state, action) => {
+      state.status = 'failed';
+      state.error = action.payload;
     },
-    addPizzaRequest: (state, action) => {
+    addPizzaRequest: (state) => {
       state.status = 'loading';
     },
     addPizzaSuccess: (state, action) => {
-      state.status = true;
+      state.status = 'succeeded';
       state.pizzas.push(action.payload);
     },
-    addPizzaFailure: (state, action) => {  // New failure action
-      state.status = false;
-      state.error = action.payload;  // Store the error message
+    addPizzaFailure: (state, action) => {
+      state.status = 'failed';
+      state.error = action.payload;
+    },
+    orderPizzaRequest: (state) => {  // New order request action
+      state.orderStatus = 'loading';
+    },
+    orderPizzaSuccess: (state, action) => {  // New order success action
+      state.orderStatus = 'succeeded';
+      state.selectedPizzaId  = action.payload
+    },
+    orderPizzaFailure: (state, action) => {  // New order failure action
+      state.orderStatus = 'failed';
+      state.orderError = action.payload;
     },
   },
 });
@@ -39,10 +53,13 @@ const pizzaSlice = createSlice({
 export const {
   fetchPizzasRequest,
   fetchPizzasSuccess,
-  fetchPizzasFailure,  // Export the new action
+  fetchPizzasFailure,
   addPizzaRequest,
   addPizzaSuccess,
-  addPizzaFailure,  // Export the new action
+  addPizzaFailure,
+  orderPizzaRequest,
+  orderPizzaSuccess,
+  orderPizzaFailure,  // Export new actions
 } = pizzaSlice.actions;
 
 export default pizzaSlice.reducer;

@@ -16,31 +16,20 @@ import OrderSuccessDialog from "./OrderSuccessDialog";
 import Link from "next/link";
 import { createOrder } from "@/app/api/orders/CreateOrder";
 import { useAuth } from "@/context/AuthContext";
-import {
-  SuccessMessage,
-  FailureMessage,
-} from "@/redux/slices/notificationSlice";
+import {SuccessMessage,FailureMessage} from "@/redux/slices/notificationSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { GetRestaurants } from "@/app/api/restaurant/GetRestaurant";
 import { GetPizzas } from "@/app/api/pizza/GetPizzas";
-// import RemoveIcon from "@mui/icons-material/Remove";
-// import AddIcon from "@mui/icons-material/Add";
 export default function OrderPizzaCard() {
-  const { id } = useAuth();
-  const userInfo = useAuth();
-  console.log("see user id:", id);
-  const dispatch = useDispatch();
+  const { id , email} = useAuth();
+  // console.log("see user id:", id);
+  // console.log("see user email:", email);
   const router = useRouter();
   const [selectedToppings, setSelectedToppings] = useState({});
   const [pizzaQuantity, setPizzaQuantity] = useState(1); // Default quantity set to 1
   const [toppingsId, setToppingsId] = useState([]);
-  const [restaurants, setRestaurants] = useState([]);
-  const [error, setError] = useState(null);
-  const [selectedPizzaId, setSelectedPizzaId] = useState(null);
-  const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
   const [pizza, setPizza] = useState({});
  
   const [open, setOpen] = useState(false);
@@ -52,56 +41,33 @@ export default function OrderPizzaCard() {
   const handleClose = () => {
     setOpen(false);
   };
-  // const pizza = useSelector((state) => state.pizza); // Adjust according to your pizza slice structure
-  // const restaurants = useSelector(state => state.restaurant.restaurants); // Adjust accordingly
+  const pizzaId = useSelector((state) => state.pizza.selectedPizzaId); // Adjust according to your pizza slice structure
+  const restaurantsId = useSelector(state => state.restaurants.selectedRestaurantId); // Adjust accordingly
 
-  useEffect(() => {
-    const fetchRestaurant = async () => {
-      try {
-        // Fetch restaurants
-        const restaurantData = await GetRestaurants();
-        console.log("see the restaurant inside order page:", restaurantData)
-        if (restaurantData.success) {
-          setRestaurants(restaurantData.restaurants); // Assuming restaurantData.restaurants contains the array of restaurant objects
-        } else {
-          setError(restaurantData.message);
-        }
-      } catch (error) {
-        setError("Failed to fetch data.");
-      }
-    };
+  // console.log("see pizzaId:", pizzaId);
+  // console.log("see type of pizzaId:", typeof(pizzaId));
+  // console.log("see restaurantsId:", restaurantsId);
 
-    fetchRestaurant(); // Call the fetch function
-  }, []); // Empty dependency array means this will run once when the component mounts
-
-  useEffect(() => {
-    // Retrieve the pizzaId from localStorage
-    const pizzaId = localStorage.getItem("selectedPizzaId");
-    const restaurantId = localStorage.getItem("selectedRestaurantId");
-
-    if (pizzaId && restaurantId) {
-      setSelectedPizzaId(pizzaId);
-      setSelectedRestaurantId(restaurantId)
-    }
-  }, []);
-  console.log("see quantity:", pizzaQuantity);
   const handleOrder = async () => {
     let result = await createOrder({
       status: "Preparing",
-      customerId: id.toString(),
-      restaurantId: selectedRestaurantId,
-      pizzaId: selectedPizzaId, // Pass the pizza ID here as string
+      customerId: String(id),
+      restaurantId: String(restaurantsId),
+      pizzaId: String(pizzaId), // Pass the pizza ID here as string
       toppings: toppingsId,
       quantity: pizzaQuantity.toString(), // Convert quantity to string
     });
 
     console.log(result);
     if (result.success) {
-      router.push('/order-history')
       // dispatch(SuccessMessage(result));
       handleOpen()
-      // router.push("/your-orders");
+      setTimeout(()  =>  {
+        router.push('/order-history')
+
+      }, 1000)
     } else {
+      console.log("see error result:", result)
       // dispatch(FailureMessage(result));
     }
   };
@@ -138,7 +104,7 @@ export default function OrderPizzaCard() {
 
         if (pizzaData.success) {
           // Ensure that both `pizza.id` and `selectedPizzaId` are numbers
-          const parsedPizzaId = parseInt(selectedPizzaId, 10);
+          const parsedPizzaId = parseInt(pizzaId, 10);
 
           // Filter the pizza based on the parsedPizzaId
           const filteredPizza = pizzaData.pizzas.find(
@@ -158,14 +124,16 @@ export default function OrderPizzaCard() {
       }
     };
 
-    if (selectedPizzaId) {
+    if (pizzaId) {
       fetchPizza();
     }
-  }, [selectedPizzaId]);
+  }, [pizzaId]);
 
 
   return (
-    <Box
+<>
+
+  {pizzaId ?  ( <Box
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -352,6 +320,13 @@ export default function OrderPizzaCard() {
         </Button>
         <OrderSuccessDialog open={open} onClose={handleClose} message = {"Your order has been successfully completed"} />
       </Box>
-    </Box>
+    </Box> )
+: (
+  <Typography variant="h5" color="error" sx={{paddingY: "60px", textAlign: "center"}}>
+    {"No pizza selected. Please choose a pizza."}
+  </Typography>
+)
+  }
+  </>
   );
 }

@@ -9,13 +9,15 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import { GetUserRoles } from "@/app/api/user/GetUserRoles";
+import { GetRoles } from "@/app/api/role/GetRoles";
 import { CreateUser } from "@/app/api/user/CreateUser";
-import { useDispatch } from "react-redux";
 import {
   SuccessMessage,
   FailureMessage,
 } from "@/redux/slices/notificationSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchRolesRequest } from "@/redux/slices/roleSlice";
+import { useAuth } from "@/context/AuthContext";
 const MyModal = ({ open, onClose }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,10 +25,9 @@ const MyModal = ({ open, onClose }) => {
   const [phone1, setPhone1] = useState("");
   const [phone2, setPhone2] = useState("");
   const [role, setRole] = useState([]);
-
-  const [roleListes, setUserRolesList] = useState([]);
   const dispatch = useDispatch();
-
+  const {restaurantId}   = useAuth()
+  // console.log("see the RestaurantId:", restaurantId)
   const [errors, setErrors] = useState({
     name: false,
     email: false,
@@ -36,26 +37,19 @@ const MyModal = ({ open, onClose }) => {
     role: false,
   });
 
+  const roleListes  =  useSelector((state)  => state.roles.roles)
   /// Fetch user roles from the server
   useEffect(() => {
-    const fetchUserRoles = async () => {
-      try {
-        const result = await GetUserRoles(); // Call GetUserRoles instead of GetToppings
-        console.log("Fetched user roles:", result.userRoles);
-        setUserRolesList(result.userRoles); // Save the fetched user roles
-      } catch (error) {
-        console.error("Error fetching user roles:", error);
-      }
-    };
-    fetchUserRoles();
+    dispatch(fetchRolesRequest());
   }, []); // Assuming `newRole` is a dependency that triggers re-fetching
 
   const handleRoleChange = (event) => {
     const selectedRoles = event.target.value; // This will be an array of selected role IDs
     setRole(selectedRoles); // Set the selected roles directly
   };
+console.log("role", role)
 
-  console.log("see role:", role);
+  // console.log("see role:", role);
   const handleSubmit = async () => {
     const newErrors = {
       name: !name,
@@ -74,6 +68,7 @@ const MyModal = ({ open, onClose }) => {
         email: email,
         phone1: phone1,
         phone2: phone2,
+        restaurantId: String(restaurantId),
         location: location,
         roleIds: role, // Example role IDs
       };

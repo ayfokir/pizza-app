@@ -9,15 +9,26 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import { fetchRolesRequest, deleteRoleRequest } from "@/redux/slices/roleSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import { SuccessMessage,FailureMessage } from "@/redux/slices/notificationSlice";
 const RoleTable = () => {
   const [openAddRole, setOpenAddRole] = useState(false);
   const dispatch   =  useDispatch()
+  
 
 const handleDelete   =  (id)   =>  {
   console.log("see the id :", id)
   dispatch(deleteRoleRequest(id))
 }
+const roleStatus = useSelector((state) => state.roles);
+useEffect(() => {
+  if (roleStatus.status === "succeeded") {
+    dispatch(SuccessMessage({ message: roleStatus.message }));
+  } else if (roleStatus.status === 'failed') {
+    dispatch(FailureMessage({ error: roleStatus.error }));
+  }
+}, [roleStatus.status, roleStatus.message, roleStatus.error]);
+
+
 
   const columns = useMemo(
     () => [
@@ -41,7 +52,7 @@ const handleDelete   =  (id)   =>  {
         size: 100,
         Cell: ({ row }) => (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <StatusSwitch />
+            <StatusSwitch userId={row.original.id} status = {row.original.status}/>
             <IconButton onClick={() => handleDelete(row.original.id)}>
               <DeleteIcon />
             </IconButton>
@@ -70,6 +81,7 @@ dispatch(fetchRolesRequest())
   const handlCloseAddRole = () => {
     setOpenAddRole(false);
   };
+
 
   return (
     <Box height={"100vh"} padding={"12px"} position="relative">

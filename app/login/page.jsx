@@ -4,14 +4,14 @@ import React from "react";
 import Login from "@/components/login/Login";
 import store from "@/redux/store/store";
 import { Provider } from "react-redux";
-import { Notification } from "@/notification/Notification";
+// import { Notification } from "@/notification/Notification";
 const page = () => {
   return (
     <Box>
-      <Provider store={store}>
-        <Notification />
+      {/* <Provider store={store}> */}
+        {/* <Notification /> */}
         <Login />
-      </Provider>
+      {/* </Provider> */}
     </Box>
   );
 };

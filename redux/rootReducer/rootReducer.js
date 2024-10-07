@@ -6,7 +6,6 @@ import orderReducer from '../slices/orderSlice';
 import toppingReducer from '../slices/toppingSlice';
 import  restaurantReducer from '../slices/restaurantSlice'
 import notificationReducer from '../slices/notificationSlice'
-import selectedPizzaRedecer from '../slices/selectedPizzaSlice'
 import headerTtile               from '../slices/headerTtileSlice'
 // Combine all the reducers
 const rootReducer = combineReducers({
@@ -17,7 +16,6 @@ const rootReducer = combineReducers({
   topping: toppingReducer,
   restaurants:restaurantReducer,
   notification: notificationReducer,
-  selectedPizza: selectedPizzaRedecer,
   header:     headerTtile,
 });
 

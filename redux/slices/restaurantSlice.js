@@ -1,10 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+
+
 const initialState = {
   restaurants: [],
+  selectedRestaurantId: null, // Changed from array to null to store a single restaurant ID
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
 };
+
 
 const restaurantSlice = createSlice({
   name: 'restaurant',
@@ -15,7 +19,6 @@ const restaurantSlice = createSlice({
       state.error = null;        // Reset error on new request
     },
     fetchRestaurantsSuccess: (state, action) => {
-      // console.log("see action inside restaurant slice:", action)
       state.status = 'succeeded';
       state.restaurants = action.payload; // payload is the array of restaurants
     },
@@ -35,6 +38,11 @@ const restaurantSlice = createSlice({
       state.status = 'failed';
       state.error = action.payload; // payload is the error message
     },
+
+    // Action to select a restaurant by its ID
+    selectRestaurant: (state, action) => {
+      state.selectedRestaurantId = action.payload; // payload is the selected restaurant ID
+    },
   },
 });
 
@@ -46,6 +54,7 @@ export const {
   addRestaurantRequest,
   addRestaurantSuccess,
   addRestaurantFailure,
+  selectRestaurant, // Export the new action
 } = restaurantSlice.actions;
 
 // Export reducer

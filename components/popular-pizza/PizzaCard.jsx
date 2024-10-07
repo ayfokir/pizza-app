@@ -1,48 +1,23 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Avatar,
-  Box,
-} from "@mui/material";
+import { Card, CardContent, Typography, Button, Avatar, Box } from "@mui/material";
 import Image from "next/image"; // for optimized image loading in Next.js
-import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectPizzaRequest,
-  selectPizzaSuccess,
-  selectPizzaFailure,
-} from "@/redux/slices/selectedPizzaSlice";
 import { useRouter } from "next/navigation";
-export default function PizzaCard({
-  pizzaId,
-  name,
-  price,
-  pizza_photo,
-  toppings,
-  restaurant,
-}) {
+import { orderPizzaRequest, orderPizzaSuccess } from "@/redux/slices/pizzaSlice";
+import { selectRestaurant } from "@/redux/slices/restaurantSlice";
+export default function PizzaCard({pizzaId,name,price,pizza_photo,toppings,restaurant}) {
   const dispatch = useDispatch(); // Initialize useDispatch
-  const router = useRouter();
+  const router = useRouter()
   
-  const handleOrderClick = () => {
-    console.log("see d/f pizzaId:", pizzaId)
+  const handleOrderClick = async () => {
     try {
-      // Dispatching actions
-      // dispatch(selectPizzaRequest()); // Set loading state
-
-      // Select pizza with ID
-      // dispatch(selectPizzaSuccess(pizzaId)); // Dispatch the pizzaId
-      localStorage.setItem("selectedPizzaId", pizzaId);
-      localStorage.setItem("selectedRestaurantId", restaurant.id);
-      // Navigate to another page after dispatch
-      router.push(`/register-customer`);
+      dispatch(orderPizzaRequest());
+      dispatch(orderPizzaSuccess(pizzaId));  // Dispatch success action with pizzaId
+      dispatch(selectRestaurant(restaurant.id)); // Dispatch only the ID
+      router.push(`/register-customer`);  // Redirect after order
     } catch (error) {
-      // Handle any error that occurs during dispatch
-      dispatch(selectPizzaFailure(error.message));
+      console.log("error :", error.message)
     }
   };
 
@@ -110,7 +85,7 @@ export default function PizzaCard({
           </Typography>
 
           <Button
-            onClick={handleOrderClick} // Attach the handler to the button
+            onClick={ () => handleOrderClick()} // Attach the handler to the button
             variant="contained"
             sx={{
               borderRadius: 2,

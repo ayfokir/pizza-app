@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link } from "@mui/material";
+import { Box, TextField, Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
+import Link from 'next/link'
 import Image from "next/image";
 import { useFormStatus } from "react-dom";
 // import { CreateCustomer } from "@/app/api/register-customer/CreateCustomer";
@@ -12,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 const RegisterCustomer = () => {
-
   const [userData, setUserData] = useState({
     email: "",
     phone: "",
@@ -22,21 +22,12 @@ const RegisterCustomer = () => {
     termsAccepted: false, // Track terms acceptance
   });
 
-
-  const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
   const router = useRouter();
   const [errors, setErrors] = useState({});
   const { pending } = useFormStatus();
   const dispatch = useDispatch(); // Get dispatch function from Redux
-
-  useEffect(() => {
-    // Retrieve the pizzaId from localStorage
-    const restaurantId = localStorage.getItem("selectedRestaurantId");
-    if ( restaurantId) {
-      setSelectedRestaurantId(restaurantId)
-    }
-  }, []);
-
+  const restaurantId = useSelector(state => state.restaurants.selectedRestaurantId); // Adjust accordingly
+  
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     
@@ -70,11 +61,9 @@ const RegisterCustomer = () => {
 
     return newErrors;
   };
-  console.log("see the selectedRestaurantId:", selectedRestaurantId)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Validate form
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
@@ -84,11 +73,18 @@ const RegisterCustomer = () => {
     
     // Submit user data (implement your submission logic here)
     const formData = new FormData(e.currentTarget);
-    formData.append("restaurantId", selectedRestaurantId)
-    console.log("see the selectedRestaurantId:", selectedRestaurantId)
+    formData.append("restaurantId", restaurantId)
     const result = await CreateCustomer(formData);
     console.log("see the result:", result)
     if (result.success) {
+      const token = result.token;
+      // const expirationTime = new Date().getTime() + (2 * 60 * 1000); // Set expiration time for 2 minutes from now
+      const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000; // Set expiration time for 24 hours from now
+      const customerData = {
+        token: token,
+        expiration: expirationTime,
+      };
+      localStorage.setItem("customer", JSON.stringify(customerData));
       dispatch(SuccessMessage(result));
       router.push("/order");
       // Handle success (e.g., redirect to login)
