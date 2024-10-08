@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Switch, Typography } from "@mui/material";
 import { Check } from "@mui/icons-material";
-import { updateUserStatusRequest } from "@/redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "@/context/AuthContext";
 import { SuccessMessage, FailureMessage } from "@/redux/slices/notificationSlice";
 
-const StatusSwitch = ({ userId, status }) => {
+const StatusSwitch = ({ id, status, onStatusChange}) => {
   const dispatch = useDispatch();
-
-  const handleStatus = () => {
-    // Toggle status
-    if (status === "active") {
-      dispatch(updateUserStatusRequest({ userId, status: "inActive" }));
-    } else {
-      dispatch(updateUserStatusRequest({ userId, status: "active" }));
-    }
+  const handleStatusToggle = () => {
+    // Call the parent’s function to handle the status change
+    onStatusChange(id, status === "active" ? "inActive" : "active");
   };
 
-  const userStatus = useSelector((state) => state.users);
   
+  const userStatus = useSelector((state) => state.users);
   useEffect(() => {
     if (userStatus.status === "succeeded") {
       dispatch(SuccessMessage({ message: userStatus.message }));
@@ -30,7 +24,7 @@ const StatusSwitch = ({ userId, status }) => {
 
   return (
     <Button
-      onClick={handleStatus}
+      onClick={handleStatusToggle}
       sx={{
         border: "2px",
         display: "flex",
@@ -52,7 +46,7 @@ const StatusSwitch = ({ userId, status }) => {
       
       <Switch
         checked={status === "active"} // Set checked based on status prop
-        onChange={handleStatus}
+        onChange={handleStatusToggle}
         size="small"
         sx={{
           "& .MuiSwitch-switchBase.Mui-checked": {

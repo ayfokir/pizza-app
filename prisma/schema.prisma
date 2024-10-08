@@ -67,6 +67,8 @@ model UserRole {
   createdAt   DateTime   @default(now())
   permissions Permission[] @relation("RolePermissions")
   users       User[]     @relation("UserRoles")
+  status               RoleStatus      @default(active)  // New status field using the enum
+
 }
 
 model Permission {
@@ -129,6 +131,10 @@ enum OrderStatus {
 }
 
 enum UserStatus {
+  active
+  inActive
+}
+enum RoleStatus {
   active
   inActive
 }

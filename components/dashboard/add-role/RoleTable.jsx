@@ -1,34 +1,39 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import { Box, Button } from "@mui/material";
 import AddRoleModal from "./AddRoleModal";
 // import { GetUserRoles } from "@/app/api/user/GetUserRoles";
 import StatusSwitch from "../add-user/StatusSwitch";
-import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton } from '@mui/material';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from "@mui/material";
 import { fetchRolesRequest, deleteRoleRequest } from "@/redux/slices/roleSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { SuccessMessage,FailureMessage } from "@/redux/slices/notificationSlice";
+import {SuccessMessage,FailureMessage} from "@/redux/slices/notificationSlice";
+import { updateRoleStatusRequest } from "@/redux/slices/roleSlice";
+
+
 const RoleTable = () => {
   const [openAddRole, setOpenAddRole] = useState(false);
-  const dispatch   =  useDispatch()
+  const dispatch = useDispatch();
   
-
-const handleDelete   =  (id)   =>  {
-  console.log("see the id :", id)
-  dispatch(deleteRoleRequest(id))
-}
-const roleStatus = useSelector((state) => state.roles);
-useEffect(() => {
-  if (roleStatus.status === "succeeded") {
-    dispatch(SuccessMessage({ message: roleStatus.message }));
-  } else if (roleStatus.status === 'failed') {
-    dispatch(FailureMessage({ error: roleStatus.error }));
-  }
-}, [roleStatus.status, roleStatus.message, roleStatus.error]);
+  const handleDelete = (id) => {
+    console.log("see the id :", id);
+    dispatch(deleteRoleRequest(id));
+  };
 
 
+  const roleStatus = useSelector((state) => state.roles);
+  const state = useSelector((state) => state);
+  console.log("see roleStatus:", roleStatus)
+  console.log("see state:", state)
+  useEffect(() => {
+    if (roleStatus.status === "succeeded") {
+      dispatch(SuccessMessage({ message: roleStatus.message }));
+    } else if (roleStatus.status === "failed") {
+      dispatch(FailureMessage({ error: roleStatus.error }));
+    }
+  }, [roleStatus.status, roleStatus.message, roleStatus.error]);
 
   const columns = useMemo(
     () => [
@@ -47,12 +52,16 @@ useEffect(() => {
         },
       },
       {
-        accessorKey: 'actions',
-        header: 'Action',
+        accessorKey: "actions",
+        header: "Action",
         size: 100,
         Cell: ({ row }) => (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <StatusSwitch userId={row.original.id} status = {row.original.status}/>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <StatusSwitch
+             id={row.original.id}
+             status={row.original.status}
+             onStatusChange={handleStatusChange}
+            />
             <IconButton onClick={() => handleDelete(row.original.id)}>
               <DeleteIcon />
             </IconButton>
@@ -63,12 +72,11 @@ useEffect(() => {
     []
   );
 
- const roleListes =  useSelector((state) => state.roles.roles)
- console.log("see all roles:", roleListes)
- useEffect(() => {
-dispatch(fetchRolesRequest())
-}, [openAddRole]); // Assuming `newRole` is a dependency that triggers re-fetching
-
+  const roleListes = useSelector((state) => state.roles.roles);
+  console.log("see all roles:", roleListes);
+  useEffect(() => {
+    dispatch(fetchRolesRequest());
+  }, [openAddRole]); // Assuming `newRole` is a dependency that triggers re-fetching
 
   const table = useMaterialReactTable({
     columns,
@@ -82,6 +90,11 @@ dispatch(fetchRolesRequest())
     setOpenAddRole(false);
   };
 
+   // Function to handle the status change (can be used for both users and roles)
+   const handleStatusChange = (id, newStatus) => {
+    console.log("see id an role status", id, newStatus)
+    dispatch(updateRoleStatusRequest({ roleId: id,  newStatus }));
+  };
 
   return (
     <Box height={"100vh"} padding={"12px"} position="relative">
