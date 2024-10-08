@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 // Define Zod schema for validation
 const updateStatusSchema = z.object({
     userId: z.number().int().positive("User ID must be a positive integer"),
-    status: z.enum(["active", "inActive"], { required_error: "Status is required" }), // Status is required and must be either 'active' or 'inactive'
+    newStatus: z.enum(["active", "inActive"], { required_error: "Status is required" }), // Status is required and must be either 'active' or 'inactive'
   });
   
 
@@ -31,7 +31,7 @@ export async function UpdateUserStatus(data) {
     };
   }
 
-  const { userId, status } = data;
+  const { userId, newStatus } = data;
 
   // Find the user by ID
   const user = await prisma.user.findUnique({
@@ -52,7 +52,7 @@ console.log("see users:", user)
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
-        status: status !== undefined ? status : (user.status === "active" ? "inactive" : "active"),
+        status: newStatus !== undefined ? newStatus : (user.status === "active" ? "inactive" : "active"),
     },
     });
 

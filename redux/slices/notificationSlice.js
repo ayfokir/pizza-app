@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   message: "",
   error: "",
-  success: false
+  success:  "idle" // 'idle' | 'loading' | 'succeeded' | 'failed'
 };
 
 const notificationSlice = createSlice({
@@ -20,10 +20,11 @@ const notificationSlice = createSlice({
       state.error = action.payload.error;
       state.success = action.payload.success;
     },
-    clearNotification(state) {
+    clearNotification(state, action) {
+      console.log("see notification state:", state)
       state.message = "";
       state.error = "";
-      state.success = false;
+      state.success = "idle";
     }
   }
 });
