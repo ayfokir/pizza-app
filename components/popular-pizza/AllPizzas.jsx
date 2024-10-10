@@ -38,14 +38,15 @@ const AllPizzas = () => {
 
   return (
     <Box display={"flex"} flexDirection={"column"}>
-      <Typography
-        paddingLeft={"80px"}
-        mx={5}
-        component={"h2"}
-        sx={{ fontSize: "35px", color: "#00000080", paddingTop: "90px" }}
-      >
-        Popular Pizzas
-      </Typography>
+    <Typography
+      paddingLeft={"80px"}
+      mx={5}
+      component={"h2"}
+      sx={{ fontSize: "35px", color: "#00000080", paddingTop: "90px" }}
+    >
+      Popular Pizzas
+    </Typography>
+    {pizzas?.pizzas?.length > 0 ? ( // Check if there are pizzas
       <Box
         display={"flex"}
         flexWrap={"wrap"}
@@ -62,10 +63,10 @@ const AllPizzas = () => {
         marginTop={2}
         paddingBottom={"60px"}
       >
-        {pizzas?.pizzas?.map((pizza) => {
+        {pizzas.pizzas.map((pizza) => {
           // Get the specific restaurant associated with the pizza
           const restaurant = restaurantMap[pizza.restaurantId];
-
+  
           return (
             <PizzaCard
               key={pizza.id} // Unique key for each pizza card
@@ -79,7 +80,21 @@ const AllPizzas = () => {
           );
         })}
       </Box>
-    </Box>
+    ) : (
+      <Typography 
+        variant="h6" 
+        color="red"
+        sx={{ 
+          textAlign: "center", 
+          padding: 2, 
+          fontSize :"30px"
+        }}
+      >
+        No pizzas found. Please check back later!
+      </Typography>
+    )}
+  </Box>
+  
   );
 };
 
