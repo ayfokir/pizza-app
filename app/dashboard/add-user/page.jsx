@@ -7,10 +7,10 @@ import { populatePermissions } from "../../api/permission/populatePermissions";
 import { Can } from "@casl/react";
 
 const page = () => {
-  useEffect(() => {
-    // Call populatePermissions if needed
-    // populatePermissions();
-  }, []);
+  // useEffect(() => {
+  //   // Call populatePermissions if needed
+  //   // populatePermissions();
+  // }, []);
 
   return (
     <Box>

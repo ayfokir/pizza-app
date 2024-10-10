@@ -1,9 +1,21 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {SuccessMessage, FailureMessage,} from "@/redux/slices/notificationSlice";
+import {
+  SuccessMessage,
+  FailureMessage,
+} from "@/redux/slices/notificationSlice";
 import UploadIcon from "@mui/icons-material/Upload"; // Import upload icon
-import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Container } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  Link,
+  Container,
+} from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { LoginUser } from "@/app/api/login/Login";
@@ -37,10 +49,10 @@ const LoginAdmin = () => {
     }));
   };
 
-    // // Clear fields on component mount
-    // useEffect(() => {
-    //   setUserData({ email: '', password: '' });
-    // }, []);
+  // // Clear fields on component mount
+  // useEffect(() => {
+  //   setUserData({ email: '', password: '' });
+  // }, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -59,7 +71,7 @@ const LoginAdmin = () => {
 
     // Handle login logic here
     const result = await LoginUser(userData); // Replace with your actual login function
-    
+
     if (result.success) {
       const token = result.token;
       // const expirationTime = new Date().getTime() + (2 * 60 * 1000); // Set expiration time for 2 minutes from now
@@ -216,7 +228,7 @@ const LoginAdmin = () => {
             align="center"
             sx={{ mt: 2 }}
           >
-            Don't have an account?{" "}
+            Don&apos;t have an account?
             <Link
               href="/super-admin-restaurant-registration"
               variant="body2"
