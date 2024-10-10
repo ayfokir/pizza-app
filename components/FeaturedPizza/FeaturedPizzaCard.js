@@ -4,12 +4,12 @@ import Image from "next/image";
 const FeaturedPizzaCard = ({ title, description, imageUrl }) => {
   return (
     <Box
-      // sx={{
-      //   display: "flex",
-      //   justifyContent: "center",
-      //   flexDirection: "column",
-      //   mx: 5,
-      // }}
+    // sx={{
+    //   display: "flex",
+    //   justifyContent: "center",
+    //   flexDirection: "column",
+    //   mx: 5,
+    // }}
     >
       {/* <Typography
         paddingLeft={"80px"}
@@ -20,7 +20,7 @@ const FeaturedPizzaCard = ({ title, description, imageUrl }) => {
         Featured Pizza
       </Typography> */}
 
-      <Box display={"flex"} justifyContent={"center"} marginTop= {2}>
+      <Box display={"flex"} justifyContent={"center"} marginTop={2}>
         <Box
           sx={{
             display: "flex",
@@ -46,29 +46,30 @@ const FeaturedPizzaCard = ({ title, description, imageUrl }) => {
               sx={{
                 fontWeight: "bold",
                 marginBottom: "1rem",
-                lineHeight: "43px",
+                lineHeight: "48px",
                 fontSize: {
                   xs: "25px", // for screens <600px
                   sm: "35px", // for screens ≥600px
                   md: "40px", // for screens ≥900px
-                  lg: "50px", // for screens ≥1200px
+                  lg: "45px", // for screens ≥1200px
                 },
+                fontFamily: "Roboto, sans-serif", // Set font family to Roboto
               }}
             >
               Make Your First Order and get 50% Off
             </Typography>
+
             <Typography
               variant="body1"
               sx={{
                 marginBottom: "2rem",
-                lineHeight: "23px" ,
+                lineHeight: "23px",
                 fontSize: {
                   xs: "12px", // for screens <600px
                   sm: "13px", // for screens ≥600px
                   md: "14px", // for screens ≥900px
                   lg: "16px", // for screens ≥1200px
                 },
-              
               }}
             >
               In publishing and graphic design, Lorem ipsum is a placeholder
@@ -114,8 +115,6 @@ const FeaturedPizzaCard = ({ title, description, imageUrl }) => {
         </Box>
         <Box></Box>
       </Box>
-
-
     </Box>
   );
 };
