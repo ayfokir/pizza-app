@@ -3,7 +3,7 @@ import { AbilityBuilder, Ability } from '@casl/ability';
 export function defineAbilitiesFor(roles, id) {
   const { can, cannot, rules } = new AbilityBuilder(Ability);
 
-  roles.forEach(role => {
+  roles?.forEach(role => {
     if (role === 'Super Admin') {
       can('manage', 'all'); // Super Admin can manage everything
     } else if (role === 'Kitchen Man') {

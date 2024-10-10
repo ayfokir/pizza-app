@@ -20,6 +20,7 @@ const roleSlice = createSlice({
       // console.log("see inside fetchRolesSuccess:", action)
       state.roles = action.payload.userRoles;
       state.error = null;
+      // console.log("see roles state:", JSON.stringify(state))
     },
     fetchRolesFailure: (state, action) => {
       state.status = 'failed';
@@ -69,7 +70,7 @@ const roleSlice = createSlice({
         role.status = newStatus;
       }
       state.status = 'succeeded';
-      state.message = `${message} ${newStatus}`;
+      // state.message = `${message} ${newStatus}`;
       state.error = null;
     },
     // Action to handle failure of status update
@@ -79,7 +80,7 @@ const roleSlice = createSlice({
       if (role) {
         role.status = 'failed';  // Set the role's status to 'failed' in case of error
       }
-      state.error = error;
+      // state.error = error;
     },
   },
 });

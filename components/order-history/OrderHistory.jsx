@@ -32,11 +32,10 @@ const OrderHistory = () => {
 
   return (
 
-    <Box sx={{ backgroundColor: "#FFF8F1" }}>
+    <Box sx={{ backgroundColor: "#FFF8F1", height: "100vh"}}>
       <Navbar noRegisterButton={true} />
-    <Box >
-      {/* Display order history */}
-<Typography    marginTop={"80px"}
+    <Box sx={{ marginTop: "60px" }}>
+<Typography   
           mx={5}
           paddingLeft={ "70px"}
           paddingTop={ 20}

@@ -17,17 +17,23 @@ const AllRestaurant = () => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexWrap: "nowrap",
-        justifyContent: "center",
-        mx: 5,
-        gap: 3,
-        overflowX: "scroll",
-        padding: 2,
-        scrollBehavior: "smooth",
-        "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar in WebKit-based browsers
-      }}
+    sx={{
+      display: "flex",
+      flexWrap: "nowrap",
+      justifyContent: "start",
+      gap: 3,
+      overflowX: "auto",
+      padding: 2,
+      marginLeft: { 
+        xs: 1.5, // Add space from the left side for small screens
+        sm: 2, // Increase the left padding for larger screens
+        md: 4,
+        lg: 6,
+      },
+      paddingRight: 0,
+      scrollBehavior: "smooth",
+      "&::-webkit-scrollbar": { display: "none" },  // Hide scrollbar in WebKit-based browsers
+    }}
     >
       {restaurants?.map((restaurant) => (
         <Restaurants

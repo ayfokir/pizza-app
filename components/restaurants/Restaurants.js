@@ -9,6 +9,7 @@ const Restaurants = ({ name, location, logoUrl, orders }) => {
         display: 'flex',
         justifyContent: 'space-between',
         padding: 2,
+        paddingLeft: "30px",
         borderRadius: '15px',
         backgroundColor: 'white',
         width: "574px",

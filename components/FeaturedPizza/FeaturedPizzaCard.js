@@ -28,12 +28,11 @@ const FeaturedPizzaCard = ({ title, description, imageUrl }) => {
             justifyContent: "space-between",
             backgroundColor: "#2e2e2e",
             borderRadius: "40px",
-            height: "431px",
+            height: "386px",
             width: "1266px",
             overflow: "hidden", // This ensures content inside follows the border-radius
           }}
         >
-          {/* Left Section: Text */}
           <Box
             sx={{
               paddingRight: "1rem",
@@ -48,16 +47,30 @@ const FeaturedPizzaCard = ({ title, description, imageUrl }) => {
                 fontWeight: "bold",
                 marginBottom: "1rem",
                 lineHeight: "43px",
+                fontSize: {
+                  xs: "25px", // for screens <600px
+                  sm: "35px", // for screens ≥600px
+                  md: "40px", // for screens ≥900px
+                  lg: "50px", // for screens ≥1200px
+                },
               }}
             >
-              {/* {title} */}
               Make Your First Order and get 50% Off
             </Typography>
             <Typography
               variant="body1"
-              sx={{ marginBottom: "2rem", lineHeight: "23px" }}
+              sx={{
+                marginBottom: "2rem",
+                lineHeight: "23px" ,
+                fontSize: {
+                  xs: "12px", // for screens <600px
+                  sm: "13px", // for screens ≥600px
+                  md: "14px", // for screens ≥900px
+                  lg: "16px", // for screens ≥1200px
+                },
+              
+              }}
             >
-              {/* {description} */}
               In publishing and graphic design, Lorem ipsum is a placeholder
               text commonly used to demonstrate the visual form of a document or
               a typeface without.
@@ -70,6 +83,12 @@ const FeaturedPizzaCard = ({ title, description, imageUrl }) => {
                 padding: "0.75rem 2rem",
                 borderRadius: "4px",
                 width: "248px",
+                width: {
+                  xs: "190px", // for screens <600px
+                  sm: "180px", // for screens ≥600px
+                  md: "200px", // for screens ≥900px
+                  lg: "248px", // for screens ≥1200px
+                },
               }}
             >
               Order Now

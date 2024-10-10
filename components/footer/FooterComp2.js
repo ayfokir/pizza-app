@@ -13,20 +13,28 @@ const FooterComp2 = () => {
         padding: "16px",
         color: "#fff",
         textAlign: "center",
-        px: "60px"
+        // px: "60px"
+        flexDirection: {
+          xs: "column",
+          sm: "row",
+        },
       }}
       display="flex"
       justifyContent="space-between"
       alignItems="center"
     >
       {/* Footer Text */}
-      <Box display="flex" gap={4}>
+      <Box display="flex" gap={3} sx={ {
+        flexDirection: {
+          xs: "column",
+          sm: "row",
+        }
+      }}>
         <Typography variant="body2">
           ©2024 Pizza All Rights Reserved.
         </Typography>
-        <Typography variant="body2">Terms & Conditions</Typography>
+      <Typography variant="body2">Terms & Conditions</Typography>
       </Box>
-
       {/* Social Media Icons */}
       <Box mt={2} display="flex" justifyContent="center" gap={2}>
         <IconButton sx={{ color: "#fff" }}>

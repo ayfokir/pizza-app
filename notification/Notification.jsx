@@ -28,7 +28,7 @@ export const Notification = () => {
       // Delay the clear notification action until the toast is completely shown
       timeoutId = setTimeout(() => {
         dispatch(clearNotification());
-      }, 3000); // Wait for 3 seconds (or match the `autoClose` value)
+      }, 1000); // Wait for 3 seconds (or match the `autoClose` value)
     } else if (error) {
       toast.error(error, {
         position: "top-right",
@@ -46,7 +46,7 @@ export const Notification = () => {
       // Delay the clear notification action
       timeoutId = setTimeout(() => {
         dispatch(clearNotification());
-      }, 3000);
+      }, 1000);
     }
 
     // Cleanup timeout on component unmount
