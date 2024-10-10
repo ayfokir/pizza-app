@@ -8,26 +8,16 @@ import store from "@/redux/store/store";
 import { Provider } from "react-redux";
 import { Notification } from "@/notification/Notification";
 import { AuthProvider } from "@/context/AuthContext";
-import { useAbility } from "@/context/AbilityContext";
 
 const page = () => {
-  const abilities = useAbility();
-  
   // populatePermissions()
   return (
     <Box>
-      {/* <Provider store={store}> */}
-      {/* <AuthProvider> */}
-      {abilities.can("manage", "all") ? (
-        <RoleTable />
-      ) : (
-        <Typography variant="h6" color="textSecondary">
+      <RoleTable />
+
+      {/* <Typography variant="h6" color="textSecondary">
           You do not have permission to view this.{" "}
-        </Typography>
-      )}{" "}
-      {/* <Notification /> */}
-      {/* </AuthProvider> */}
-      {/* </Provider> */}
+        </Typography> */}
     </Box>
   );
 };

@@ -1,9 +1,21 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {SuccessMessage, FailureMessage,} from "@/redux/slices/notificationSlice";
+import {
+  SuccessMessage,
+  FailureMessage,
+} from "@/redux/slices/notificationSlice";
 import UploadIcon from "@mui/icons-material/Upload"; // Import upload icon
-import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Container } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  Link,
+  Container,
+} from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { LoginUser } from "@/app/api/login/Login";
@@ -16,7 +28,7 @@ const Login = () => {
 
   const router = useRouter();
   const dispatch = useDispatch(); // Get dispatch function from Redux
-  
+
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -37,10 +49,10 @@ const Login = () => {
     }));
   };
 
-    // // Clear fields on component mount
-    // useEffect(() => {
-    //   setUserData({ email: '', password: '' });
-    // }, []);
+  // // Clear fields on component mount
+  // useEffect(() => {
+  //   setUserData({ email: '', password: '' });
+  // }, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -215,7 +227,7 @@ const Login = () => {
             align="center"
             sx={{ mt: 2 }}
           >
-            Don't have an account?{" "}
+            Don&apos;t have an account?
             <Link
               href="/register-customer"
               variant="body2"
