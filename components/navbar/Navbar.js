@@ -154,7 +154,9 @@ const Navbar = ({ noRegisterButton }) => {
            <Link href={"/register-customer"}>
               <Button
                 variant="contained"
+                
                 sx={{
+                  marginTop: "10px",
                   width: "148px",
                   backgroundColor: "#f57c00",
                   color: "#fff",

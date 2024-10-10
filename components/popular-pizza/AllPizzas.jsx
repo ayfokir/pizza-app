@@ -36,66 +36,73 @@ const AllPizzas = () => {
     return <div>Error: {pizzas.error}</div>;
   }
 
-  return (
-    <Box display={"flex"} flexDirection={"column"}>
-    <Typography
-      paddingLeft={"80px"}
-      mx={5}
-      component={"h2"}
-      sx={{ fontSize: "35px", color: "#00000080", paddingTop: "90px" }}
-    >
-      Popular Pizzas
-    </Typography>
-    {pizzas?.pizzas?.length > 0 ? ( // Check if there are pizzas
-      <Box
-        display={"flex"}
-        flexWrap={"wrap"}
-        justifyContent={"center"}
-        gap={4}
-        sx={{
-          mx: {
-            xs: 0, // for screens <600px
-            sm: 3, // for screens ≥600px
-            md: 4, // for screens ≥900px
-            lg: 5, // for screens ≥1200px
-          }
-        }}
-        marginTop={2}
-        paddingBottom={"60px"}
-      >
-        {pizzas.pizzas.map((pizza) => {
-          // Get the specific restaurant associated with the pizza
-          const restaurant = restaurantMap[pizza.restaurantId];
-  
-          return (
-            <PizzaCard
-              key={pizza.id} // Unique key for each pizza card
-              pizzaId={pizza.id}
-              name={pizza.name}
-              price={pizza.price}
-              pizza_photo={pizza.pizza_photo} // Pass the photo URL
-              toppings={pizza.toppings} // Pass the toppings array
-              restaurant={restaurant} // Pass the specific restaurant
-            />
-          );
-        })}
+  try {
+    return (
+      <Box display={"flex"} flexDirection={"column"}>
+        <Typography
+          paddingLeft={"80px"}
+          mx={5}
+          component={"h2"}
+          sx={{ fontSize: "35px", color: "#00000080", paddingTop: "90px" }}
+        >
+          Popular Pizzas
+        </Typography>
+        {pizzas?.pizzas?.length > 0 ? (
+          <Box
+            display={"flex"}
+            flexWrap={"wrap"}
+            justifyContent={"center"}
+            gap={4}
+            sx={{
+              mx: {
+                xs: 0,
+                sm: 3,
+                md: 4,
+                lg: 5,
+              }
+            }}
+            marginTop={2}
+            paddingBottom={"60px"}
+          >
+            {pizzas.pizzas.map((pizza) => {
+              const restaurant = restaurantMap[pizza.restaurantId];
+              return (
+                <PizzaCard
+                  key={pizza.id}
+                  pizzaId={pizza.id}
+                  name={pizza.name}
+                  price={pizza.price}
+                  pizza_photo={pizza.pizza_photo}
+                  toppings={pizza.toppings}
+                  restaurant={restaurant}
+                />
+              );
+            })}
+          </Box>
+        ) : (
+          <Typography
+            variant="h6"
+            color="red"
+            sx={{ textAlign: "center", padding: 2, fontSize: "30px" }}
+          >
+            No pizzas found. Please check back later!
+          </Typography>
+        )}
       </Box>
-    ) : (
-      <Typography 
-        variant="h6" 
+    );
+  } catch (error) {
+    console.error("Rendering error:", error); // Log the error to see the specific issue
+    return (
+      <Typography
+        variant="h6"
         color="red"
-        sx={{ 
-          textAlign: "center", 
-          padding: 2, 
-          fontSize :"30px"
-        }}
+        sx={{ textAlign: "center", padding: 2 }}
       >
-        No pizzas found. Please check back later!
+        An error occurred while rendering the component. Please try again.
       </Typography>
-    )}
-  </Box>
+    );
+  }
   
-  );
 };
 
 export default AllPizzas;
