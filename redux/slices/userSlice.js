@@ -51,7 +51,7 @@ const userSlice = createSlice({
     },
     updateUserStatusSuccess: (state, action) => {
       state.status = 'succeeded';
-      state.message = `${action.payload.message}`
+      // state.message = `${action.payload.message}`
       const { userId, newStatus } = action.payload;
       const user = state.users.find(user => user.id === userId);
       if (user) {
@@ -60,8 +60,8 @@ const userSlice = createSlice({
     },
     updateUserStatusFailure: (state, action) => {
       state.status = 'failed';
-      state.error = `${action.payload.error}`
-      state.error = action.payload.error;
+      // state.error = `${action.payload.error}`
+      // state.error = action.payload.error;
     },
   },
 });

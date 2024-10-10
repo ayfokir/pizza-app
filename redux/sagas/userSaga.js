@@ -17,6 +17,8 @@ import { RegisterRestaurantSuperAdmin } from "@/app/api/register/RegisterRestaur
 import { GetUsers } from "@/app/api/user/GetUsers";
 import { DeleteUser } from "@/app/api/user/DeleteUser";
 import { UpdateUserStatus } from "@/app/api/user/UpdateUserStatus";
+import { SuccessMessage, FailureMessage } from "../slices/notificationSlice"; 
+
 // Worker Saga: Fetch Users
 function* fetchUsersSaga(action) {
   // console.log("see restaurantId here inside userSaga", action)
@@ -63,8 +65,10 @@ function* updateUserStatusSaga(action) {
      response = yield call(() => UpdateUserStatus(action.payload)); // Call API to update user status
      console.log("see response:", response)
     yield put(updateUserStatusSuccess(response)); // Dispatch success action with updated user status
+    yield put(SuccessMessage(response)); // Dispatch success action with updated user status
   } catch (error) {
     yield put(updateUserStatusFailure(response)); // Dispatch failure action if there's an error
+    yield put(FailureMessage(response)); // Dispatch failure action if there's an error
   }
 }
 

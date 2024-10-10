@@ -17,7 +17,7 @@ import { GetRoles } from "@/app/api/role/GetRoles";
 import { DeleteRole } from "@/app/api/role/DeleteRole";
 // import { UpdateRoleStatus } from "@/app/api/role/UpdateRoleStatus"; // Placeholder for actual API call
 import { UpdateUserRoleStatus } from "@/app/api/role/UpdateRoleStatus";
-
+import { SuccessMessage, FailureMessage } from "../slices/notificationSlice";
 // Worker Saga: Fetch Roles
 function* fetchRolesSaga() {
   try {
@@ -65,9 +65,11 @@ function* updateRoleStatusSaga(action) {
 
     // Dispatch success action with updated role status
     yield put(updateRoleStatusSuccess(response));
+    yield put(SuccessMessage(response));
   } catch (error) {
     // Dispatch failure action if the update fails
     yield put(updateRoleStatusFailure(response));
+    yield put(FailureMessage(response));
   }
 }
 

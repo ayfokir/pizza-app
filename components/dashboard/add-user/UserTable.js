@@ -29,13 +29,13 @@ const UserTable = () => {
   // console.log("see all users:", users);
   // console.log("see all userStatus:", userStatus);
 
-  useEffect(() => {
-    if (userStatus.status === "succeeded") {
-      dispatch(SuccessMessage({ message: userStatus.message }));
-    } else if (userStatus.status === "failed") {
-      dispatch(FailureMessage({ error: userStatus.error }));
-    }
-  }, [userStatus.status, userStatus.message, userStatus.error]);
+  // useEffect(() => {
+  //   if (userStatus.status === "succeeded") {
+  //     dispatch(SuccessMessage({ message: userStatus.message }));
+  //   } else if (userStatus.status === "failed") {
+  //     dispatch(FailureMessage({ error: userStatus.error }));
+  //   }
+  // }, [userStatus.status, userStatus.message, userStatus.error]);
 
   const { restaurantId, id } = useAuth();
 

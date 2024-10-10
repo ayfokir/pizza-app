@@ -51,7 +51,14 @@ const AllPizzas = () => {
         flexWrap={"wrap"}
         justifyContent={"center"}
         gap={4}
-        mx={5}
+        sx={{
+          mx: {
+            xs: 0, // for screens <600px
+            sm: 3, // for screens ≥600px
+            md: 4, // for screens ≥900px
+            lg: 5, // for screens ≥1200px
+          }
+        }}
         marginTop={2}
         paddingBottom={"60px"}
       >

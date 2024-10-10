@@ -25,15 +25,15 @@ const RoleTable = () => {
 
   const roleStatus = useSelector((state) => state.roles);
   const state = useSelector((state) => state);
-  console.log("see roleStatus:", roleStatus)
-  console.log("see state:", state)
-  useEffect(() => {
-    if (roleStatus.status === "succeeded") {
-      dispatch(SuccessMessage({ message: roleStatus.message }));
-    } else if (roleStatus.status === "failed") {
-      dispatch(FailureMessage({ error: roleStatus.error }));
-    }
-  }, [roleStatus.status, roleStatus.message, roleStatus.error]);
+  // console.log("see roleStatus:", roleStatus)
+  // console.log("see state:", state)
+  // useEffect(() => {
+  //   if (roleStatus.status === "succeeded") {
+  //     dispatch(SuccessMessage({ message: roleStatus.message }));
+  //   } else if (roleStatus.status === "failed") {
+  //     dispatch(FailureMessage({ error: roleStatus.error }));
+  //   }
+  // }, [roleStatus.status, roleStatus.message, roleStatus.error]);
 
   const columns = useMemo(
     () => [
@@ -73,7 +73,7 @@ const RoleTable = () => {
   );
 
   const roleListes = useSelector((state) => state.roles.roles);
-  console.log("see all roles:", roleListes);
+  // console.log("see all roles:", roleListes);
   useEffect(() => {
     dispatch(fetchRolesRequest());
   }, [openAddRole]); // Assuming `newRole` is a dependency that triggers re-fetching
