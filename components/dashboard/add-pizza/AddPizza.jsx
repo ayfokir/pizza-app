@@ -251,7 +251,7 @@ console.log("selectedToppings:", selectedToppings)
             justifyContent: "flex-start",
           }}
         >
-          {toppingsList.map((topping) => (
+          {toppingsList?.map((topping) => (
             <FormControlLabel
               key={topping.id}
               control={

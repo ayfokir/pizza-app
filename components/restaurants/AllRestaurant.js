@@ -6,8 +6,8 @@ import { Box, Typography } from '@mui/material';
 
 const AllRestaurant = () => {
   const dispatch = useDispatch();
-  // const restaurants = useSelector((state) => state?.restaurants?.restaurants);
-   const restaurants = []
+  const restaurants = useSelector((state) => state?.restaurants?.restaurants);
+  //  const restaurants = []
   const restaurantsInitially = useSelector((state) => state?.restaurants);
   console.log("see  restaurantsInitially:", restaurantsInitially)
   console.log("see restaurants :", restaurants)
