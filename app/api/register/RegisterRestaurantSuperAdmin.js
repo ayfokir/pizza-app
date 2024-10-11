@@ -176,6 +176,7 @@ export async function RegisterRestaurantSuperAdmin(formData) {
     });
 console.log("see Registered Super Admin:", user)
 console.log("see restaurantId:", user.restaurantId)
+console.log("see the supper admin Role", superAdminRole)
     // Generate JWT token if needed
     const payload = {
       // the payload data is not sensitive
@@ -183,7 +184,7 @@ console.log("see restaurantId:", user.restaurantId)
       name: user.name,
       email: user.email,
       restaurantId: restaurant.id,
-      roles: user.roles.length > 0 && user.roles.map(role => role.name), // Assign roles or default to 'guest'
+      roles: [superAdminRole.name], // Assign roles or default to 'guest'
     };
     console.log(jwtSecret);
     const token = jwt.sign(payload, jwtSecret, { expiresIn: "24h" });
