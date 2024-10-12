@@ -11,6 +11,8 @@ import { AuthProvider } from "@/context/AuthContext";
 import { DeleteSomthing } from "@/app/api/permission/DeletSomthing";
 const page = () => {
   // populatePermissions()
+  //  DeleteSomthing()
+
   return (
     <Box>
       <RoleTable />

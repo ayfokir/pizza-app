@@ -21,20 +21,7 @@ const RoleTable = () => {
     console.log("see the id :", id);
     dispatch(deleteRoleRequest(id));
   };
-
-
-  const roleStatus = useSelector((state) => state.roles);
-  const state = useSelector((state) => state);
-  // console.log("see roleStatus:", roleStatus)
-  // console.log("see state:", state)
-  // useEffect(() => {
-  //   if (roleStatus.status === "succeeded") {
-  //     dispatch(SuccessMessage({ message: roleStatus.message }));
-  //   } else if (roleStatus.status === "failed") {
-  //     dispatch(FailureMessage({ error: roleStatus.error }));
-  //   }
-  // }, [roleStatus.status, roleStatus.message, roleStatus.error]);
-
+  
   const columns = useMemo(
     () => [
       {

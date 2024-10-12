@@ -1,15 +1,20 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 // import { fetchToppingsAPI, addToppingAPI } from '../api/toppingApi'; // Assuming these API calls are defined elsewhere
-import { fetchToppings, addTopping, fetchToppingsSuccess, fetchToppingsFailure, addToppingSuccess, addToppingFailure } from '../slices/toppingSlice';
+import { fetchToppingsRequest, fetchToppingsSuccess, fetchToppingFailure, addToppingRequest, addToppingSuccess, addToppingFailure  } from '../slices/toppingSlice';
+import { GetToppings } from "@/app/api/topping/GetToppings";
 
 // Worker Saga: Fetch Toppings
-function* fetchToppingsSaga() {
-  // try {
-  //   const response = yield call(fetchToppingsAPI); // Fetch toppings from API
-  //   yield put(fetchToppingsSuccess(response.data)); // Dispatch success action with toppings data
-  // } catch (error) {
-  //   yield put(fetchToppingsFailure(error.message)); // Dispatch failure action if there's an error
-  // }
+function* fetchToppingsSaga(action) {
+  let restaurantId = action.payload
+  console.log("see action inside the fetchToppingsSaga", action)
+  let response;
+  try {
+     response = yield call( () =>  GetToppings(restaurantId)); // Fetch toppings from API
+    console.log("see all toppings:", response)
+    yield put(fetchToppingsSuccess(response.toppings)); // Dispatch success action with toppings data
+  } catch (error) {
+    yield put(fetchToppingFailure(error.message)); // Dispatch failure action if there's an error
+  }
 }
 
 // Worker Saga: Add Topping
@@ -24,8 +29,8 @@ function* addToppingSaga(action) {
 
 // Watcher Saga: Watch for topping-related actions
 function* toppingSaga() {
-  // yield takeLatest(fetchToppings.type, fetchToppingsSaga);
-  // yield takeLatest(addTopping.type, addToppingSaga);
+  yield takeLatest(fetchToppingsRequest.type, fetchToppingsSaga);
+  // yield takeLatest(addToppingRequest.type, addToppingSaga);
 }
 
 export default toppingSaga;

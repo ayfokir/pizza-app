@@ -151,7 +151,7 @@ const Navbar = ({ noRegisterButton }) => {
           
           }
           { !isSmallScreen &&
-           <Link href={"/register-customer"}>
+           <Link href={"/"}>
               <Button
                 variant="contained"
                 
@@ -170,7 +170,7 @@ const Navbar = ({ noRegisterButton }) => {
                     md: "22px", // for screens ≥900px
                     lg: "25px", // for screens ≥1200px
                   },
-                  py: "5px",
+                  py: "3px",
                   textTransform: "none", // Prevent uppercase transformation
                 }}
               >

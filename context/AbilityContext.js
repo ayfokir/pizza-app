@@ -10,7 +10,7 @@ const AbilityContext = createContext();
 export function AbilityProvider({ children }) {
 const dispatch  = useDispatch()
 let {roles, id}  = useAuth()
-console.log("see current user roles :", roles, id)
+// console.log("see current user roles :", roles, id)
 
 useEffect(()  =>  {
 dispatch(fetchRolesRequest)

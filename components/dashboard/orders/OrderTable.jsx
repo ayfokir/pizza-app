@@ -24,7 +24,7 @@ import { Menu, FormControlLabel, Radio } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the arrow icon
 import CustomStatusSwitch from "./CustomStatusSwitch";
 import { updateOrderRequest } from "@/redux/slices/orderSlice";
-
+import { useAuth } from "@/context/AuthContext";
 const OrderTable = () => {
   const [open, setOpen] = useState(false);
   const [toppingsList, setToppingsList] = useState([]);
@@ -45,18 +45,24 @@ const OrderTable = () => {
 
   const dispatch = useDispatch();
   const orders = useSelector((state) => state?.orders?.orders);
-  console.log("see orders:", orders);
+  const {restaurantId} =  useAuth()
+  console.log("see all orders:", orders)
   // Fetch orders on component mount
   useEffect(() => {
-    dispatch(fetchOrdersRequest());
-  }, [dispatch]);
+    if(restaurantId) {
+      dispatch(fetchOrdersRequest(restaurantId));
+    }
+  }, [restaurantId]);
 
   // Function to update the order status in the database
   const handleStatusChange = (orderId, newStatus) => {
-    console.log("see handleStatus:", orderId);
-    console.log("see handleStatus:", newStatus);
+    // console.log("see handleStatus:", orderId);
+    // console.log("see handleStatus:", newStatus);
     dispatch(updateOrderRequest({ orderId, newStatus }));
   };
+  
+
+
 
   const columns = useMemo(
     () => [
@@ -112,17 +118,11 @@ const OrderTable = () => {
         header: "Status",
         size: 150,
         Cell: ({ row }) => {
-          const [currentStatus, setCurrentStatus] = useState(
-            row.original.status
-          );
-
-          console.log("Current Status:", row.original.status); // Debugging line
 
           return (
             <CustomStatusSwitch
-              currentStatus={currentStatus}
+              currentStatus={row.original.status}
               onChangeStatus={(newStatus) => {
-                setCurrentStatus(newStatus);
                 handleStatusChange(row.original.id, newStatus); // Update status in DB
               }}
             />

@@ -3,10 +3,12 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function GetToppings() {
+export async function GetToppings(restaurantId) {
   // Fetch all toppings from the database
   try {
-    const toppings = await prisma.topping.findMany();
+    const toppings = await prisma.topping.findMany({
+      where: {restaurantId: restaurantId }
+    });
     
     return {
       message: 'Toppings retrieved successfully',
