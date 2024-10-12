@@ -6,8 +6,10 @@ const prisma = new PrismaClient();
 export async function DeleteSomthing() {
   try {
     // Delete all restaurants
-    const deletedRestaurant = await prisma.restaurant.deleteMany();
-    const deletedUser = await prisma.user.deleteMany(); // Changed from delete() to deleteMany()
+    const deletedRestaurant = await prisma.restaurant.delete({
+      where: { id: 8}
+    });
+    // const deletedUser = await prisma.user.deleteMany(); // Changed from delete() to deleteMany()
     // Delete all users
 
     // console.log("Deleted restaurant count:", deletedRestaurant.count); // Log the count of deleted restaurants
@@ -16,8 +18,8 @@ export async function DeleteSomthing() {
     return {
       message: 'Deleted successfully',
       success: true,
-    //   deletedRestaurantCount: deletedRestaurant.count,
-      deletedUserCount: deletedUser.count,
+      deletedRestaurantCount: deletedRestaurant.count,
+      // deletedUserCount: deletedUser.count,
     };
   } catch (error) {
     console.error("Error during deletion:", error); // Log the error for debugging

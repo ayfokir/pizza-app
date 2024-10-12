@@ -18,7 +18,6 @@ import {
   FailureMessage,
 } from "@/redux/slices/notificationSlice";
 import { updateUserStatusRequest } from "@/redux/slices/userSlice";
-
 const UserTable = () => {
   //should be memoized or stable
   const [openAddUser, setOpenAddUser] = useState(false);
@@ -26,19 +25,11 @@ const UserTable = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.users);
   const userStatus = useSelector((state) => state.users);
-  // console.log("see all users:", users);
+  console.log("see all users:", users);
   // console.log("see all userStatus:", userStatus);
 
-  // useEffect(() => {
-  //   if (userStatus.status === "succeeded") {
-  //     dispatch(SuccessMessage({ message: userStatus.message }));
-  //   } else if (userStatus.status === "failed") {
-  //     dispatch(FailureMessage({ error: userStatus.error }));
-  //   }
-  // }, [userStatus.status, userStatus.message, userStatus.error]);
 
   const { restaurantId, id } = useAuth();
-
   useEffect(() => {
     if (restaurantId) {
       // Dispatch the action once restaurantId is available

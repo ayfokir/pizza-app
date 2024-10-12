@@ -5,7 +5,12 @@ import Link from "next/link";
 const RelatedPizzaCard = ({ pizzaId, name, price, pizza_photo, toppings }) => {
   // console.log("toppings:", toppings);
   return (
-    <Link href={"/"}>
+    <Link href={"/"}
+    
+    style={{
+      textDecoration: "none", // Remove underline
+      color: "inherit", // Inherit text color
+    }}>
       <Card
         sx={{
           width: "370px",

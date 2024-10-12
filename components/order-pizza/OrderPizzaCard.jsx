@@ -24,7 +24,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { GetPizzas } from "@/app/api/pizza/GetPizzas";
 export default function OrderPizzaCard() {
   const { id , email} = useAuth();
-  // console.log("see user id:", id);
+  console.log("see user id:", id);
   // console.log("see user email:", email);
   const router = useRouter();
   const [selectedToppings, setSelectedToppings] = useState({});

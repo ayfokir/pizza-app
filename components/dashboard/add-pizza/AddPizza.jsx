@@ -19,6 +19,7 @@ import { GetToppings } from "@/app/api/topping/GetToppings";
 import { CreatePizza } from "@/app/api/pizza/CreatePizza";
 import OrderSuccessDialog from "@/components/order-pizza/OrderSuccessDialog";
 import { useAuth } from "@/context/AuthContext";
+import { fetchToppingsRequest } from "@/redux/slices/toppingSlice";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -36,12 +37,11 @@ const AddPizza = () => {
   const [showToppingField, setShowToppingField] = useState(false);
   const [selectedToppings, setSelectedToppings] = useState({});
   const [newTopping, setNewTopping] = useState(""); // For the add topping field
-  const [toppingsList, setToppingsList] = useState([]); // State to store the fetched toppings
+  // const [toppingsList, setToppingsList] = useState([]); // State to store the fetched toppings
   
   const [open, setOpen] = useState(false);
   const {restaurantId, id}  = useAuth()
-  const AllToken  = useAuth()
-  console.log("AllPayload Value:", AllToken)
+  console.log("see restaurantId:", restaurantId)
   // console.log("see restaurantId id inside Add pizza Component :", restaurantId)
   const handleOpen = () => {
     setOpen(true);
@@ -51,7 +51,7 @@ const AddPizza = () => {
     setOpen(false);
   };
   const handleToppingChange = (id) => {
-    console.log("see id:", id)
+    // console.log("see id:", id)
     setSelectedToppings((prevState) => ({
       ...prevState,
       [id]: !prevState[id], // Toggle the selection
@@ -67,7 +67,7 @@ const AddPizza = () => {
   }, [selectedToppings]);
   
 
-console.log("selectedToppings:", selectedToppings)
+// console.log("selectedToppings:", selectedToppings)
 
   const handleToppingAdd = () => {
     if (showToppingField) {
@@ -75,26 +75,31 @@ console.log("selectedToppings:", selectedToppings)
     } else setShowToppingField(true);
   };
 
+  const toppingsList =  useSelector((state) => state.topping.toppings)
+  console.log("see all toppings:", toppingsList)
   // Fetch toppings from the server
   useEffect(() => {
-    const fetchToppings = async () => {
-      try {
-        const result = await GetToppings();
-        console.log("Fetched toppings:", result.toppings);
-        setToppingsList(result.toppings); // Save the fetched toppings
-      } catch (error) {
-        console.error("Error fetching toppings:", error);
-      }
-    };
-    fetchToppings();
-  }, [newTopping]);
-
+    // const fetchToppings = async () => {
+    //   try {
+    //     const result = await GetToppings();
+    //     // console.log("Fetched toppings:", result.toppings);
+    //     setToppingsList(result.toppings); // Save the fetched toppings
+    //   } catch (error) {
+    //     // console.error("Error fetching toppings:", error);
+    //   }
+    // };
+    // fetchToppings();
+    if(restaurantId) {
+      dispatch(fetchToppingsRequest(restaurantId))
+    }
+  }, [newTopping, restaurantId]);
+  
   // Immediately after adding topping value send it to the backend
   useEffect(() => {
     const createTopping = async () => {
       if (newTopping && !showToppingField) {
         let result = await CreateTopping(newTopping, restaurantId);
-        console.log("Created Topping:", result);
+        // console.log("Created Topping:", result);
         if (result.success) {
           setNewTopping("");
           dispatch(SuccessMessage(result));
@@ -121,7 +126,7 @@ console.log("selectedToppings:", selectedToppings)
     const { name, value } = e.target;
     if (name === "pizza_photo") {
       // Handle file input
-      console.log("see pizza photo:",  e.target.files[0])
+      // console.log("see pizza photo:",  e.target.files[0])
       setPizzaData((prevState) => ({
         ...prevState,
         pizza_photo: e.target.files[0], // Store the uploaded file in state
@@ -196,8 +201,7 @@ console.log("selectedToppings:", selectedToppings)
       // dispatch(FailureMessage(result));
     }
   };
-  
-  
+
 
   return (
     <Box

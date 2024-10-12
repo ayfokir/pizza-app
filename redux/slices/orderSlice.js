@@ -45,13 +45,11 @@ const orderSlice = createSlice({
     },
     updateOrderSuccess: (state, action) => {
       state.status = 'succeeded';
-      const index = state.orders.findIndex(
-        (order) => order.id === action.payload.id
-      );
-      if (index !== -1) {
-        state.orders[index] = action.payload; // Update the specific order
+      let existingOrder =  state.orders.find((order) => order.id == action.payload.id)
+      if(existingOrder) {
+        existingOrder.status = action.payload.status;
       }
-      state.error = null;
+      // state.error = null;
     },
     updateOrderFailure: (state, action) => {
       state.status = 'failed';

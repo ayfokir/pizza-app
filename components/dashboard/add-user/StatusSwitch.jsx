@@ -1,26 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Switch, Typography } from "@mui/material";
-import { Check } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
-import { useAuth } from "@/context/AuthContext";
-import { SuccessMessage, FailureMessage } from "@/redux/slices/notificationSlice";
-
+import { Check } from "@mui/icons-material"
 const StatusSwitch = ({ id, status, onStatusChange}) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const handleStatusToggle = () => {
     // Call the parent’s function to handle the status change
     onStatusChange(id, status === "active" ? "inActive" : "active");
   };
-
-  
-  const userStatus = useSelector((state) => state.users);
-  useEffect(() => {
-    if (userStatus.status === "succeeded") {
-      dispatch(SuccessMessage({ message: userStatus.message }));
-    } else if (userStatus.status === "failed") {
-      dispatch(FailureMessage({ error: userStatus.error }));
-    }
-  }, [userStatus.status, userStatus.message, userStatus.error]);
 
   return (
     <Button

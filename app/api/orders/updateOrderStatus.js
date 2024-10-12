@@ -66,18 +66,12 @@ console.log("see the newStatus ", newStatus)
       updatedOrder,
     };
   } catch (error) {
-    // Handle database errors
-    if (error instanceof Error) {
-      return {
-        error: error.message,
-        success: false,
-      };
-    }
     // Handle other types of errors
     return {
-      error: 'An unexpected error occurred',
+      error:  error?.message || 'An unexpected error occurred',
       success: false,
     };
+   
   }
 }
 
