@@ -45,7 +45,7 @@ export const DeleteRole = async (roleId) => {
   } catch (error) {
     console.error(`Error deleting role with ID ${roleId}: ${error.message}`);
     return {
-      error: error.message || 'Failed to delete role',
+      error: error?.message || 'Failed to delete role',
       status: false,
     };
   } finally {

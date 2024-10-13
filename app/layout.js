@@ -4,8 +4,7 @@ import store from "@/redux/store/store";
 import { Provider } from "react-redux";
 import { Notification } from "@/notification/Notification";
 import { AuthProvider } from "@/context/AuthContext";
-import { AbilityProvider } from "@/context/AbilityContext";
-import { GetUserRoles } from "./api/role/GetRoles";
+// import { AbilityProvider } from "@/context/AbilityContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,16 +22,18 @@ const geistMono = localFont({
 // };
 
 export default function RootLayout({ children }) {
+    // Check if abilities are loaded
+  
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Provider store={store}>
           {/* Ensure user context is valid, could be dynamic from auth */}
             <AuthProvider>
-          <AbilityProvider>
+          {/* <AbilityProvider> */}
               <Notification />
               {children}
-          </AbilityProvider>
+          {/* </AbilityProvider> */}
             </AuthProvider>
         </Provider>
       </body>

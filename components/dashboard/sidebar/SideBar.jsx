@@ -1,32 +1,26 @@
 'use client'
 import React from "react";
-import { Box, List, ListItemIcon, ListItemText, Typography, Button, IconButton, ListItemButton } from "@mui/material";
+import { Box, List, ListItemIcon, ListItemText, Typography, Button, IconButton, ListItemButton, CircularProgress } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import Divider from "@mui/material/Divider";
-import LogoutIcon from "@mui/icons-material/Logout"; // Import logout icon
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useDispatch, useSelector } from "react-redux";
 import { setHeaderTitle } from "@/redux/slices/headerTtileSlice";
-import { useAbility } from "@/context/AbilityContext";
-
+import { useAuth } from "@/context/AuthContext";
 const SideBar = () => {
   const pathname = usePathname();
   const dispatch = useDispatch(); // Get dispatch function from Redux
-  const abilities = useAbility();
-
+  const {ability, roles} = useAuth();
+  console.log("see all ability inside sidebar:", ability)
+  console.log("see all roles inside sidebar:", roles)
 
   const handleHeaderTitle   =  (title)  =>  {
     dispatch(setHeaderTitle(title))
   }
-  // console.log("see the current :", pathname);
-
-
-
-
   const menuItems = [
-    abilities.can("read", "orders") ? { 
+    ability.can("read", "orders") || ability.can("add", "menu") || ability.can("read",  "orders") ? { 
       text: "Orders",
       icon: (
         <Image
@@ -39,7 +33,7 @@ const SideBar = () => {
       link: "/dashboard/orders",
     } : null,
   
-    abilities.can('create', 'Pizza') ? {
+    ability.can("add", "menu") ? {
       text: "Add Menu",
       icon: (
         <Image
@@ -53,7 +47,7 @@ const SideBar = () => {
     } : null,
   
     // Add conditions for Role and User if needed
-    abilities.can('manage', 'all') ? { 
+    ability.can('manage', 'all') ? { 
       text: "Role",
       icon: (
         <Image
@@ -66,7 +60,7 @@ const SideBar = () => {
       link: "/dashboard/add-role",
     } : null,
   
-    abilities.can('manage', 'all') ? { 
+    ability.can('manage', 'all') || ability.can("add", "user")? { 
       text: "User",
       icon: (
         <Image

@@ -17,6 +17,7 @@ const toppingSlice = createSlice({
     },
     fetchToppingsSuccess: (state, action) => {
       state.status = 'succeeded';
+      console.log("see action:", action)
       state.toppings = action.payload;
     },
     fetchToppingFailure: (state, action) => {

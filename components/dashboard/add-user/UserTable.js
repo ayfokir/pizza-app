@@ -1,41 +1,29 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from "material-react-table";
+import { MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import { Box, Button, IconButton, Typography } from "@mui/material";
-import AddRoleModal from "../add-role/AddRoleModal";
 import AddUser from "./AddUser";
-import { GetUsers } from "@/app/api/user/GetUsers";
 import StatusSwitch from "./StatusSwitch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUserRequest, fetchUsersRequest } from "@/redux/slices/userSlice";
 import { useAuth } from "@/context/AuthContext";
-import {
-  SuccessMessage,
-  FailureMessage,
-} from "@/redux/slices/notificationSlice";
 import { updateUserStatusRequest } from "@/redux/slices/userSlice";
 const UserTable = () => {
-  //should be memoized or stable
   const [openAddUser, setOpenAddUser] = useState(false);
-  // const [users, setUsers]   = useState([])
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.users);
   const userStatus = useSelector((state) => state.users);
   console.log("see all users:", users);
-  // console.log("see all userStatus:", userStatus);
-
-
+  
   const { restaurantId, id } = useAuth();
+
   useEffect(() => {
     if (restaurantId) {
       // Dispatch the action once restaurantId is available
       dispatch(fetchUsersRequest(restaurantId));
     }
-  }, [restaurantId, dispatch, openAddUser]);
+  }, [restaurantId, openAddUser]);
 
   const handleDelete = (id) => {
     console.log("see the id of the user:", id);

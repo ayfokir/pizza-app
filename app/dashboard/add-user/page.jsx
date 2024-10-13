@@ -1,7 +1,6 @@
 "use client";
 import { Box } from "@mui/material";
 import React, { useEffect } from "react";
-import Dashboard from "@/components/dashboard/Dashboard";
 import UserTable from "@/components/dashboard/add-user/UserTable";
 import { populatePermissions } from "../../api/permission/populatePermissions";
 import { Can } from "@casl/react";

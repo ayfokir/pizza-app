@@ -67,7 +67,7 @@ const OrderHistoryCard = ({ name, price, pizza_photo, toppings, status }) => {
               </Typography>
             </Typography>
           </Box>
-          {status === "Preparing" && (
+          {(status === "Preparing" || status === "Ready") && (
             <Typography
               variant="body2"
               color="#FF9921"
@@ -76,8 +76,7 @@ const OrderHistoryCard = ({ name, price, pizza_photo, toppings, status }) => {
               Ordered
             </Typography>
           )  }
-
-           {status === "Delivered" &&  <Typography
+          {status === "Delivered" &&  <Typography
               variant="body2"
               color="green"
               sx={{ fontSize: "30px" }}

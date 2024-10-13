@@ -6,6 +6,7 @@ const getAuth = async () => {
     
     // If item is null or empty, return an empty object
     if (!item) {
+      console.log("see the customer:", item)
       console.log("No customer data found in localStorage.");
       return {};
     }
