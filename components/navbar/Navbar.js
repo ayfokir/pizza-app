@@ -77,25 +77,27 @@ const Navbar = ({ noRegisterButton }) => {
             },
           }}
         >
-          <Button
-            // color="inherit"
-            sx={{
-              fontSize: {
-                xs: "14px", // for screens <600px
-                sm: "18px", // for screens ≥600px
-                md: "22px", // for screens ≥900px
-                lg: "25px", // for screens ≥1200px
-              },
-              color: "#f57c00",
-              marginRight: 3,
-              "&:hover": { color: "#f57c00" },
-              fontWeight: "500",
-              // fontSize: "25px",
-              textTransform: "none", // Prevent uppercase transformation
-            }}
-          >
-            Home
-          </Button>
+          <Link href={"/"}>
+            <Button
+              // color="inherit"
+              sx={{
+                fontSize: {
+                  xs: "14px", // for screens <600px
+                  sm: "18px", // for screens ≥600px
+                  md: "22px", // for screens ≥900px
+                  lg: "25px", // for screens ≥1200px
+                },
+                color: "#f57c00",
+                marginRight: 3,
+                "&:hover": { color: "#f57c00" },
+                fontWeight: "500",
+                // fontSize: "25px",
+                textTransform: "none", // Prevent uppercase transformation
+              }}
+            >
+              Home
+            </Button>
+          </Link>
           <Link href={"/order-history"}>
             <Button
               color="inherit"
