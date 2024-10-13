@@ -52,8 +52,10 @@ function* deleteUserSaga(action) {
     response = yield call(() => DeleteUser(action.payload)); // Call API to delete user
     console.log("see deleted response:", response);
     yield put(deleteUserSuccess(response)); // Dispatch success action with user ID
+    yield put(SuccessMessage(response)); // Dispatch success message
   } catch (error) {
     yield put(deleteUserFailure(response)); // Dispatch failure action if there's an error
+    yield put (FailureMessage(response))
   }
 }
 

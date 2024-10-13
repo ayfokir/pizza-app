@@ -3,7 +3,7 @@ import { act } from 'react';
 
 // Define the initial state
 const initialState = {
-  title: "",  // Initial state for the header title
+  title: "Orders",  // Initial state for the header title
 };
 
 const headerSlice = createSlice({

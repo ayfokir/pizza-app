@@ -38,7 +38,8 @@ const AddPizza = () => {
   const [selectedToppings, setSelectedToppings] = useState({});
   const [newTopping, setNewTopping] = useState(""); // For the add topping field
   // const [toppingsList, setToppingsList] = useState([]); // State to store the fetched toppings
-  
+  const [toppingAdded, setToppingAdded] = useState(false);
+
   const [open, setOpen] = useState(false);
   const {restaurantId, id}  = useAuth()
   console.log("see restaurantId:", restaurantId)
@@ -79,20 +80,10 @@ const AddPizza = () => {
   console.log("see all toppings:", toppingsList)
   // Fetch toppings from the server
   useEffect(() => {
-    // const fetchToppings = async () => {
-    //   try {
-    //     const result = await GetToppings();
-    //     // console.log("Fetched toppings:", result.toppings);
-    //     setToppingsList(result.toppings); // Save the fetched toppings
-    //   } catch (error) {
-    //     // console.error("Error fetching toppings:", error);
-    //   }
-    // };
-    // fetchToppings();
     if(restaurantId) {
       dispatch(fetchToppingsRequest(restaurantId))
     }
-  }, [newTopping, restaurantId]);
+  }, [toppingAdded, restaurantId]);
   
   // Immediately after adding topping value send it to the backend
   useEffect(() => {
@@ -102,6 +93,7 @@ const AddPizza = () => {
         // console.log("Created Topping:", result);
         if (result.success) {
           setNewTopping("");
+          setToppingAdded(true); // Indicate a topping was added
           dispatch(SuccessMessage(result));
         } else {
           dispatch(FailureMessage(result));
@@ -109,8 +101,8 @@ const AddPizza = () => {
       }
     };
     createTopping();
-  }, [newTopping, showToppingField]);
-
+  }, [showToppingField, newTopping]);
+  
   const [pizzaData, setPizzaData] = useState({
     name: "",
     price: "",

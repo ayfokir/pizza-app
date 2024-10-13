@@ -25,6 +25,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the
 import CustomStatusSwitch from "./CustomStatusSwitch";
 import { updateOrderRequest } from "@/redux/slices/orderSlice";
 import { useAuth } from "@/context/AuthContext";
+// import { useAuth } from "@/context/AuthContext";
 const OrderTable = () => {
   const [open, setOpen] = useState(false);
   const [toppingsList, setToppingsList] = useState([]);
@@ -42,7 +43,7 @@ const OrderTable = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
+ const {ability}  = useAuth()
   const dispatch = useDispatch();
   const orders = useSelector((state) => state?.orders?.orders);
   const {restaurantId} =  useAuth()
@@ -64,8 +65,8 @@ const OrderTable = () => {
 
 
 
-  const columns = useMemo(
-    () => [
+  const columns = useMemo(() => {
+    const baseColumns = [
       {
         accessorKey: "pizzas[0].pizza.name",
         header: "Pizza Name",
@@ -100,11 +101,6 @@ const OrderTable = () => {
         size: 150,
       },
       {
-        accessorKey: "customer.phoneNumber",
-        header: "Customer No",
-        size: 150,
-      },
-      {
         accessorKey: "createdAt",
         header: "Created at",
         size: 150,
@@ -113,25 +109,37 @@ const OrderTable = () => {
           return date.toLocaleDateString();
         },
       },
-      {
+    ];
+  
+    // Conditionally add "Customer No" column for non-Kitchen Man roles
+    if (ability.can("read", "customerPhone")) {
+      baseColumns.push({
+        accessorKey: "customer.phoneNumber",
+        header: "Customer No",
+        size: 150,
+      });
+    }
+  
+    // Conditionally add the "Status" column
+    if (ability.can("update", "order")) {
+      baseColumns.push({
         accessorKey: "status",
         header: "Status",
         size: 150,
-        Cell: ({ row }) => {
-
-          return (
-            <CustomStatusSwitch
-              currentStatus={row.original.status}
-              onChangeStatus={(newStatus) => {
-                handleStatusChange(row.original.id, newStatus); // Update status in DB
-              }}
-            />
-          );
-        },
-      },
-    ],
-    []
-  );
+        Cell: ({ row }) => (
+          <CustomStatusSwitch
+            currentStatus={row.original.status}
+            onChangeStatus={(newStatus) => {
+              handleStatusChange(row.original.id, newStatus); // Update status in DB
+            }}
+          />
+        ),
+      });
+    }
+  
+    return baseColumns;
+  }, [ability]);
+  
 
   return (
     <Box height={"100vh"} padding={"12px"} position="relative">

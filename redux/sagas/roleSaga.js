@@ -48,8 +48,11 @@ function* deleteRoleSaga(action) {
     response = yield call(() => DeleteRole(action.payload)); // Call API to delete role
     console.log("Role deleted successfully:", response);
     yield put(deleteRoleSuccess(response)); // Dispatch success action with deleted role ID
+    yield put(SuccessMessage(response)); // Dispatch success action with deleted role ID
+
   } catch (error) {
     yield put(deleteRoleFailure(response)); // Dispatch failure action if there's an error
+    yield put(FailureMessage(response)); // Dispatch failure action if there's an error
   }
 }
 

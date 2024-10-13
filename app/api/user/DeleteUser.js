@@ -97,7 +97,7 @@ export async function DeleteUser(userId) {
   } catch (error) {
     console.error("Error deleting user:", error);
     return {
-      error: `${error.message}`,
+      error: `${error?.message} || Un expected error occured`,
       success: false,
       // userId: userId, // Optionally return the mock password
     };

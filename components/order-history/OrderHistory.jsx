@@ -12,12 +12,12 @@ const OrderHistory = () => {
   const dispatch = useDispatch();
   const [userOrders, setUserOrders] = useState([]);
   const orders = useSelector((state) => state.orders.orders);
-
+  
   const { id, restaurantId } = useAuth(); // user Id
-
+  
   console.log("see orders :", orders);
   console.log("see userId:", id);
-
+  
   useEffect(() => {
     if (restaurantId) {
       dispatch(fetchOrdersRequest(restaurantId));

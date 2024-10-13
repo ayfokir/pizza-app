@@ -16,34 +16,33 @@ import AllRestaurant from "@/components/restaurants/AllRestaurant";
 // import 'globals.css'
 export default function Home() {
   return (
-    <Provider store={store}>
-      <Box sx={{ backgroundColor: "#FFF8F1", minHeight: "100vh" }}>
-        <Navbar />
-        <MainHeading />
-        <SwipperCard />
-
-        <Box display={"flex"} flexDirection={"column"}>
-          <Typography
-            component={"h2"}
-            sx={{
-              fontSize: "35px",
-              color: "#00000080",
-              paddingTop: "90px",
-              marginLeft: { 
-                xs: 1.5, // Add space from the left side for small screens
-                sm: 2, // Increase the left padding for larger screens
-                md: 4,
-                lg: 6,
-              },
-            }}
-          >
-            Top Restaurants
-          </Typography>
-        </Box>
-        <AllRestaurant />
-        <AllPizzas />
-        <Footer />
+    // <Provider store={store}>
+    <Box sx={{ backgroundColor: "#FFF8F1", minHeight: "100vh" }}>
+      <Navbar />
+      <MainHeading />
+      <SwipperCard />
+      <Box display={"flex"} flexDirection={"column"}>
+        <Typography
+          component={"h2"}
+          sx={{
+            fontSize: "35px",
+            color: "#00000080",
+            paddingTop: "90px",
+            marginLeft: {
+              xs: 1.5, // Add space from the left side for small screens
+              sm: 2, // Increase the left padding for larger screens
+              md: 4,
+              lg: 6,
+            },
+          }}
+        >
+          Top Restaurants
+        </Typography>
       </Box>
-    </Provider>
+      <AllRestaurant />
+      <AllPizzas />
+      <Footer />
+    </Box>
+    // </Provider>
   );
 }

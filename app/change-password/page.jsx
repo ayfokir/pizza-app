@@ -2,11 +2,9 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {SuccessMessage, FailureMessage,} from "@/redux/slices/notificationSlice";
-import UploadIcon from "@mui/icons-material/Upload"; // Import upload icon
 import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Container } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { LoginUser } from "@/app/api/login/Login";
 import { ChangePassword } from "../api/change-password/ChangePassword";
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -217,7 +215,7 @@ const Login = () => {
           >
             Already have an account?
             <Link
-              href="/register-customer"
+              href="/super-admin-restaurant-login"
               variant="body2"
               sx={{ color: "#FF9921" }}
             >
