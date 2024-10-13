@@ -10,6 +10,7 @@ import {
   IconButton,
   Checkbox,
   FormControlLabel,
+  CircularProgress,
 } from "@mui/material";
 import Image from "next/image";
 import OrderSuccessDialog from "./OrderSuccessDialog";
@@ -22,17 +23,53 @@ import { useRouter } from "next/navigation";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { GetPizzas } from "@/app/api/pizza/GetPizzas";
+import getAuth from "@/util/Auth";
 export default function OrderPizzaCard() {
-  const { id , email} = useAuth();
-  console.log("see user id:", id);
+  // const { id , email} = useAuth();
+  // const { id , email} = getAuth();
+
   // console.log("see user email:", email);
   const router = useRouter();
   const [selectedToppings, setSelectedToppings] = useState({});
   const [pizzaQuantity, setPizzaQuantity] = useState(1); // Default quantity set to 1
   const [toppingsId, setToppingsId] = useState([]);
+  const [id, setId]  = useState("")
   const [pizza, setPizza] = useState({});
- 
   const [open, setOpen] = useState(false);
+  
+  const pizzaId = useSelector((state) => state.pizza.selectedPizzaId); // Adjust according to your pizza slice structure
+  const restaurantsId = useSelector(state => state.restaurants.selectedRestaurantId); // Adjust accordingly
+
+
+
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        let { id, email } = await getAuth();
+        console.log("id", id);
+        setId(id);
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+      }
+    };
+    fetchUser();
+  }, []);
+  
+   // if ( !id) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         height: "100vh",
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //       }}
+  //     >
+  //       <CircularProgress />
+  //     </Box>
+  //   );
+  // }
 
   const handleOpen = () => {
     setOpen(true);
@@ -41,8 +78,6 @@ export default function OrderPizzaCard() {
   const handleClose = () => {
     setOpen(false);
   };
-  const pizzaId = useSelector((state) => state.pizza.selectedPizzaId); // Adjust according to your pizza slice structure
-  const restaurantsId = useSelector(state => state.restaurants.selectedRestaurantId); // Adjust accordingly
 
   // console.log("see pizzaId:", pizzaId);
   // console.log("see type of pizzaId:", typeof(pizzaId));
