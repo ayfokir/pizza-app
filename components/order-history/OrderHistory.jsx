@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Navbar from "../navbar/Navbar";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchOrdersRequest } from "@/redux/slices/orderSlice";
 import OrderHistoryCard from "./OrderHistoryCard";
@@ -11,28 +11,50 @@ import { useAuth } from "@/context/AuthContext";
 const OrderHistory = () => {
   const dispatch = useDispatch();
   const [userOrders, setUserOrders] = useState([]);
+  const [loading, setLoading]  = useState(true)
   const orders = useSelector((state) => state.orders.orders);
   
   const { id, restaurantId } = useAuth(); // user Id
   
   console.log("see orders :", orders);
   console.log("see userId:", id);
+  console.log("see restaurantId:", restaurantId);
   
   useEffect(() => {
     if (restaurantId) {
       dispatch(fetchOrdersRequest(restaurantId));
     }
   }, [restaurantId]);
-
+  
+ 
+  
   useEffect(() => {
+    console.log("see inside useEffect")
     if (id && orders?.length > 0) {
       // filter user orders based on customerId
       const filteredOrders = orders?.filter((order) => order.customerId === id);
       console.log("filtered orders:", filteredOrders);
       setUserOrders(filteredOrders);
+      setLoading(() => false)
     }
-  }, [id, orders]);
+    // setLoading(() => false)
+    
+  }, [orders]);
 
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <Box sx={{ backgroundColor: "#FFF8F1", height: "100vh" }}>
       <Navbar noRegisterButton={true} />
