@@ -12,7 +12,7 @@ import { DeleteUser } from "@/app/api/user/DeleteUser";
 const page = () => {
   // populatePermissions()
   //  DeleteSomthing()
-//  DeleteUser(26)
+//  DeleteUser(32)
   return (
     <Box>
       <RoleTable />
