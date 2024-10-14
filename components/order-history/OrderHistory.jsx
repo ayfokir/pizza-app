@@ -15,7 +15,8 @@ const OrderHistory = () => {
   const [loading, setLoading]  = useState(true)
   const orders = useSelector((state) => state.orders.orders);
   const [id, setId]  =useState()
-  const {  restaurantId } = useAuth(); // user Id
+  const [restaurantId, setRestaurantId] = useState()
+  // const {  restaurantId } = useAuth(); // user Id
   
   console.log("see orders :", orders);
   console.log("see userId:", id);
@@ -30,9 +31,11 @@ const OrderHistory = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        let { id, email } = await getAuth();
+        let { id, email, restaurantId } = await getAuth();
         console.log("id", id);
+        console.log("restaurantId", restaurantId);
         setId(id);
+        setRestaurantId(restaurantId)
       } catch (error) {
         console.error("Failed to fetch user:", error);
       }
