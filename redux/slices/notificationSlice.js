@@ -12,7 +12,7 @@ const notificationSlice = createSlice({
   initialState,
   reducers: {
     SuccessMessage(state, action) {
-      console.log("see actions inside SuccessMessage:", action)
+      // console.log("see actions inside SuccessMessage:", action)
       state.message = action.payload.message;
       state.success = action.payload.success;
     },
@@ -26,7 +26,7 @@ const notificationSlice = createSlice({
       state.message = "";
       state.error = "";
       state.success = "idle";
-      console.log("see  state inside clearNotification:", JSON.stringify(state))
+      // console.log("see  state inside clearNotification:", JSON.stringify(state))
     }
   }
 });

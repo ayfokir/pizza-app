@@ -10,7 +10,7 @@ import { SuccessMessage, FailureMessage } from "@/redux/slices/notificationSlice
 // import { useDispatch, useSelector } from "react-redux";
 import { CreateCustomer } from "@/app/api/register-customer/CreateCustomer";
 import { useDispatch, useSelector } from "react-redux";
-
+import { SetCookie } from "@/util/SetCookie";
 
 const RegisterCustomer = () => {
   const [userData, setUserData] = useState({
@@ -85,6 +85,8 @@ const RegisterCustomer = () => {
         expiration: expirationTime,
       };
       localStorage.setItem("customer", JSON.stringify(customerData));
+      SetCookie('customer', `${customerData.token}`, 7); // Cookie valid for 7 days
+
       dispatch(SuccessMessage(result));
       router.push("/order");
       // Handle success (e.g., redirect to login)

@@ -3,10 +3,11 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function GetRoles() {
+export async function GetRoles(restaurantId) {
   // Fetch all user roles from the database
   try {
     const userRoles = await prisma.userRole.findMany({
+      where: {restaurantId: restaurantId},
       include: {
         permissions: true
       }

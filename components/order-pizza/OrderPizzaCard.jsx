@@ -25,51 +25,19 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { GetPizzas } from "@/app/api/pizza/GetPizzas";
 import getAuth from "@/util/Auth";
 export default function OrderPizzaCard() {
-  // const { id , email} = useAuth();
-  // const { id , email} = getAuth();
-
-  // console.log("see user email:", email);
+  const { id , email, loading} = useAuth();
+  console.log("see id: ", id)
+  
   const router = useRouter();
   const [selectedToppings, setSelectedToppings] = useState({});
   const [pizzaQuantity, setPizzaQuantity] = useState(1); // Default quantity set to 1
   const [toppingsId, setToppingsId] = useState([]);
-  const [id, setId]  = useState("")
+  // const [id, setId]  = useState("")
   const [pizza, setPizza] = useState({});
   const [open, setOpen] = useState(false);
   
   const pizzaId = useSelector((state) => state.pizza.selectedPizzaId); // Adjust according to your pizza slice structure
   const restaurantsId = useSelector(state => state.restaurants.selectedRestaurantId); // Adjust accordingly
-
-
-
- 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        let { id, email } = await getAuth();
-        console.log("id", id);
-        setId(id);
-      } catch (error) {
-        console.error("Failed to fetch user:", error);
-      }
-    };
-    fetchUser();
-  }, []);
-  
-   // if ( !id) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         height: "100vh",
-  //         display: "flex",
-  //         alignItems: "center",
-  //         justifyContent: "center",
-  //       }}
-  //     >
-  //       <CircularProgress />
-  //     </Box>
-  //   );
-  // }
 
   const handleOpen = () => {
     setOpen(true);
@@ -165,6 +133,22 @@ export default function OrderPizzaCard() {
   }, [pizzaId]);
 
 
+
+  if (loading) {
+    console.log("inside spinner")
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
 <>
 

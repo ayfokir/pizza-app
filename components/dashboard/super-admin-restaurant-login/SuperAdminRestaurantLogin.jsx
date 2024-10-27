@@ -19,7 +19,18 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { LoginUser } from "@/app/api/login/Login";
+import { SetCookie } from "@/util/SetCookie";
 
+
+// const setCookie = (name, value, days) => {
+//   let expires = "";
+//   if (days) {
+//     const date = new Date();
+//     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+//     expires = "; expires=" + date.toUTCString();
+//   }
+//   document.cookie = name + "=" + (value || "") + expires + "; path=/";
+// };
 const LoginAdmin = () => {
   const [userData, setUserData] = useState({
     email: "",
@@ -28,7 +39,7 @@ const LoginAdmin = () => {
 
   const router = useRouter();
   const dispatch = useDispatch(); // Get dispatch function from Redux
-
+  
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -80,7 +91,10 @@ const LoginAdmin = () => {
         token: token,
         expiration: expirationTime,
       };
+
+      console.log("see customer inside superAdminLoginjsx ", customerData)
       localStorage.setItem("customer", JSON.stringify(customerData));
+      SetCookie('customer', `${customerData.token}`, 7); // Cookie valid for 7 days
 
       dispatch(SuccessMessage(result));
       router.push("/dashboard"); // Redirect to the dashboard or home page

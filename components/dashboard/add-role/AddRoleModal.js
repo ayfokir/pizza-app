@@ -10,8 +10,9 @@ const AddRoleModal = ({ open, onClose }) => {
   const [selectedPermissions, setSelectedPermissions] = useState({});
   const [permissionsList, setPermissionsList] = useState([]);
   const dispatch = useDispatch();
-  const {id}   = useAuth();
+  const {id, restaurantId}   = useAuth();
   console.log("see the current UserId:", id)
+  console.log("see the current restaurantId:", restaurantId)
   // Fetch permissions from the server
   useEffect(() => {
     const fetchPermissions = async () => {
@@ -62,7 +63,7 @@ const AddRoleModal = ({ open, onClose }) => {
     }
     //Call API to create a new role
     try {
-        const result = await createUserRole(roleData.name, roleData.permissions);
+        const result = await createUserRole(roleData.name, roleData.permissions, restaurantId);
         if (result.success) {
           dispatch(SuccessMessage(result));
           onClose(); // Close modal after successful submission

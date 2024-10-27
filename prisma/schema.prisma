@@ -23,7 +23,7 @@ model User {
   secondPhoneNumber    String?         // Additional phone number (optional)
   isActive             Boolean         @default(false)  // To track if the user has activated their account
   location             String?
-  roles                UserRole[]      @relation("UserRoles")
+  roles                UserRole[]      @relation("UserRoles") 
   orders               Order[]
   restaurant           Restaurant?     @relation("RestaurantUsers", fields: [restaurantId], references: [id])
   restaurantId         Int?
@@ -54,6 +54,7 @@ model Restaurant {
   superAdminId Int       @unique
   users       User[]     @relation("RestaurantUsers")
   orders      Order[]
+  roles        UserRole[]
   pizzas      Pizza[]    // Relation to pizzas
   toppings    Topping[]  // Relation to toppings
   createdAt   DateTime   @default(now())
@@ -61,15 +62,26 @@ model Restaurant {
 }
 
 
+// model UserRole {
+//   id          Int        @id @default(autoincrement())
+//   name        String
+//   createdAt   DateTime   @default(now())
+//   permissions Permission[] @relation("RolePermissions")
+//   users       User[]     @relation("UserRoles")
+//   status               RoleStatus      @default(active)  // New status field using the enum
+  
+// }
 model UserRole {
-  id          Int        @id @default(autoincrement())
-  name        String
-  createdAt   DateTime   @default(now())
-  permissions Permission[] @relation("RolePermissions")
-  users       User[]     @relation("UserRoles")
-  status               RoleStatus      @default(active)  // New status field using the enum
-
+  id            Int          @id @default(autoincrement())
+  name          String
+  restaurant    Restaurant   @relation(fields: [restaurantId], references: [id])
+  restaurantId  Int          // Foreign key to link the role to a specific restaurant
+  permissions   Permission[] @relation("RolePermissions")
+  users         User[]       @relation("UserRoles")
+  status        RoleStatus   @default(active)
+  createdAt     DateTime     @default(now())
 }
+
 
 model Permission {
   id          Int        @id @default(autoincrement())
