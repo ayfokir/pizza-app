@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, List, ListItemIcon, ListItemText, Typography, Button, IconButton, ListItemButton, CircularProgress } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,15 +12,20 @@ import { useAuth } from "@/context/AuthContext";
 const SideBar = () => {
   const pathname = usePathname();
   const dispatch = useDispatch(); // Get dispatch function from Redux
-  const {ability, roles} = useAuth();
-  console.log("see all ability inside sidebar:", ability)
-  console.log("see all roles inside sidebar:", roles)
+  const {ability, roles,id} = useAuth();
+  // console.log("see all ability inside sidebar:", ability)
+  // console.log("see all roles inside sidebar:", roles)
+  // console.log("see all id inside sidebar:", id)
+  
+
+
+
 
   const handleHeaderTitle   =  (title)  =>  {
     dispatch(setHeaderTitle(title))
   }
   const menuItems = [
-    ability.can("read", "orders") || ability.can("add", "menu") || ability.can("read",  "orders") ? { 
+    ability?.can("read", "orders") || ability?.can("add", "menu") || ability?.can("read",  "orders") ? { 
       text: "Orders",
       icon: (
         <Image
@@ -33,7 +38,7 @@ const SideBar = () => {
       link: "/dashboard/orders",
     } : null,
   
-    ability.can("add", "menu") ? {
+    ability?.can("add", "menu") ? {
       text: "Add Menu",
       icon: (
         <Image
@@ -47,7 +52,7 @@ const SideBar = () => {
     } : null,
   
     // Add conditions for Role and User if needed
-    ability.can('manage', 'all') ? { 
+    ability?.can('manage', 'all') ? { 
       text: "Role",
       icon: (
         <Image
@@ -60,7 +65,7 @@ const SideBar = () => {
       link: "/dashboard/add-role",
     } : null,
   
-    ability.can('manage', 'all') || ability.can("add", "user")? { 
+    ability?.can('manage', 'all') || ability?.can("add", "user")? { 
       text: "User",
       icon: (
         <Image
@@ -74,10 +79,6 @@ const SideBar = () => {
     } : null,
   ].filter(Boolean);
   
-
-
-
-
   const logout = () => {
     localStorage.removeItem("customer");
     window.location.href = "/super-admin-restaurant-login";

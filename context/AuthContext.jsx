@@ -55,13 +55,18 @@ export const AuthProvider = ({ children }) => {
           setEmail(loggedInUser.email);
           setRastaurantId(loggedInUser.restaurantId);
           setIsLogged(true); // Set isLogged to true if token exists
-          console.log("Roles set to:", loggedInUser.roles);
-          console.log("ID set to:", loggedInUser.id);
+          // console.log("Roles set to:", loggedInUser.roles);
+          // console.log("ID set to:", loggedInUser.id);
+          try {
           const definedAbility = defineAbilitiesFor(
             loggedInUser.roles,
             loggedInUser.id
           );
           setAbility(definedAbility);
+          }
+          catch (error) {
+            console.error("Error defining abilities:", error);
+          }
         }
       } catch (error) {
         console.error("Error fetching auth data", error);

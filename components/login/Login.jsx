@@ -19,7 +19,8 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { LoginUser } from "@/app/api/login/Login";
-
+// import Cookies from 'js-cookie';
+import { SetCookie } from "@/util/SetCookie";
 const Login = () => {
   const [userData, setUserData] = useState({
     email: "",
@@ -28,7 +29,7 @@ const Login = () => {
 
   const router = useRouter();
   const dispatch = useDispatch(); // Get dispatch function from Redux
-
+  console.log("inside logged in page")
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -60,7 +61,7 @@ const Login = () => {
     if (!userData.password) newErrors.password = "Password is required";
     return newErrors;
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validateForm();
@@ -68,9 +69,10 @@ const Login = () => {
       setErrors(formErrors);
       return; // Stop submission if there are validation errors
     }
-
+    
     // Handle login logic here
     const result = await LoginUser(userData); // Replace with your actual login function
+    console.log("see result:", result)
     if (result.success) {
       const token = result.token;
       // const expirationTime = new Date().getTime() + (2 * 60 * 1000); // Set expiration time for 2 minutes from now
@@ -79,8 +81,10 @@ const Login = () => {
         token: token,
         expiration: expirationTime,
       };
+      console.log("see customer inside logjsx ", customerData)
       localStorage.setItem("customer", JSON.stringify(customerData));
-
+      SetCookie('customer', `${customerData}`, 7); // Cookie valid for 7 days
+      
       dispatch(SuccessMessage(result));
       router.push("/order"); // Redirect to the dashboard or home page
     } else {

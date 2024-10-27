@@ -9,13 +9,11 @@ import { AuthProvider } from "@/context/AuthContext";
 const page = () => {
   return (
     // <Provider store={store}>
-      // <AuthProvider>
+      <AuthProvider>
       <Box sx={{ backgroundColor: "#FFF8F1", minHeight: "100vh" }}>
-
         <OrderHistory />
-
       </Box>
-      // </AuthProvider>
+      </AuthProvider>
     // </Provider>
   );
 };

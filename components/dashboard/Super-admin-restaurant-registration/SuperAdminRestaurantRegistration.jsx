@@ -23,7 +23,7 @@ import { RegisterRestaurantSuperAdmin } from "@/app/api/register/RegisterRestaur
 import { useRouter } from "next/navigation";
 import InputFileUpload from "./UploadLogo";
 import { styled } from "@mui/material/styles";
-
+import { SetCookie } from "@/util/SetCookie";
 // Styled component for visually hidden input
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -126,6 +126,8 @@ const SuperAdminRestaurantRegistration = () => {
         expiration: expirationTime,
       };
       localStorage.setItem("customer", JSON.stringify(customerData));
+      SetCookie('customer', `${customerData.token}`, 7); // Cookie valid for 7 days
+
       dispatch(SuccessMessage(result));
       router.push("/add-admin");
     } else {

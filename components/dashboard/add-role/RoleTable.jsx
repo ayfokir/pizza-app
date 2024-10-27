@@ -11,12 +11,14 @@ import { fetchRolesRequest, deleteRoleRequest } from "@/redux/slices/roleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {SuccessMessage,FailureMessage} from "@/redux/slices/notificationSlice";
 import { updateRoleStatusRequest } from "@/redux/slices/roleSlice";
+import { useAuth } from "@/context/AuthContext";
 
 
 const RoleTable = () => {
   const [openAddRole, setOpenAddRole] = useState(false);
   const dispatch = useDispatch();
-  
+  const { restaurantId } = useAuth();
+  console.log("see the restaurantId inside the role table:", restaurantId)
   const handleDelete = (id) => {
     console.log("see the id :", id);
     dispatch(deleteRoleRequest(id));
@@ -60,9 +62,9 @@ const RoleTable = () => {
   );
 
   const roleListes = useSelector((state) => state.roles.roles);
-  // console.log("see all roles:", roleListes);
+  console.log("see all roles:", roleListes);
   useEffect(() => {
-    dispatch(fetchRolesRequest());
+    dispatch(fetchRolesRequest(restaurantId));
   }, [openAddRole]); // Assuming `newRole` is a dependency that triggers re-fetching
 
   const table = useMaterialReactTable({

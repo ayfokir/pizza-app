@@ -88,14 +88,14 @@ export async function CreateCustomer(formData) {
       success: false,
     };
   }
-
+  
   // Generate a salt and hash password
   const salt = await bcrypt.genSalt(10);
   console.log("see the salt:", salt);
-
+  
   // Hash the password
   const hashedPassword = await bcrypt.hash(data.password, salt);
-
+  
   // Save user and restaurant to the database
   try {
     const user = await prisma.user.create({
@@ -109,7 +109,7 @@ export async function CreateCustomer(formData) {
         // Here you can set the restaurantId later after creating the restaurant
       },
     });
-
+    
     // Generate JWT token if needed
     const payload = {
       // the payload data is not sensitive
@@ -122,7 +122,7 @@ export async function CreateCustomer(formData) {
     console.log(jwtSecret);
     const token = jwt.sign(payload, jwtSecret, { expiresIn: "24h" });
     console.log(token);
-
+    
     return {
       message: "Customer registered successfully",
       token, // Include the token in the response if needed

@@ -7,17 +7,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchOrdersRequest } from "@/redux/slices/orderSlice";
 import OrderHistoryCard from "./OrderHistoryCard";
 import { useAuth } from "@/context/AuthContext";
-import getAuth from "@/util/Auth";
+// import getAuth from "@/util/Auth";
 
 const OrderHistory = () => {
   const dispatch = useDispatch();
   const [userOrders, setUserOrders] = useState([]);
   const [loading, setLoading]  = useState(true)
   const orders = useSelector((state) => state.orders.orders);
-  const [id, setId]  =useState()
-  const [restaurantId, setRestaurantId] = useState()
-  // const {  restaurantId } = useAuth(); // user Id
-  
+  // const [id, setId]  =useState()
+  // const [restaurantId, setRestaurantId] = useState()
+  const {restaurantId , id} = useAuth(); // user Id
   console.log("see orders :", orders);
   console.log("see userId:", id);
   console.log("see restaurantId:", restaurantId);
@@ -28,20 +27,20 @@ const OrderHistory = () => {
     }
   }, [restaurantId]);
   
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        let { id, email, restaurantId } = await getAuth();
-        console.log("id", id);
-        console.log("restaurantId", restaurantId);
-        setId(id);
-        setRestaurantId(restaurantId)
-      } catch (error) {
-        console.error("Failed to fetch user:", error);
-      }
-    };
-    fetchUser();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       let { id, email, restaurantId } = await getAuth();
+  //       console.log("id", id);
+  //       console.log("restaurantId", restaurantId);
+  //       setId(id);
+  //       // setRestaurantId(restaurantId)
+  //     } catch (error) {
+  //       console.error("Failed to fetch user:", error);
+  //     }
+  //   };
+  //   fetchUser();
+  // }, []);
   
   useEffect(() => {
     console.log("see inside useEffect")
@@ -56,6 +55,7 @@ const OrderHistory = () => {
     
   }, [orders]);
 
+console.log("loading:", loading)
   if (loading) {
     return (
       <Box

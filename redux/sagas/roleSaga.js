@@ -19,9 +19,12 @@ import { DeleteRole } from "@/app/api/role/DeleteRole";
 import { UpdateUserRoleStatus } from "@/app/api/role/UpdateRoleStatus";
 import { SuccessMessage, FailureMessage } from "../slices/notificationSlice";
 // Worker Saga: Fetch Roles
-function* fetchRolesSaga() {
+function* fetchRolesSaga(action) {
+  let restaurantId = action.payload
+  console.log("see restaurantId",restaurantId)
+  console.log("see action",action)
   try {
-    const response = yield call(() => GetRoles()); // Fetch roles from API
+    const response = yield call(() => GetRoles(restaurantId)); // Fetch roles from API
     console.log("Roles fetched successfully:", response);
     yield put(fetchRolesSuccess(response)); // Dispatch success action with roles data
   } catch (error) {

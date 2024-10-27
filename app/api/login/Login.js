@@ -20,14 +20,14 @@ export async function LoginUser(formData) {
 //   const password = formData.get('password')?.toString() ?? '';
   const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET;
   console.log("see secret:", jwtSecret);
-
+  
   // Create an object from the form data
   const data = {
     email,
     password,
   };
   console.log("see data ", data);
-
+  
   // Validate the data using Zod schema
   try {
     loginSchema.parse(data);
@@ -46,7 +46,7 @@ export async function LoginUser(formData) {
       success: false,
     };
   }
-
+  
   // Check if the user exists
   try {
     const user = await prisma.user.findUnique({
