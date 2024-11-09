@@ -4,8 +4,6 @@ export function middleware(request) {
   // Getting cookies from the request using the `RequestCookies` API
   const token = request.cookies.get("customer");
 
-  console.log("see token >>>>>>>>>>>>>>>>>>>>>>>>>>>:", token);
-
   if (!token) {
     // Redirect the user to the login page
     const loginUrl = new URL("/super-admin-restaurant-login", request.url);

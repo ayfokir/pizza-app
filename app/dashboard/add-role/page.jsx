@@ -9,10 +9,12 @@ import { Notification } from "@/notification/Notification";
 import { AuthProvider } from "@/context/AuthContext";
 import { DeleteSomthing } from "@/app/api/permission/DeletSomthing";
 import { DeleteUser } from "@/app/api/user/DeleteUser";
+import { UpdateUserRestaurant } from "@/app/api/restaurant/UpdateRestaurant";
 const page = () => {
   // populatePermissions()
   //  DeleteSomthing()
-//  DeleteUser(46)
+//  DeleteUser(51)
+UpdateUserRestaurant({restaurantId: 9, name: "Pizzaluxe Restaurant"})
   return (
     <Box>
       <RoleTable />

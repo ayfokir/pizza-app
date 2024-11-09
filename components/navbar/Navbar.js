@@ -153,7 +153,7 @@ const Navbar = ({ noRegisterButton }) => {
           
           }
           { !isSmallScreen &&
-           <Link href={"/"}>
+           <Link href={"/register-customer"}>
               <Button
                 variant="contained"
                 

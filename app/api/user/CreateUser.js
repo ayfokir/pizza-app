@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 const registrationSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   restaurantId: z.string().min(1, 'RestaurantId is required'),
-  email: z.string().email('Invalid email address').min(1, 'Email is required'),
+  email: z.string().trim().email('Invalid email address').min(1, 'Email is required'),
   phone1: z.string().min(1, 'Phone number is required').regex(/^\d+$/, 'Phone number must contain only digits'),
   phone2: z.string().optional(), // Second phone number is optional
   location: z.string().min(1, 'Location is required'),
@@ -30,6 +30,7 @@ const generateMockPassword = () => {
 // Change the function to accept a JSON object
 export async function CreateUser(data) {
   // Validate the data using Zod schema
+  console.log("see email address:", data.email)
   try {
     registrationSchema.parse(data);
   } catch (error) {
@@ -92,13 +93,14 @@ export async function CreateUser(data) {
   // Generate a salt and hash the password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-
+  console.log("see the email before trime", data.email)
+  console.log("see the email after trime", data.email.trim())
   // Save user and associate with the roles
   try {
     const user = await prisma.user.create({
       data: {
         name: data.name,
-        email: data.email,
+        email: data.email.trim(),
         restaurantId: data.restaurantId ? parseInt(data.restaurantId): null,
         phoneNumber: data.phone1,
         secondPhoneNumber: data.phone2, // Save second phone number if provided

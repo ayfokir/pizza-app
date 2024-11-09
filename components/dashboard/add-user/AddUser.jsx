@@ -47,7 +47,7 @@ const MyModal = ({ open, onClose }) => {
     const selectedRoles = event.target.value; // This will be an array of selected role IDs
     setRole(selectedRoles); // Set the selected roles directly
   };
-console.log("role", role)
+// console.log("role", role)
 
   // console.log("see role:", role);
   const handleSubmit = async () => {

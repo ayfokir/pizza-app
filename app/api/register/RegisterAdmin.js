@@ -23,16 +23,17 @@ export async function RegisterAdmin(formData) {
   const phone = formData.get('phone')?.toString() ?? '';
   const password = formData.get('password')?.toString() ?? '';
   const confirmPassword = formData.get('confirmPassword')?.toString() ?? '';
-  console.log("see email here:", email)
-
+  console.log("see email here before trim:", email)
+  
   // Create an object from the form data
   const data = {
     name,
-    email,
+    email: email.trim(),
     phone,
     password,
     confirmPassword,
   };
+  console.log("see email here after trim:", data.email)
 
   console.log("see all Data:", data)
   // Validate the data using Zod schema
