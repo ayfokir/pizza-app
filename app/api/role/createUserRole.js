@@ -4,14 +4,12 @@ import { z } from 'zod';
 
 const prisma = new PrismaClient();
 
-
 // Define Zod schema for role validation
 const roleSchema = z.object({
   name: z.string().min(1, 'Role name is required'),
   restaurantId: z.number().int().positive('A valid restaurant ID is required'), // Ensures restaurantId is a positive integer
   permissionIds: z.array(z.number().int()).nonempty('At least one permission ID is required'), // Ensures array of permission IDs with at least one item
 });
-
 
 // Create User Role Function
 export async function createUserRole(roleName, permissionIds, restaurantId) {
@@ -82,5 +80,3 @@ console.log("see restaurantId",restaurantId)
     };
   }
 }
-
-
