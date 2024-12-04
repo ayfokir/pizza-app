@@ -14,7 +14,7 @@ const page = () => {
   // populatePermissions()
   //  DeleteSomthing()
 //  DeleteUser(51)
-UpdateUserRestaurant({restaurantId: 9, name: "Pizzaluxe Restaurant"})
+// UpdateUserRestaurant({restaurantId: 9, name: "Pizzaluxe Restaurant"})
   return (
     <Box>
       <RoleTable />
