@@ -23,6 +23,7 @@ const OrderHistory = () => {
   
   useEffect(() => {
     if (restaurantId) {
+      console.log("see restaurantId", restaurantId)
       dispatch(fetchOrdersRequest(restaurantId));
     }
   }, [restaurantId]);

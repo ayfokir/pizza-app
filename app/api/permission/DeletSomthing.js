@@ -6,10 +6,10 @@ const prisma = new PrismaClient();
 export async function DeleteSomthing() {
   try {
     // Delete all restaurants
-    const deletedRestaurant = await prisma.restaurant.delete({
-      where: { id: 8}
-    });
-    // const deletedUser = await prisma.user.deleteMany(); // Changed from delete() to deleteMany()
+    // const deletedRestaurant = await prisma.restaurant.delete({
+    //   where: { id: 2}
+    // });
+    const deletedUser = await prisma.user.deleteMany(); // Changed from delete() to deleteMany()
     // Delete all users
 
     // console.log("Deleted restaurant count:", deletedRestaurant.count); // Log the count of deleted restaurants
