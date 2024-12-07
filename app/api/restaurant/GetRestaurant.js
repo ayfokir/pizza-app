@@ -13,6 +13,10 @@ export async function GetRestaurants() {
         orders: true,  // Include related orders
         superAdmin: true,  // Include the associated super admin
       },
+      orderBy: {
+        createdAt: 'desc',  // Replace 'createdAt' with the field you want to sort by
+      },
+
     });
 
     if (!restaurants || restaurants.length === 0) {
