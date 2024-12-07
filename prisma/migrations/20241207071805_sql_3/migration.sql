@@ -1,5 +1,11 @@
 -- CreateEnum
-CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'PREPARING', 'DELIVERED', 'CANCELED');
+CREATE TYPE "OrderStatus" AS ENUM ('Preparing', 'Ready', 'Delivered');
+
+-- CreateEnum
+CREATE TYPE "UserStatus" AS ENUM ('active', 'inActive');
+
+-- CreateEnum
+CREATE TYPE "RoleStatus" AS ENUM ('active', 'inActive');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -12,6 +18,7 @@ CREATE TABLE "User" (
     "isActive" BOOLEAN NOT NULL DEFAULT false,
     "location" TEXT,
     "restaurantId" INTEGER,
+    "status" "UserStatus" NOT NULL DEFAULT 'active',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -46,6 +53,8 @@ CREATE TABLE "Restaurant" (
 CREATE TABLE "UserRole" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "restaurantId" INTEGER NOT NULL,
+    "status" "RoleStatus" NOT NULL DEFAULT 'active',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "UserRole_pkey" PRIMARY KEY ("id")
@@ -65,6 +74,8 @@ CREATE TABLE "Pizza" (
     "name" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "pizza_photo" TEXT,
+    "restaurantId" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Pizza_pkey" PRIMARY KEY ("id")
 );
@@ -73,6 +84,7 @@ CREATE TABLE "Pizza" (
 CREATE TABLE "Topping" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "restaurantId" INTEGER NOT NULL,
 
     CONSTRAINT "Topping_pkey" PRIMARY KEY ("id")
 );
@@ -167,6 +179,18 @@ ALTER TABLE "Token" ADD CONSTRAINT "Token_userId_fkey" FOREIGN KEY ("userId") RE
 
 -- AddForeignKey
 ALTER TABLE "Restaurant" ADD CONSTRAINT "Restaurant_superAdminId_fkey" FOREIGN KEY ("superAdminId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserRole" ADD CONSTRAINT "UserRole_restaurantId_fkey" FOREIGN KEY ("restaurantId") REFERENCES "Restaurant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Pizza" ADD CONSTRAINT "Pizza_restaurantId_fkey" FOREIGN KEY ("restaurantId") REFERENCES "Restaurant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Pizza" ADD CONSTRAINT "Pizza_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Topping" ADD CONSTRAINT "Topping_restaurantId_fkey" FOREIGN KEY ("restaurantId") REFERENCES "Restaurant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

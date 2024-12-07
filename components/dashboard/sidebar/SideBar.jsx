@@ -111,7 +111,7 @@ const SideBar = () => {
         <Box display="flex" alignItems="center">
           <IconButton sx={{ marginLeft: "10px", paddingRight: "16px" }}>
             <Image
-              src="/material-symbols_menu-open.png"
+              src="/logos/material-symbols_menu-open.png"
               alt="menu"
               width={24}
               height={24}

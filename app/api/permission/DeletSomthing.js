@@ -11,10 +11,10 @@ export async function DeleteSomthing() {
     // });
     const deletedUser = await prisma.user.deleteMany(); // Changed from delete() to deleteMany()
     // Delete all users
-
+    
     // console.log("Deleted restaurant count:", deletedRestaurant.count); // Log the count of deleted restaurants
     console.log("Deleted user count:", deletedUser.count); // Log the count of deleted users
-
+    
     return {
       message: 'Deleted successfully',
       success: true,
