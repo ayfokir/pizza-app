@@ -80,9 +80,18 @@ const SideBar = () => {
   ].filter(Boolean);
   
   const logout = () => {
+    console.log("yes inside logout");
+  
+    // Remove from localStorage
     localStorage.removeItem("customer");
+  
+    // Remove the 'customer' cookie
+    document.cookie = "customer=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  
+    // Redirect to login page
     window.location.href = "/super-admin-restaurant-login";
   };
+  
   
   return (
     <Box
