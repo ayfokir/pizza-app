@@ -61,7 +61,7 @@ const AddRoleModal = ({ open, onClose }) => {
       setErrors(formErrors);
       return; // Stop submission if there are validation errors
     }
-    //Call API to create a new role
+    //Call API to create a new role 
     try {
         const result = await createUserRole(roleData.name, roleData.permissions, restaurantId);
         if (result.success) {

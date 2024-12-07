@@ -15,15 +15,23 @@ export async function populatePermissions() {
   ];
 
   for (const permission of permissions) {
+    // Trim and normalize the name for consistent comparison
+    const normalizedName = permission.name.trim().toLowerCase();
+
     // Check if the permission already exists
     const existingPermission = await prisma.permission.findFirst({
-      where: { name: permission.name },
+      where: {
+        name: {
+          equals: normalizedName,
+          mode: 'insensitive', // Case-insensitive search (PostgreSQL)
+        },
+      },
     });
 
     // Only add if it doesn't already exist
     if (!existingPermission) {
       await prisma.permission.create({
-        data: permission,
+        data: { name: normalizedName }, // Store the normalized name
       });
       console.log(`Added permission: ${permission.name}`);
     } else {
