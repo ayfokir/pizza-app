@@ -70,10 +70,10 @@ const Navbar = ({ noRegisterButton }) => {
           // gap={10}
           sx={{
             gap: {
-              xs: 2, // for screens <600px
-              sm: 6, // for screens ≥600px
-              md: 8, // for screens ≥900px
-              lg: 10, // for screens ≥1200px
+              xs: 1, // for screens <600px
+              sm: 1, // for screens ≥600px
+              md: 2, // for screens ≥900px
+              lg: 4, // for screens ≥1200px
             },
           }}
         >

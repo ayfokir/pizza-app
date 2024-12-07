@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchOrdersRequest } from "@/redux/slices/orderSlice";
 import OrderHistoryCard from "./OrderHistoryCard";
 import { useAuth } from "@/context/AuthContext";
+
 // import getAuth from "@/util/Auth";
 
 const OrderHistory = () => {
@@ -52,7 +53,10 @@ const OrderHistory = () => {
       setUserOrders(filteredOrders);
       setLoading(() => false)
     }
-    // setLoading(() => false)
+    else if (!id) {
+      setLoading(false);
+    }
+    
     
   }, [orders]);
 
